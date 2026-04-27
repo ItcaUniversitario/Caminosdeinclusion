@@ -18,9 +18,16 @@
     display: none !important;
 }
 
-/* 2. Encendemos el reflector: Muestra SOLO la pantalla que recibe la orden de JS (.activa) */
+/* Modifica esta parte en tu CSS global */
 .main-game-area > *.activa {
-    display: flex !important; 
+    display: flex !important;
+    flex-direction: column;
+    /* Cambia height: 100% por min-height */
+    min-height: 100%; 
+    height: auto; 
+    width: 100%;
+    justify-content: flex-start; /* Mejor que center si el contenido es largo */
+    padding-bottom: 40px; /* Espacio extra para que no choque con el menú inferior */
 }
 /* 1. VARIABLES MAESTRAS */
 :root {
@@ -213,26 +220,31 @@ body {
     100% { opacity: 1; transform: scale(1); }
 }
 
-/* 6. RESPONSIVIDAD GENERAL (MÓVIL) */
 @media (max-width: 768px) {
     .layout-container {
-        flex-direction: column-reverse; /* El menú lateral pasa a ser barra inferior */
+        flex-direction: column-reverse; /* Menú abajo, juego arriba */
+        height: 100%; /* Asegura que ocupe el alto disponible */
     }
 
-    /* Asumo que tienes una clase para tu menú lateral. Aquí le puse .sidebar-mini de ejemplo */
-    .sidebar-mini {
-        width: 100%;
-        height: auto;
-        min-height: 70px;
-        flex-direction: row;
-        justify-content: space-evenly; 
-        padding: 0.5rem 1rem calc(0.5rem + env(safe-area-inset-bottom)); 
-        border-right: none;
-        border-top: 3px solid var(--color-purple-dark);
-        box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
+    .main-game-area {
+        flex: 1; /* Obliga al área de juego a estirarse */
+        width: 100vw;
+        height: auto; /* Permite que el flex-grow maneje el alto */
+        overflow-y: auto; /* Activa el scroll interno si el contenido es largo */
+    }
+
+    /* Asegúrate de que la clase de tu menú lateral tenga un tamaño fijo */
+    .sidebar-mini { 
+        flex-shrink: 0; /* Evita que el área de juego lo aplaste */
+        height: 70px; /* Altura fija para la barra inferior */
     }
 }
-
+@media (max-width: 768px) {
+    .pantalla-inicio, .pantalla-caminos, .pantalla-personajes, 
+    .pantalla-quiz, .pantalla-mapa {
+        padding-bottom: 80px !important; /* Espacio para que el menú no tape botones */
+    }
+}
 /* =========================================
    CONTROL DE PANTALLAS (VISIBILIDAD)
    ========================================= */
