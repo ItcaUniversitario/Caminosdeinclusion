@@ -23,54 +23,49 @@ export function configurarSidebar() {
     } else {
         console.warn("Módulo Sidebar: No se encontró el botón de inicio.");
     }
+// ==========================================
+// 2. CONFIGURACIÓN BOTÓN AUDIO
+// ==========================================
+const btnAudioSidebar = document.querySelector('.btn-mini[title="Audio"]');
 
-    // ==========================================
-    // 2. CONFIGURACIÓN BOTÓN AUDIO
-    // ==========================================
-    const btnAudioSidebar = document.querySelector('.btn-mini[title="Audio"]');
+if (btnAudioSidebar) {
+    // CAMBIO: Ahora seleccionamos la imagen (img) en lugar del span
+    const iconoAudio = btnAudioSidebar.querySelector('.icono-custom');
+    const textoAudio = btnAudioSidebar.querySelector('.texto-btn-mini');
+    
+    let estaSilenciado = false;
 
-    if (btnAudioSidebar) {
-        const iconoAudio = btnAudioSidebar.querySelector('.icono-emoji');
-        const textoAudio = btnAudioSidebar.querySelector('.texto-btn-mini');
-        
-        // Variable para recordar el estado actual
-        let estaSilenciado = false;
+    // Rutas de tus iconos locales (Asegúrate de que los nombres coincidan con tus archivos)
+    const rutaAudioOn = 'assets/imagenes/iconos/icono_sonido.png';
+    const rutaAudioOff = 'assets/imagenes/iconos/icono_sinsonido.png';
 
-        btnAudioSidebar.addEventListener('click', () => {
-            estaSilenciado = !estaSilenciado; // Cambia entre true/false
+    btnAudioSidebar.addEventListener('click', () => {
+        estaSilenciado = !estaSilenciado;
 
-            if (estaSilenciado) {
-                // 1. Cambio Visual
-                iconoAudio.textContent = '🔇';
-                textoAudio.textContent = 'Mutear';
+        if (estaSilenciado) {
+            // 1. Cambio Visual (IMAGEN LOCAL)
+            iconoAudio.src = rutaAudioOff; // Cambia a la imagen de silencio
+            textoAudio.textContent = 'Mutear';
 
-                // 2. Silenciar a través de tu función global (si existe)
-                if (typeof window.controlarMusica === 'function') {
-                    // Llama a tu función para pausar (puedes ajustar esto según cómo funcione tu código)
-                    window.controlarMusica(true); 
-                }
-
-                // 3. El Truco Infalible: Mutea a la fuerza cualquier <audio> o <video> del HTML
-                document.querySelectorAll('audio, video').forEach(media => media.muted = true);
-
-                // Si tuvieras un método mute() en audioManager, lo pondrías aquí:
-                // if (window.audioManager) window.audioManager.pauseBGM();
-
-            } else {
-                // 1. Cambio Visual
-                iconoAudio.textContent = '🔊';
-                textoAudio.textContent = 'Audio';
-
-                // 2. Restaurar tu función global
-                if (typeof window.controlarMusica === 'function') {
-                    window.controlarMusica(false); 
-                }
-
-                // 3. Desmutear todas las etiquetas
-                document.querySelectorAll('audio, video').forEach(media => media.muted = false);
+            // 2. Lógica de silencio
+            if (typeof window.controlarMusica === 'function') {
+                window.controlarMusica(true); 
             }
-        });
-    } else {
-        console.warn("Módulo Sidebar: No se encontró el botón de audio.");
-    }
+            document.querySelectorAll('audio, video').forEach(media => media.muted = true);
+
+        } else {
+            // 1. Cambio Visual (IMAGEN LOCAL)
+            iconoAudio.src = rutaAudioOn; // Cambia a la imagen de sonido activo
+            textoAudio.textContent = 'Audio';
+
+            // 2. Lógica de sonido
+            if (typeof window.controlarMusica === 'function') {
+                window.controlarMusica(false); 
+            }
+            document.querySelectorAll('audio, video').forEach(media => media.muted = false);
+        }
+    });
+} else {
+    console.warn("Módulo Sidebar: No se encontró el botón de audio.");
+}
 }

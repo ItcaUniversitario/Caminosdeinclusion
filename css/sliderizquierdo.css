@@ -42,18 +42,26 @@
     /* Animación fluida de rebote */
     transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-
-/* El Icono (Emoji o SVG) */
-.icono-emoji {
-    font-size: 1.6rem; 
-    line-height: 1;
-    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4)); /* Pequeña sombra 3D */
-    transition: transform 0.2s ease;
+.icono-custom {
+    width: 50px;  /* El mismo tamaño que tenía tu SVG */
+    height: 50px;
+    object-fit: contain; /* Evita que la imagen se deforme */
+    display: block;
 }
+
+/* Si quieres que el icono cambie de color o brille al pasar el mouse (como tus otros botones) */
+.btn-mini:hover .icono-custom {
+    filter: drop-shadow(var(--hud-glow));
+    transform: scale(1.1);
+    transition: all 0.2s ease;
+}
+
+
+
 
 /* Las letras pequeñitas */
 .texto-btn-mini {
-    font-size: 0.65rem; 
+    font-size: 0.80rem; 
     font-weight: 800;
     text-transform: uppercase;
     font-family: var(--font-body, 'Fredoka', sans-serif);

@@ -36,28 +36,30 @@
 
         <aside class="sidebar-mini">
             <button class="btn-mini" title="Inicio">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
+                <img src="assets/imagenes/iconos/icono_inicio.png" alt="Inicio" class="icono-custom">
+
                 <span class="texto-btn-mini">Inicio</span>
             </button>
 
             <button class="btn-mini" title="Perfil">
-                <span class="icono-emoji">👤</span>
+                <img src="assets/imagenes/iconos/icono_perfil.png" alt="Perfil" class="icono-custom">
+
                 <span class="texto-btn-mini">Perfil</span>
             </button>
 
             <button class="btn-mini" title="Audio">
-                <span class="icono-emoji">🔊</span>
+                <img src="assets/imagenes/iconos/icono_sonido.png" alt="Audio" class="icono-custom">
+
                 <span class="texto-btn-mini">Audio</span>
             </button>
 
             <a href="admin/admin-dashboard.html" target="_blank" style="text-decoration: none;">
                 <button class="btn-mini" title="Ajustes">
-                    <span class="icono-emoji">⚙️</span>
-                    <span class="texto-btn-mini">Ajustes</span>
+                    <img src="assets/imagenes/iconos/icono_administrador.png" alt="Ajustes" class="icono-custom">
+
+                    <span class="texto-btn-mini">Admin
+
+                    </span>
                 </button>
             </a>
         </aside>
@@ -106,7 +108,7 @@
                             </button>
 
                             <button class="btn-burbuja btn-arcoiris">
-                                <img src="assets/imagenes/iconos/icon_tres_jugadores.png" alt="Modo Diverso"
+                                <img src="assets/imagenes/iconos/icon_cuatro_jugadores.png" alt="Modo Diverso"
                                     class="icono-personalizado">
                                 <span class="num-burbuja">4</span>
                             </button>
@@ -130,7 +132,7 @@
                     <div class="contenedor-modulos">
                         <button class="btn-modulo modulo-violencia">
                             <div class="icono-modulo">
-                                <img src="assets/imagenes/iconos/icono_nivel1.png" alt="Módulo 1">
+                                <img src="assets/imagenes/fondo_caminos/camino1.png" alt="Módulo 1">
                             </div>
                             <div class="textos-btn-modulo">
                                 <h2 class="num-modulo">Camino 1</h2>
@@ -141,7 +143,7 @@
                         <button class="btn-modulo bloqueado">
                             <div class="candado-icono">🔒</div>
                             <div class="icono-modulo">
-                                <img src="assets/imagenes/iconos/icono_nivel2.png" alt="Módulo 2">
+                                <img src="assets/imagenes/fondo_caminos/camino2.png" alt="Módulo 2">
                             </div>
                             <div class="textos-btn-modulo">
                                 <h2 class="num-modulo">Camino 2</h2>
@@ -202,7 +204,11 @@
 
                     <div class="zona-manual-instrucciones">
                         <div class="tarjeta-manual">
-                            <h2>📖 Instrucciones del Viaje</h2>
+                            <h2 class="titulo-instrucciones">
+                                <img src="assets/imagenes/iconos/icono_instrucciones.png" alt="Instrucciones"
+                                    class="icono-titulo">
+                                Instrucciones del Viaje
+                            </h2>
 
                             <p class="intro-manual">
                                 Explora historias reales, toma decisiones y fortalece tu empatía en este recorrido
@@ -309,7 +315,7 @@
             <div class="pantalla-quiz" id="pantalla-quiz">
 
                 <div class="etiqueta-fase">
-                    <h1>📝 Fase: <strong id="etiqueta-fase-texto">PRE-QUIZ</strong></h1>
+                    <h1> Fase: <strong id="etiqueta-fase-texto">PRE-QUIZ</strong></h1>
                 </div>
 
                 <div class="contenedor-central-quiz">
@@ -340,16 +346,16 @@
                 <div class="panel-izquierdo">
 
                     <div class="contenedor-reloj-mapa">
-                    
+
                         <div class="tiempo-texto">
                             <span class="etiqueta-tiempo">TIEMPO DE JUEGO</span>
                             <span id="reloj-juego">00:00min</span>
                         </div>
                     </div>
 
-                   <div id="contenedor-scores-global" class="hud-scores-multijugador"></div>
+                    <div id="contenedor-scores-global" class="hud-scores-multijugador"></div>
 
-                   
+
 
                     <div class="contenedor-ruleta-lateral"
                         style="display: flex; flex-direction: column; align-items: center; margin-top: auto; padding-bottom: 20px;">
@@ -368,13 +374,13 @@
                             <div class="centro-ruleta" id="texto-centro-ruleta">GIRAR</div>
                         </button>
                     </div>
-                    
+
                 </div>
 
                 <div class="panel-principal-mapa">
 
                     <div class="contenedor-mapa-visual">
-                        <img src="assets/imagenes/mapas/mapa_camino1.jpeg" class="imagen-fondo-mapa"
+                        <img src="assets/imagenes/mapas/mapa_camino1.jpg" class="imagen-fondo-mapa"
                             alt="Mapa del camino">
                         <div id="capa-fichas"></div>
                     </div>

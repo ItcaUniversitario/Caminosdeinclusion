@@ -32,6 +32,9 @@
     z-index: 10; 
 }
 
+
+
+
 /* --- 2. CABECERA FLUIDA --- */
 .pantalla-personajes .cabecera-personajes {
     display: flex; /* Cambiado a flex para que sea líquido */
@@ -83,6 +86,26 @@
     font-size: 1rem;
     margin: 0.2rem 0 0 0;
     font-weight: 500;
+}
+
+
+
+/*-----------------ICONO DE INSTRUCCIONES */
+.titulo-instrucciones {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Lo centra en la pantalla */
+    gap: 15px;               /* Espacio entre el icono y el texto */
+    color: var(--color-purple-dark);
+    margin-bottom: 20px;
+}
+
+.icono-titulo {
+    width: clamp(30px, 5vw, 45px); /* Tamaño responsivo: ni muy grande ni muy chico */
+    height: auto;
+    object-fit: contain;
+    /* Un pequeño filtro para que resalte si es necesario */
+    filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1));
 }
 /* =========================================
    ETIQUETA DE TURNO (GAMIFICADA Y ANIMADA)
