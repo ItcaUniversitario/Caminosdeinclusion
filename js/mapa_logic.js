@@ -371,13 +371,14 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
                             </div>
                         </div>
 
-                       <div class="cara-carta cara-reverso" id="cara-trasera" style="${estiloReverso}">
-                            <h3 id="titulo-reverso" style="font-family: var(--font-body, 'Fredoka', sans-serif); color: #222; margin-top: 50px; margin-bottom: 30px; text-align: center; font-size: 1.8rem; -webkit-font-smoothing: antialiased;">
-                                ¿Qué decides hacer?
-                            </h3>
-                            
-                            <div id="contenedor-opciones-reverso" style="display: flex; flex-direction: column; justify-content: center; gap: 20px; width: 100%; padding: 0 25px; flex-grow: 1; position: relative; z-index: 30; box-sizing: border-box;"></div>
-                        </div>
+              
+                    <div class="cara-carta cara-reverso" id="cara-trasera" style="${estiloReverso}">
+                        <h3 id="titulo-reverso" style="font-family: var(--font-body, 'Fredoka', sans-serif); color: #222; margin-top: 30px; margin-bottom: 12px; text-align: center; font-size: 1.5rem; -webkit-font-smoothing: antialiased;">
+                            ¿Qué decides hacer?
+                        </h3>
+                        
+                        <div id="contenedor-opciones-reverso" style="display: flex; flex-direction: column; justify-content: center; gap: 8px; width: 100%; padding: 0 15px 15px 15px; flex-grow: 1; position: relative; z-index: 30; box-sizing: border-box; overflow-y: auto;"></div>
+                    </div>
 
                     </div>
                 </div>

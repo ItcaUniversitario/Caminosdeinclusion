@@ -321,7 +321,6 @@ div#pantalla-mapa.activa {
     margin-top: 2px;
 }
 
-
 /* ==========================================================================
    FICHA 3D CON EFECTO DE PIEZA DE TABLERO Y BORDE STICKER
    ========================================================================== */
@@ -335,8 +334,6 @@ div#pantalla-mapa.activa {
     overflow: visible; 
     background: none; 
 
-    /* 🚨 TRUCO 1: Efecto Sticker y Sombra */
-    /* Crea un borde blanco contorneando la figura y le añade una sombra suave al piso */
     filter: 
         drop-shadow(1.5px 0px 0px #ffffff) 
         drop-shadow(-1.5px 0px 0px #ffffff) 
@@ -344,6 +341,7 @@ div#pantalla-mapa.activa {
         drop-shadow(0px -1.5px 0px #ffffff)
         drop-shadow(0px 8px 6px rgba(0, 0, 0, 0.5));
 
+    /* ✅ El translate y el transform-origin están perfectos aquí */
     transform: translate(calc(-50% + var(--desfaseX, 0px)), calc(-100% + var(--desfaseY, 0px))) perspective(500px) rotateX(15deg);
     transition: left 0.8s ease-in-out, top 0.8s ease-in-out, transform 0.8s ease-in-out; 
     z-index: 50;
@@ -357,29 +355,37 @@ div#pantalla-mapa.activa {
     width: auto !important; 
     display: block;
     position: relative;
-    z-index: 2; /* Asegura que la imagen esté sobre la base */
+    z-index: 2; 
 }
 
-/* 🚨 TRUCO 2: El Pedestal / Base brillante bajo los pies */
+/* ==========================================================================
+   EL PEDESTAL: LA CLAVE DEL CENTRADO
+   ========================================================================== */
 .ficha-jugador-mapa::after {
     content: "";
     position: absolute;
-    bottom: 0px; 
+    
+    /* 🚨 LA MAGIA AQUÍ: 
+       Como el pedestal mide 12px de alto, si le ponemos bottom: 0, 
+       queda apoyado SOBRE la coordenada. 
+       Al poner bottom: -6px (la mitad), obligamos a que el CENTRO del pedestal 
+       sea exactamente la coordenada del mapa. */
+    bottom: -6px; 
+    
     left: 50%;
     transform: translateX(-50%);
     
-    /* Forma de la base (óvalo aplastado) */
     width: 45px; 
     height: 12px; 
     border-radius: 50%;
     
-    /* Colores del pedestal (Un morado brillante que combina con tu mapa) */
     background: rgba(255, 255, 255, 0.8);
     border: 2px solid var(--color-purple-main, #5e2a84);
-    box-shadow: 0 0 10px rgba(240, 98, 146, 0.8); /* Resplandor rosa */
+    box-shadow: 0 0 10px rgba(240, 98, 146, 0.8); 
     
-    z-index: 1; /* Se pone por detrás de los pies del personaje */
+    z-index: 1; 
 }
+
 
 /* ==========================================================================
    ETIQUETA DE NOMBRE FLOTANTE (MÁS GRANDE Y LEGIBLE)
