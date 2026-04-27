@@ -6,21 +6,37 @@ import { doc, getDoc, setDoc, addDoc, collection, serverTimestamp } from "https:
 // 2. Variables globales para el flujo
 let jugadorActual = 1;
 let totalJugadores = 0;
-
 // ✅ EXPORTAMOS este arreglo para que otras pantallas (como la de personajes) sepan quién está jugando
 export let datosDeTodosLosJugadores = []; 
 
 export function configurarBotonesJugadores() {
-    console.log("¡La función de los botones SÍ arrancó!"); // 👈 AGREGA ESTO
+    
     const botonesSeleccion = document.querySelectorAll('.btn-burbuja');
     const zonaFormularios = document.getElementById('zona-formularios');
     const textosSeleccion = document.querySelector('.textos-casual');
     const contenedorBotones = document.querySelector('.botones-burbuja-container');
 
+    // 🎯 EL TRUCO: Buscamos SOLAMENTE el video que vive dentro de la pantalla de inicio
+    const videoInicio = document.querySelector('.pantalla-inicio video');
+
     botonesSeleccion.forEach(boton => {
         boton.addEventListener('click', (e) => {
             boton.blur(); 
             
+            // ==========================================
+            // 🔊 ACTIVAR AUDIO SOLO DEL VIDEO DE INICIO
+            // ==========================================
+            if (videoInicio) {
+                videoInicio.muted = false; // Le quitamos el silencio
+                
+                // Si el video estaba pausado, lo forzamos a reproducir
+                if (videoInicio.paused) {
+                    videoInicio.play().catch(error => console.warn("Bloqueo de navegador:", error));
+                }
+            }
+            // ==========================================
+            
+            // Asumo que totalJugadores y jugadorActual están declaradas globalmente en tu archivo
             totalJugadores = parseInt(boton.querySelector('.num-burbuja').textContent);
             jugadorActual = 1; 
             datosDeTodosLosJugadores = []; 
@@ -36,7 +52,6 @@ export function configurarBotonesJugadores() {
         });
     });
 }
-
 function mostrarFormularioPasoAPaso(contenedor, textosSeleccion, contenedorBotones) {
     contenedor.innerHTML = ''; 
     contenedor.style.display = 'flex';
@@ -269,12 +284,21 @@ function mostrarFormularioPasoAPaso(contenedor, textosSeleccion, contenedorBoton
                     // Opcional: Podrías detener el juego aquí si la partida no se crea.
                 }
                 
-                // ==========================================
+               // ==========================================
                 // CAMBIO DE PANTALLA CORRECTO USANDO CLASES
                 // ==========================================
                 const pantallaInicio = document.querySelector('.pantalla-inicio');
                 const pantallaCaminos = document.querySelector('.pantalla-caminos');
 
+                // 🛑 1. DETENEMOS EL VIDEO ANTES DE OCULTAR LA PANTALLA
+                const videoInicio = document.querySelector('.pantalla-inicio video');
+                if (videoInicio) {
+                    videoInicio.pause();
+                    videoInicio.currentTime = 0; // Opcional: lo regresa al inicio
+                    videoInicio.muted = true;    // Lo vuelve a silenciar
+                }
+
+                // 2. AHORA SÍ, CAMBIAMOS LA PANTALLA
                 if (pantallaInicio && pantallaCaminos) {
                     pantallaInicio.classList.remove('activa'); 
                     pantallaCaminos.classList.add('activa'); 
@@ -293,7 +317,6 @@ function mostrarFormularioPasoAPaso(contenedor, textosSeleccion, contenedorBoton
 
     contenedor.appendChild(formElement);
 }
-
 // =========================================================
 // FUNCIÓN MATEMÁTICA OFICIAL PARA CÉDULAS DE ECUADOR
 // =========================================================

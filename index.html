@@ -50,7 +50,7 @@
             <button class="btn-mini" title="Audio">
                 <img src="assets/imagenes/iconos/icono_sonido.png" alt="Audio" class="icono-custom">
 
-                <span class="texto-btn-mini">Audio</span>
+                <span class="texto-btn-mini">Sonido</span>
             </button>
 
             <a href="admin/admin-dashboard.html" target="_blank" style="text-decoration: none;">
@@ -441,6 +441,13 @@
 
         </main>
     </div>
+    <audio id="musicaFondo" loop>
+    <source src="assets/sonido/sonido_de_fondo.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento de audio.
+</audio>
+<audio id="sonidoAcierto" src="assets/sonido/sonido_correcto.mp3"></audio>
+<audio id="sonidoError" src="assets/sonido/sonido_incorrecto.mp3"></audio>
+
     <script type="module" src="./js/main.js"></script>
 </body>
 

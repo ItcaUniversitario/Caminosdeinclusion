@@ -64,6 +64,7 @@ function actualizarHUD() {
 }
 // Asegúrate de que esta variable esté arriba del todo en tu archivo
 let gradosActuales = 0;
+
 function girarRuleta() {
     // 🛑 BLOQUEO 1: Si hay movimiento, no hacer nada
     if (fichaEnMovimiento) {
@@ -77,20 +78,28 @@ function girarRuleta() {
 
     // Bloqueo visual y de clics
     btnRuleta.style.pointerEvents = 'none';
-    btnRuleta.style.opacity = '0.5'; // Opcional: para que se vea desactivado
+    btnRuleta.style.opacity = '0.5'; 
     textoCentro.textContent = "...";
 
+    // 1. Generar número aleatorio del 1 al 6
     const avance = Math.floor(Math.random() * 6) + 1;
     const gradosPorSeccion = 60;
-    const gradosParaLlegar = 360 - (avance * gradosPorSeccion - 30);
 
-    gradosActuales += (360 * 5) + gradosParaLlegar - (gradosActuales % 360);
+    // 2. MAGIA DE ALEATORIEDAD VISUAL:
+    // En lugar de caer siempre en el centro exacto (-30), elegimos un punto aleatorio 
+    // dentro de la sección (entre 10 y 50 grados para no pisar la línea divisoria).
+    const offsetAleatorio = Math.floor(Math.random() * 40) + 10; 
+    const gradosParaLlegar = 360 - (avance * gradosPorSeccion - offsetAleatorio);
+
+    // 3. Reducimos las vueltas extra de 5 a 2, para que en medio segundo no se vea como un borrón
+    gradosActuales += (360 * 2) + gradosParaLlegar - (gradosActuales % 360);
     ruedaGrafica.style.setProperty('--giro', `${gradosActuales}deg`);
 
+    // 4. Cambiamos el temporizador a 500 milisegundos (Medio segundo)
     setTimeout(() => {
         textoCentro.textContent = avance;
         moverFicha(avance); // Esta función activará el bloqueo de ficha
-    }, 3000);
+    }, 500);
 }
 // ==========================================================================
 // 🚀 FUNCIÓN PRINCIPAL DE MOVIMIENTO (Con Paradas y Continuación)

@@ -110,23 +110,40 @@ function mostrarPregunta() {
         // 🚨 CAMBIO 3: Guardamos el texto "limpio" en la memoria del botón para no romper la validación
         btn.dataset.respuesta = opcionTexto;
         
-        btn.addEventListener('click', () => {
+       btn.addEventListener('click', () => {
             if (!btnSiguiente.classList.contains('bloqueado')) return;
             
             opcionElegidaTemporal = opcionTexto; // Guardamos la limpia en la BD
             
+            // Traemos los elementos de audio
+            const audioAcierto = document.getElementById('sonidoAcierto');
+            const audioError = document.getElementById('sonidoError');
+
             // 1. Evaluamos si es correcta o incorrecta
             if (opcionTexto === preguntaActual.respuestaCorrecta) {
                 btn.classList.add('correcta'); // Se pinta de Verde
+                
+                // 🔊 REPRODUCIR SONIDO DE ACIERTO
+                if (audioAcierto) {
+                    audioAcierto.currentTime = 0; // Reinicia el sonido por si se hace clic rápido
+                    audioAcierto.play().catch(e => console.warn("Audio bloqueado:", e));
+                }
+
             } else {
                 btn.classList.add('incorrecta'); // Se pinta de Rojo
+                
+                // 🔊 REPRODUCIR SONIDO DE ERROR
+                if (audioError) {
+                    audioError.currentTime = 0;
+                    audioError.play().catch(e => console.warn("Audio bloqueado:", e));
+                }
                 
                 // ==========================================
                 // REVELACIÓN (SOLO PARA POST-QUIZ)
                 // ==========================================
                 if (modoActual === "POST") {
                     document.querySelectorAll('.btn-opcion-quiz').forEach(b => {
-                        // 🚨 CAMBIO 4: Ahora comparamos con 'dataset.respuesta' en vez de 'textContent'
+                        // 🚨 CAMBIO 4: Ahora comparamos con 'dataset.respuesta'
                         if (b.dataset.respuesta === preguntaActual.respuestaCorrecta) {
                             b.classList.add('correcta'); // Verde para la que debió ser
                         }
