@@ -192,3 +192,49 @@ select.input-casual {
     box-shadow: 0 0px 0 var(--color-purple-dark);
     transform: translateY(4px); 
 }
+
+
+/* 1. EL CONTENEDOR (Flexbox al rescate) */
+.contenedor-terminos {
+    display: flex;
+    align-items: flex-start; /* Hace que el checkbox se quede arriba, junto a la 1ra línea */
+    gap: 12px;               /* Espacio bonito entre el cuadro y el texto */
+    margin: 20px 0;          /* Margen superior e inferior para que respire */
+    width: 100%;
+}
+
+/* 2. EL CUADRO DE SELECCIÓN */
+.checkbox-casual {
+    flex-shrink: 0;          /* Evita que el texto aplaste o deforme el checkbox */
+    width: 20px;             /* Un tamaño amigable para hacer clic en celulares */
+    height: 20px;
+    cursor: pointer;
+    
+    /* 🚨 LA MAGIA: Lo empujamos unos milímetros hacia abajo para que 
+       se alinee visualmente con el centro óptico de la primera línea de texto */
+    margin-top: 2px;         
+}
+.texto-terminos {
+    /* 🚨 ESTO FUERZA EL JUSTIFICADO Y MATA EL CENTRADO ANTERIOR */
+    text-align: justify !important; 
+    
+    margin: 0; 
+    font-size: 0.95rem; 
+    line-height: 1.5; 
+    color: #444; 
+    width: 100%; /* Asegura que ocupe todo el espacio para poder justificarse */
+}
+
+/* Y para que el cuadrito y el texto se alineen bien: */
+.contenedor-terminos {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.checkbox-casual {
+    margin-top: 3px; /* Empuja el cuadrito un poquito abajo para alinear con la 1ra línea */
+    flex-shrink: 0;
+}

@@ -66,7 +66,7 @@ function mostrarFormularioPasoAPaso(contenedor, textosSeleccion, contenedorBoton
     formElement.offsetHeight; 
     formElement.style.animation = 'deslizarArriba 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
 
-    const textoBoton = jugadorActual === totalJugadores ? "🚀 Comenzar Juego" : "➡️ Siguiente Jugador";
+    const textoBoton = jugadorActual === totalJugadores ? "Comenzar Juego" : "➡️ Siguiente Jugador";
 
     // --- HTML DEL FORMULARIO ---
     formElement.innerHTML = `
@@ -123,12 +123,18 @@ function mostrarFormularioPasoAPaso(contenedor, textosSeleccion, contenedorBoton
             </div>
         </div>
 
-        <div class="contenedor-terminos">
-            <input type="checkbox" id="terminos_j" class="checkbox-casual" required>
-            <p class="texto-terminos">
-                Confirmo que he leído y acepto los <a href="#" target="_blank">Términos y Condiciones</a>, y autorizo el uso de mis datos para los fines del proyecto institucional. *
-            </p>
-        </div>
+       <div class="contenedor-terminos">
+    <input type="checkbox" id="terminos_j" class="checkbox-casual" required>
+    <p class="texto-terminos">
+        Confirmo que he leído y acepto los 
+        <a href="https://drive.google.com/file/d/1FOWdO75X8GoajU0BsB5IGJPoMfGL54j2/view?usp=drive_link" 
+           target="_blank" 
+           rel="noopener noreferrer">
+           Términos y Condiciones
+        </a>, 
+        y autorizo el uso de mis datos para los fines del proyecto institucional. *
+    </p>
+</div>
 
         <button type="submit" class="btn-burbuja" style="width: 100%; height: 60px; margin-top: 25px;">
             <span class="num-burbuja" style="color: var(--color-purple-main); font-size: 1.2rem;">${textoBoton}</span>
