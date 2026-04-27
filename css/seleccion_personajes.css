@@ -1,0 +1,638 @@
+/* ==========================================================================
+   PANTALLA DE PERSONAJES - FLUIDA PARA RESPONSIVO GLOBAL
+   Sin @media queries: Se adapta sola a la escala de tu contenedor principal
+   ========================================================================== */
+
+/* --- 1. CONTENEDOR PRINCIPAL --- */
+.pantalla-personajes {
+    width: 100%;
+    min-height: 100%;
+    display: none; 
+    flex-direction: column;
+   
+    box-sizing: border-box;
+    
+    font-family: var(--font-body);
+    position: relative; 
+    animation: fadeInSuave 0.4s ease-out forwards; 
+}
+
+.pantalla-personajes.activa {
+    display: flex;
+}
+
+@keyframes fadeInSuave {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.pantalla-personajes .cabecera-personajes,
+.pantalla-personajes .layout-dual-personajes {
+    position: relative;
+    z-index: 10; 
+}
+
+/* --- 2. CABECERA FLUIDA --- */
+.pantalla-personajes .cabecera-personajes {
+    display: flex; /* Cambiado a flex para que sea líquido */
+    flex-wrap: wrap; /* Se apila solo si se queda sin espacio */
+    justify-content: space-between;
+    align-items: center; 
+    width: 100%;
+    bottom: 20px;
+  
+}
+
+/* El centro es flexible para que empuje los lados suavemente */
+.pantalla-personajes .zona-centro { 
+    flex: 1 1 250px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+}
+
+.pantalla-personajes .btn-volver-casual {
+    background: transparent;
+    color: var(--color-purple-dark);
+    border: 2px solid var(--color-purple-main);
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px; 
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: all 0.3s ease;
+    white-space: nowrap; /* Evita que el texto del botón se parta */
+}
+
+.pantalla-personajes .btn-volver-casual:hover {
+    background: var(--color-purple-main);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(94, 42, 132, 0.3);
+}
+
+.pantalla-personajes .titulo-casual {
+    color: var(--color-purple-dark);
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 900;
+    margin: 0;
+}
+
+.pantalla-personajes .pie-casual {
+    color: var(--color-purple-main);
+    font-size: 1rem;
+    margin: 0.2rem 0 0 0;
+    font-weight: 500;
+}
+/* =========================================
+   ETIQUETA DE TURNO (GAMIFICADA Y ANIMADA)
+   ========================================= */
+.pantalla-personajes .etiqueta-turno {
+    background: #ffffff;
+    color: var(--color-purple-dark);
+    border: 3px solid var(--color-yellow-btn); /* Borde más grueso e imponente */
+    padding: 0.6rem 1.6rem; /* Botón más ancho y alto */
+    border-radius: 50px;
+    font-weight: 700; /* Letra base más gordita */
+    font-size: 1.15rem; /* Tamaño general más grande */
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    
+    /* La magia visual: Llama a la animación de latido */
+    animation: pulsoTurno 2s infinite ease-in-out; 
+}
+
+/* El nombre del jugador resaltará muchísimo más */
+.pantalla-personajes .etiqueta-turno strong {
+    color: var(--color-pink-accent);
+    font-weight: 900;
+    font-size: 1.35rem; /* El nombre es más grande que el texto "Turno de:" */
+    text-transform: uppercase; /* Lo hace ver como un título importante */
+    letter-spacing: 0.5px;
+}
+
+/* Animación: Hace que el botón palpite y emita un anillo de luz */
+@keyframes pulsoTurno {
+    0% {
+        box-shadow: 0 0 0 0 rgba(243, 166, 1, 0.6);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 0 15px rgba(243, 166, 1, 0); /* El anillo amarillo se expande y desvanece */
+        transform: scale(1.03); /* Se infla un poquitito */
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(243, 166, 1, 0);
+        transform: scale(1);
+    }
+}
+
+/* --- 3. LAYOUT DUAL FLUIDO --- */
+.pantalla-personajes .layout-dual-personajes {
+    display: flex;
+    flex-wrap: wrap; /* LA CLAVE: Se convierte en 1 columna si el wrapper lo comprime */
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    align-items: flex-start;
+    
+}
+
+
+/* --- 4. MANUAL (IZQUIERDA) --- */
+.pantalla-personajes .zona-manual-instrucciones {
+    /* Crece y se encoge inteligentemente, base mínima 300px */
+    flex: 1 1 500px; 
+    order: -1; 
+}
+
+.pantalla-personajes .tarjeta-manual {
+    background-color: #ffffff;
+    border-radius: 24px;
+    padding: 1rem;
+    box-shadow: 0 10px 30px rgba(58, 22, 83, 0.06); 
+    position: sticky;
+    
+    border: 1px solid rgba(94, 42, 132, 0.1);
+}
+
+.pantalla-personajes .tarjeta-manual h3 {
+    color: var(--color-purple-dark);
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 0;
+   
+    font-weight: 900;
+}
+
+.pantalla-personajes .lista-instrucciones {
+    list-style: none; 
+    padding: 0;
+    margin: 0 0 1.2rem 0;
+}
+
+.pantalla-personajes .lista-instrucciones li {
+    padding: 0.6rem 0;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--color-purple-dark);
+    border-bottom: 1px solid rgba(94, 42, 132, 0.1); 
+}
+
+.pantalla-personajes .lista-instrucciones strong {
+    color: var(--color-purple-main);
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 0.2rem;
+    font-weight: 800;
+}
+
+.pantalla-personajes .nota-manual {
+    background-color: var(--color-bg-light); 
+    padding: 1rem;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    color: var(--color-purple-main);
+    display: flex;
+    gap: 0.5rem;
+}
+
+
+/* --- 5. ZONA DE PERSONAJES (GRILLA AUTOMÁTICA) --- */
+.pantalla-personajes .zona-grilla-personajes {
+    /* Toma el doble de espacio que el manual, forzando 2 columnas cuando hay espacio */
+    flex: 2 1 500px; 
+}
+
+.pantalla-personajes .contenedor-personajes {
+    display: grid;
+    /* MAGIA PURA: Mide el espacio y mete todas las cartas posibles de al menos 130px. Sin @media queries */
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem; 
+}
+
+
+/* --- 6. TARJETAS DE PERSONAJE (CARTAS COMPACTAS 110PX) --- */
+.pantalla-personajes .card-personajes {
+    background: #ffffff;
+    border-radius: 16px; 
+    border: 2px solid rgba(94, 42, 132, 0.1); 
+    box-shadow: 0 6px 15px rgba(58, 22, 83, 0.08); 
+    padding: 0; 
+    display: flex;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden; 
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-sizing: border-box;
+    height: 200px; 
+   
+    
+}
+
+.pantalla-personajes .icono-personajes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%; 
+    margin: 0; 
+    z-index: 1; 
+}
+
+.pantalla-personajes .icono-personajes img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    object-position: center top; 
+    transition: transform 0.5s ease;
+}
+
+/* Texto superpuesto reforzado */
+.pantalla-personajes .textos-btn-personajes {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2; 
+    padding: 2rem 0.5rem 0.4rem 0.5rem; 
+    text-align: center;
+    box-sizing: border-box;
+    background: linear-gradient(to top, rgba(58, 22, 83, 1) 0%, rgba(58, 22, 83, 0.85) 35%, rgba(58, 22, 83, 0) 100%);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    font-family:'Fredoka', sans-serif;
+}
+
+.pantalla-personajes .num-personajes {
+    font-size: 0.75rem;
+    color: var(--color-yellow-btn); 
+    text-transform: uppercase;
+    font-weight: 900;
+    margin-bottom: 0.1rem;
+    display: block;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); 
+}
+
+.pantalla-personajes .nombre-personajes {
+    color: #ffffff; 
+    font-size: 1.15rem; 
+    font-weight: 900;
+    margin: 0;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+.pantalla-personajes .card-personajes:not(.bloqueado):hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(58, 22, 83, 0.2); 
+    border-color: var(--color-pink-accent);
+}
+
+.pantalla-personajes .card-personajes:not(.bloqueado):hover .icono-personajes img {
+    transform: scale(1.1); 
+}
+
+/* --- 7. ESTADOS BLOQUEADOS --- */
+.pantalla-personajes .card-personajes.bloqueado {
+    border-color: #e5e7eb;
+    cursor: not-allowed;
+}
+
+.pantalla-personajes .card-personajes.bloqueado .icono-personajes img {
+    filter: grayscale(100%) opacity(0.8); 
+}
+
+.pantalla-personajes .card-personajes.bloqueado .textos-btn-personajes {
+    background: linear-gradient(to top, rgba(100, 116, 139, 1) 0%, rgba(100, 116, 139, 0.85) 35%, rgba(100, 116, 139, 0) 100%);
+}
+
+.pantalla-personajes .card-personajes.bloqueado .nombre-personajes,
+.pantalla-personajes .card-personajes.bloqueado .num-personajes {
+    color: #e2e8f0;
+}
+
+.pantalla-personajes .candado-icono {
+    position: absolute;
+    top: 8px; 
+    right: 8px;
+    font-size: 1rem;
+    background: #ffffff;
+    color: var(--color-purple-dark);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 3; 
+}
+
+
+
+
+/*-----------------------------------------------------------------------------------------------------*/
+/*-------------------------------MODALES----------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------*/
+/* ========================================================= */
+/* ========================================================= */
+/* DISEÑO V7: 3D GAMER LUMINOSO (Usando tu paleta clara)     */
+/* ========================================================= */
+
+.modal-pj-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw; /* 100% del ancho exacto de la pantalla */
+    height: 100vh; /* 100% del alto exacto de la pantalla */
+    /* Tip pro para móviles modernos: usa 100dvh si quieres que ignore la barra de navegación del celular */
+    /* height: 100dvh; */ 
+    
+    background: rgba(94, 42, 132, 0.25); 
+    display: none; /* Recuerda que tu JS debe cambiar esto a 'flex' para que funcione align-items */
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-family: var(--font-body, 'Fredoka', sans-serif);
+}
+
+/* Cuando tu JS le agregue la clase para abrirlo, asegúrate de que cambie a flex */
+.modal-pj-overlay.activa {
+    display: flex;
+}
+
+.modal-pj-overlay.activa .modal-pj-contenedor {
+     opacity: 1;
+}
+
+.modal-pj-contenedor {
+    /* ✨ LA MAGIA CLARA: El fondo ahora es tu color crema/claro */
+    background: var(--color-bg-light); 
+    width: 85%;
+    max-width: 700px;
+    min-height: 200px;
+    border-radius: 35px; /* Bordes extra redondos muy amigables */
+    position: relative;
+    padding: 10px;
+    
+    /* Borde grueso usando tu morado principal para dar el estilo dibujo/juego */
+    border: 6px solid var(--color-purple-main);
+    
+    /* Sombra 3D dura hacia abajo usando tu morado oscuro */
+    box-shadow: 
+        0 15px 0px var(--color-purple-dark), 
+        0 30px 40px rgba(0,0,0,0.3);
+    
+    transform: scale(0.9) translateY(0) rotateX(0deg);
+    opacity: 0;
+}
+
+/* Un brillo cálido detrás del modal para que resalte más */
+.modal-pj-contenedor::after {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+    border-radius: 50px;
+    z-index: -1;
+    filter: blur(15px);
+}
+
+/* Botón de cerrar: Estilo gema rosa 3D */
+.modal-pj-btn-cerrar {
+    position: absolute;
+    top: -25px;
+    right: -25px;
+    background: var(--color-pink-accent);
+    border: 5px solid var(--color-bg-light);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-bg-light);
+    font-size: 2.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    /* Sombra dura para que parezca un botón real */
+    box-shadow: 0 8px 0px var(--color-purple-dark), 0 10px 15px rgba(0,0,0,0.2);
+    transition: all 0.1s ease;
+    z-index: 10;
+}
+
+.modal-pj-btn-cerrar:active {
+    transform: translateY(8px);
+    box-shadow: 0 0px 0px var(--color-purple-dark), 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.modal-pj-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+   
+    align-items: center;
+    height: 100%;
+}
+
+.modal-pj-col-izq {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 100%;
+   
+}
+
+.modal-pj-imagen-full {
+    width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+    /* Sombra difuminada para que el personaje se vea 3D pero integrado a la luz */
+    filter: drop-shadow(0 20px 15px rgba(58, 22, 83, 0.3));
+   
+}
+
+.modal-pj-col-der {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: 10px;
+}
+
+.modal-pj-titulo {
+    font-size: 3.2rem;
+    color: var(--color-purple-dark); /* Título oscuro para máximo contraste */
+    margin-bottom: 10px;
+    font-family: 'Fredoka', sans-serif;
+    margin-top: 0;
+    text-transform: uppercase;
+    font-weight: 900;
+    letter-spacing: 1px;
+    
+}
+
+.modal-pj-texto {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    /* Texto oscuro sobre fondo blanco roto */
+    color: var(--color-purple-dark);
+    background: #ffffff; 
+   
+    border-radius: 15px;
+    margin-bottom: 30px;
+    border: 2px solid rgba(94, 42, 132, 0.1);
+   
+    /* Justificado perfecto a ambos lados que pediste */
+    text-align: justify !important;
+    text-justify: inter-word;
+     padding: 16px 18px;
+}
+/* Botón principal: Estilo Neon-Pastel 3D (Sin mayúsculas) */
+.modal-pj-btn-accion {
+    background: #f4ebff; 
+    color: var(--color-purple-dark); 
+    border: 3px solid var(--color-pink-accent); 
+
+    font-size: 1.2rem;
+    font-weight: 700; /* Un poco menos pesado para que se vea más fino */
+    
+    /* 👇 Quitamos lo mayúsculo aquí 👇 */
+    text-transform: none; 
+     padding: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: auto;
+    
+    /* Sombra 3D suave */
+    box-shadow: 0 6px 0px var(--color-pink-accent), 0 10px 20px rgba(240, 98, 146, 0.2);
+    
+    transition: all 0.1s ease;
+    letter-spacing: 0.5px;
+    position: relative;
+    font-family: var(--font-body, 'Fredoka', sans-serif);
+}
+
+.modal-pj-btn-accion:active {
+    transform: translateY(6px);
+    box-shadow: 0 0px 0px var(--color-pink-accent), 0 4px 8px rgba(240, 98, 146, 0.1);
+    background: #efe0ff;
+}
+
+.modal-pj-btn-accion:hover {
+    background: #ffffff;
+}
+/* ========================================================= */
+/* ANIMACIONES CLAVE 3D                                      */
+/* ========================================================= */
+
+@keyframes floatingPopLight {
+    0% { transform: scale(0.6) translateY(50px) rotateX(15deg); opacity: 0; }
+    100% { transform: scale(1) translateY(0) rotateX(0deg); opacity: 1; }
+}
+
+@keyframes floatingInfiniteLight {
+    0% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
+    25% { transform: translateY(-8px) rotateX(1deg) rotateY(1deg); }
+    50% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
+    75% { transform: translateY(8px) rotateX(-1deg) rotateY(-1deg); }
+    100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
+}
+
+@keyframes flotarPersonajeLight {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* ========================================================= */
+/* DISEÑO RESPONSIVO (MÓVILES)                               */
+/* ========================================================= */
+
+@media (max-width: 768px) {
+    .modal-pj-contenedor {
+        padding: 25px 20px;
+        width: 90%;
+        border-width: 4px;
+        box-shadow: 0 10px 0px var(--color-purple-dark), 0 20px 30px rgba(0,0,0,0.3);
+    }
+    .modal-pj-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    .modal-pj-titulo { text-align: center; font-size: 2.4rem; text-shadow: 2px 2px 0px  }
+    .modal-pj-col-izq { border: none; background: transparent; padding: 0; }
+    .modal-pj-imagen-full { max-height: 220px; }
+    .modal-pj-texto { font-size: 1rem; padding: 15px; margin-bottom: 20px; }
+    .modal-pj-btn-cerrar { top: -20px; right: -15px; width: 45px; height: 45px; font-size: 1.5rem; border-width: 3px; box-shadow: 0 5px 0px var(--color-purple-dark);}
+}
+
+
+
+
+
+/* =========================================
+   ESTADO MEJORADO: INTEGRADO A LA PALETA
+   ========================================= */
+.pantalla-personajes .card-personajes.ya-elegido {
+    /* Usamos el morado oscuro de tu paleta con un poco de opacidad para el borde */
+    border-color: rgba(58, 22, 83, 0.5); 
+    cursor: not-allowed;
+    pointer-events: none; 
+    transform: none !important;
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,0.1) !important;
+}
+
+/* La imagen se pone en escala de grises, pero la oscurecemos con un tinte lila sutil */
+.pantalla-personajes .card-personajes.ya-elegido .icono-personajes img {
+    filter: grayscale(100%) sepia(20%) hue-rotate(250deg) brightness(0.6) contrast(1.1); 
+}
+
+/* Degradado inferior usando tu morado oscuro pero casi negro */
+.pantalla-personajes .card-personajes.ya-elegido .textos-btn-personajes {
+    background: linear-gradient(to top, rgb(140, 124, 153) 0%, rgba(181, 164, 194, 0.7) 45%, transparent 100%);
+}
+
+/* --- LA BANDA SUPERIOR INTEGRADA --- */
+.pantalla-personajes .etiqueta-dueno {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* Tu morado oscuro original en lugar de gris azulado */
+    background: rgb(140, 124, 153) ; 
+    /* Una línea delgada rosa para atarlo al resto del diseño */
+    border-bottom: 2px solid var(--color-purple-dark); 
+    padding: 0.5rem 0.2rem;
+    z-index: 4;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Estilo para "ELEGIDO POR" */
+.pantalla-personajes .etiqueta-dueno .texto-previo {
+    display: block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #e2d5ed; /* Un lila muy clarito en lugar de gris plata */
+    margin-bottom: 2px;
+}
+
+/* Estilo para el nombre */
+.pantalla-personajes .etiqueta-dueno .nombre-dueno {
+    display: block;
+    color: var(--color-yellow-btn); 
+    font-size: 0.9rem; 
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8); 
+}

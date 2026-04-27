@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Partidas - Caminos de Inclusión</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <style>
+        body { background-color: #f7f6f9; font-family: 'Inter', sans-serif; }
+        .navbar { background-color: #3a1653; }
+        .navbar-brand { color: #ffffff !important; font-weight: 600; }
+        
+        .btn-back { color: #5e2a84; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 1.5rem; }
+        .btn-back:hover { color: #3a1653; }
+
+        .table-container { background: #ffffff; border-radius: 16px; box-shadow: 0 5px 15px rgba(58, 22, 83, 0.05); padding: 2rem; margin-bottom: 2rem; }
+
+        .table thead th { background-color: #f0eaf5; color: #3a1653; font-weight: 600; border-bottom: none; }
+        .table tbody tr { transition: all 0.2s ease; }
+        .table tbody tr:hover { background-color: #faf8fc; }
+        .table td { vertical-align: middle; color: #4a4a4a; font-size: 0.95rem; }
+
+        /* Botones de acción general */
+        .btn-danger-custom { background-color: #dc3545; color: white; transition: all 0.3s; }
+        .btn-danger-custom:hover { background-color: #bb2d3b; color: white; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3); }
+        
+        .btn-excel { background-color: #107c41; color: white; transition: all 0.3s; font-weight: 500; }
+        .btn-excel:hover { background-color: #0c5e31; color: white; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(16, 124, 65, 0.3); }
+
+        /* Estilos para el modal interno */
+        .modal-body-scroll { max-height: 65vh; overflow-y: auto; background-color: #f8f9fa; }
+        .nav-tabs .nav-link { color: #716a7a; font-weight: 600; }
+        .nav-tabs .nav-link.active { color: #5e2a84; border-color: #dee2e6 #dee2e6 #f8f9fa; }
+        .info-label { font-size: 0.85rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem; }
+        .info-value { font-size: 1.05rem; font-weight: 600; color: #3a1653; margin-bottom: 1rem; }
+        
+        /* Modificando los inputs para que se vean parejos */
+        .input-group-text { border-color: #ced4da; }
+        .form-control, .form-select { border-color: #ced4da; }
+        .form-control:focus, .form-select:focus { border-color: #5e2a84; box-shadow: 0 0 0 0.25rem rgba(94, 42, 132, 0.15); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar px-4 py-3 shadow-sm mb-4">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1"><i class="bi bi-controller me-2"></i>Módulo de Partidas</span>
+        </div>
+    </nav>
+
+    <div class="container mb-5">
+        <a href="dashboard.html" class="btn-back"><i class="bi bi-arrow-left me-2"></i>Volver al Dashboard</a>
+
+        <div class="table-container">
+            <div class="row mb-4 align-items-center g-3">
+                <div class="col-12 col-lg-2">
+                    <h2 style="color: #3a1653; font-weight: 700; margin: 0;">Historial</h2>
+                </div>
+                
+                <div class="col-sm-4 col-lg-2">
+                    <select id="filtroCamino" class="form-select shadow-sm">
+                        <option value="TODOS">Todos los Caminos</option>
+                    </select>
+                </div>
+                
+                <div class="col-sm-4 col-lg-2">
+                    <div class="input-group shadow-sm" title="Filtrar por fecha">
+                        <span class="input-group-text bg-white"><i class="bi bi-calendar-date text-muted"></i></span>
+                        <input type="date" id="filtroFecha" class="form-control border-start-0 ps-0">
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-lg-3">
+                    <div class="input-group shadow-sm">
+                        <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                        <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="Buscar cédula...">
+                    </div>
+                </div>
+                
+                <div class="col-12 col-lg-3 text-md-end d-flex gap-2">
+                    <button id="btnExportarExcel" class="btn btn-excel flex-grow-1 shadow-sm">
+                        <i class="bi bi-file-earmark-excel-fill"></i> Excel
+                    </button>
+                    <button id="btnLimpiarTodo" class="btn btn-danger-custom flex-grow-1 shadow-sm" title="Eliminar todas las partidas">
+                        <i class="bi bi-trash3-fill"></i> Borrar All
+                    </button>
+                </div>
+            </div>
+
+            <div id="loadingPartidas" class="text-center py-5">
+                <div class="spinner-border text-primary" style="color: #5e2a84 !important;" role="status"></div>
+                <p class="mt-2 text-muted">Cargando registro de partidas...</p>
+            </div>
+
+            <div class="table-responsive" id="tableWrapper" style="display: none;">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Fecha Inicio</th>
+                            <th>Cédula</th>
+                            <th>Jugador</th>
+                            <th>Camino</th>
+                            <th>Puntos Empatía</th>
+                            <th>Estado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaPartidasBody">
+                        </tbody>
+                </table>
+            </div>
+            
+            <div id="noResults" class="text-center py-4 text-muted" style="display: none;">
+                <i class="bi bi-inbox-fill fs-1"></i>
+                <p class="mt-2">No se encontraron partidas con esos filtros o en esa fecha.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDetalles" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #3a1653; color: white;">
+                    <h5 class="modal-title fw-bold">Reporte Detallado de Partida</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <div class="modal-header p-0" style="background-color: #fff; border-bottom: 1px solid #dee2e6;">
+                    <ul class="nav nav-tabs w-100 px-3 pt-2" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="resumen-tab" data-bs-toggle="tab" data-bs-target="#resumen" type="button" role="tab">Resumen y Empatía</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="prequiz-tab" data-bs-toggle="tab" data-bs-target="#prequiz" type="button" role="tab">Pre-Quiz</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="postquiz-tab" data-bs-toggle="tab" data-bs-target="#postquiz" type="button" role="tab">Post-Quiz</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="modal-body modal-body-scroll">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="resumen" role="tabpanel"></div>
+                        <div class="tab-pane fade" id="prequiz" role="tabpanel"></div>
+                        <div class="tab-pane fade" id="postquiz" role="tabpanel"></div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar Reporte</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyATWYM-R92ngZhZKdzs_DqgvrmXDXUNaFE",
+            authDomain: "caminos-de-empatia.firebaseapp.com",
+            projectId: "caminos-de-empatia",
+            storageBucket: "caminos-de-empatia.firebasestorage.app",
+            messagingSenderId: "464927455216",
+            appId: "1:464927455216:web:41107ad19784e7fbb20f35",
+            measurementId: "G-QEZM1BHT58"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let partidasGlobales = [];
+        let partidasActualesEnVista = []; 
+
+        const tablaBody = document.getElementById('tablaPartidasBody');
+        const searchInput = document.getElementById('searchInput');
+        const filtroCamino = document.getElementById('filtroCamino');
+        const filtroFecha = document.getElementById('filtroFecha'); // <--- NUEVO FILTRO
+        const btnExportarExcel = document.getElementById('btnExportarExcel');
+        const modalDetalles = new bootstrap.Modal(document.getElementById('modalDetalles'));
+
+        // ==========================================
+        // UTILIDAD: FORMATEAR FECHAS 
+        // ==========================================
+        function formatearFecha(fechaObj) {
+            if (!fechaObj) return 'No registrada';
+            try {
+                let d = fechaObj.toDate ? fechaObj.toDate() : new Date(fechaObj);
+                return d.toLocaleDateString('es-ES') + ' ' + d.toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'});
+            } catch(e) { return 'Formato inválido'; }
+        }
+
+        // Extrae la fecha en formato YYYY-MM-DD para comparar con el input de fecha
+        function obtenerFechaCorta(fechaObj) {
+            if (!fechaObj) return '';
+            try {
+                let d = fechaObj.toDate ? fechaObj.toDate() : new Date(fechaObj);
+                const anio = d.getFullYear();
+                const mes = String(d.getMonth() + 1).padStart(2, '0');
+                const dia = String(d.getDate()).padStart(2, '0');
+                return `${anio}-${mes}-${dia}`;
+            } catch(e) { return ''; }
+        }
+
+        // ==========================================
+        // CARGAR PARTIDAS Y FILTROS
+        // ==========================================
+        async function cargarPartidas() {
+            document.getElementById('loadingPartidas').style.display = 'block';
+            document.getElementById('tableWrapper').style.display = 'none';
+            document.getElementById('noResults').style.display = 'none';
+            partidasGlobales = [];
+            
+            const caminosUnicos = new Set(); 
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "partidas"));
+                
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    partidasGlobales.push({ id: doc.id, ...data });
+                    if(data.caminoSeleccionado) caminosUnicos.add(data.caminoSeleccionado);
+                });
+
+                // Ordenar por fechaInicio (más reciente primero)
+                partidasGlobales.sort((a, b) => {
+                    const dateA = a.fechaInicio?.toDate ? a.fechaInicio.toDate() : new Date(a.fechaInicio || 0);
+                    const dateB = b.fechaInicio?.toDate ? b.fechaInicio.toDate() : new Date(b.fechaInicio || 0);
+                    return dateB - dateA;
+                });
+
+                // Llenar el Dropdown de Caminos dinámicamente
+                filtroCamino.innerHTML = '<option value="TODOS">Todos los Caminos</option>';
+                caminosUnicos.forEach(camino => {
+                    filtroCamino.innerHTML += `<option value="${camino}">${camino}</option>`;
+                });
+
+                document.getElementById('loadingPartidas').style.display = 'none';
+                aplicarFiltros(); 
+
+            } catch (error) {
+                document.getElementById('loadingPartidas').innerHTML = '<p class="text-danger">Error al cargar la base de datos.</p>';
+            }
+        }
+
+        // ==========================================
+        // FILTRADO TRIPLE (BÚSQUEDA + DROPDOWN + FECHA)
+        // ==========================================
+        function aplicarFiltros() {
+            const textoBusqueda = searchInput.value.toLowerCase().trim();
+            const caminoSeleccionado = filtroCamino.value;
+            const fechaSeleccionada = filtroFecha.value; // Formato "YYYY-MM-DD"
+
+            partidasActualesEnVista = partidasGlobales.filter(partida => {
+                // Filtro 1: Camino
+                let pasaCamino = (caminoSeleccionado === "TODOS" || partida.caminoSeleccionado === caminoSeleccionado);
+                
+                // Filtro 2: Cédula
+                let pasaCedula = true;
+                if (textoBusqueda !== "") {
+                    pasaCedula = false;
+                    if (partida.jugadores) {
+                        pasaCedula = partida.jugadores.some(j => j.cedula && j.cedula.toLowerCase().includes(textoBusqueda));
+                    }
+                }
+
+                // Filtro 3: Fecha
+                let pasaFecha = true;
+                if (fechaSeleccionada !== "") {
+                    const fechaPartida = obtenerFechaCorta(partida.fechaInicio);
+                    pasaFecha = (fechaPartida === fechaSeleccionada);
+                }
+                
+                return pasaCamino && pasaCedula && pasaFecha;
+            });
+
+            renderizarTabla(partidasActualesEnVista);
+        }
+
+        searchInput.addEventListener('input', aplicarFiltros);
+        filtroCamino.addEventListener('change', aplicarFiltros);
+        filtroFecha.addEventListener('change', aplicarFiltros); // Detecta cuando escoges fecha en el calendario
+
+        // ==========================================
+        // RENDERIZAR TABLA
+        // ==========================================
+        function renderizarTabla(datos) {
+            tablaBody.innerHTML = '';
+
+            if (datos.length === 0) {
+                document.getElementById('tableWrapper').style.display = 'none';
+                document.getElementById('noResults').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('tableWrapper').style.display = 'block';
+            document.getElementById('noResults').style.display = 'none';
+
+            datos.forEach(partida => {
+                const fechaStr = formatearFecha(partida.fechaInicio);
+                const cedulas = partida.jugadores ? partida.jugadores.map(j => j.cedula).join(', ') : 'N/A';
+                const nombres = partida.jugadores ? partida.jugadores.map(j => `${j.nombres} ${j.apellidos}`).join('<br>') : 'N/A';
+                
+                let ptsEmpatia = "N/A";
+                if (partida.jugadoresResultadosMapa && partida.jugadoresResultadosMapa.length > 0) {
+                    ptsEmpatia = partida.jugadoresResultadosMapa.map(r => `<span class="badge bg-success">${r.puntosEmpatia} pts</span>`).join(' ');
+                }
+
+                let estadoBadge = `<span class="badge bg-secondary">${partida.estado}</span>`;
+                if(partida.estado === 'en_mapa') estadoBadge = `<span class="badge bg-warning text-dark">En Mapa</span>`;
+                if(partida.estado === 'finalizado') estadoBadge = `<span class="badge bg-success">Finalizado</span>`;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><small class="text-muted">${fechaStr}</small></td>
+                    <td><strong>${cedulas}</strong></td>
+                    <td>${nombres}</td>
+                    <td><small>${partida.caminoSeleccionado || 'N/A'}</small></td>
+                    <td>${ptsEmpatia}</td>
+                    <td>${estadoBadge}</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-primary btn-ver" data-id="${partida.id}" title="Ver Reporte">
+                                <i class="bi bi-file-earmark-text"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger btn-eliminar" data-id="${partida.id}" title="Eliminar Partida">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tablaBody.appendChild(tr);
+            });
+        }
+
+        // ==========================================
+        // EXPORTAR A EXCEL (Respeta el Filtro de Fecha)
+        // ==========================================
+        btnExportarExcel.addEventListener('click', () => {
+            if(partidasActualesEnVista.length === 0) {
+                alert("No hay datos para exportar con los filtros actuales.");
+                return;
+            }
+
+            const dataExportacion = partidasActualesEnVista.map(p => {
+                const j = p.jugadores && p.jugadores.length > 0 ? p.jugadores[0] : {};
+                const r = p.jugadoresResultadosMapa && p.jugadoresResultadosMapa.length > 0 ? p.jugadoresResultadosMapa[0] : {};
+                
+                const aciertosPre = p.respuestasPreQuiz ? p.respuestasPreQuiz.filter(resp => resp.fueCorrecta).length : 0;
+                const totalPre = p.respuestasPreQuiz ? p.respuestasPreQuiz.length : 0;
+                
+                const aciertosPost = p.respuestasPostQuiz ? p.respuestasPostQuiz.filter(resp => resp.fueCorrecta).length : 0;
+                const totalPost = p.respuestasPostQuiz ? p.respuestasPostQuiz.length : 0;
+
+                let estadoText = p.estado;
+                if(p.estado === 'finalizado') estadoText = 'Finalizado';
+                if(p.estado === 'en_mapa') estadoText = 'En Mapa';
+
+                let fila = {
+                    "Fecha de Inicio": formatearFecha(p.fechaInicio),
+                    "Estado Partida": estadoText,
+                    "Cédula": j.cedula || 'N/A',
+                    "Nombres": j.nombres || 'N/A',
+                    "Apellidos": j.apellidos || 'N/A',
+                    "Edad": j.edad || 'N/A',
+                    "Sexo": j.sexo || 'N/A',
+                    "Correo": j.correo || 'N/A',
+                    "Camino Elegido": p.caminoSeleccionado || 'N/A',
+                    "Personaje Elegido": r.nombre || 'N/A',
+                    "Puntos Empatía": r.puntosEmpatia !== undefined ? r.puntosEmpatia : 'N/A',
+                    "Score Pre-Quiz": totalPre > 0 ? `${aciertosPre} de ${totalPre}` : 'N/A',
+                    "Score Post-Quiz": totalPost > 0 ? `${aciertosPost} de ${totalPost}` : 'N/A'
+                };
+
+                if (p.respuestasPreQuiz && p.respuestasPreQuiz.length > 0) {
+                    p.respuestasPreQuiz.forEach((q, idx) => {
+                        const num = q.numeroPregunta || (idx + 1);
+                        fila[`PRE Q${num} - Pregunta`] = q.preguntaTexto || '';
+                        fila[`PRE Q${num} - Elegida`] = q.respuestaElegida || '';
+                        fila[`PRE Q${num} - Resultado`] = q.fueCorrecta ? "✔️ Correcta" : "❌ Incorrecta";
+                    });
+                }
+
+                if (p.respuestasPostQuiz && p.respuestasPostQuiz.length > 0) {
+                    p.respuestasPostQuiz.forEach((q, idx) => {
+                        const num = q.numeroPregunta || (idx + 1);
+                        fila[`POST Q${num} - Pregunta`] = q.preguntaTexto || '';
+                        fila[`POST Q${num} - Elegida`] = q.respuestaElegida || '';
+                        fila[`POST Q${num} - Resultado`] = q.fueCorrecta ? "✔️ Correcta" : "❌ Incorrecta";
+                    });
+                }
+
+                return fila;
+            });
+
+            const worksheet = XLSX.utils.json_to_sheet(dataExportacion);
+            const workbook = XLSX.utils.book_new();
+            
+            // Nombre de hoja dinámico si hay fecha filtrada
+            let nombreHoja = "Partidas";
+            if(filtroFecha.value !== "") nombreHoja = `Feria_${filtroFecha.value}`;
+
+            XLSX.utils.book_append_sheet(workbook, worksheet, nombreHoja);
+
+            const fechaString = new Date().toISOString().split('T')[0];
+            XLSX.writeFile(workbook, `Reporte_Partidas_${fechaString}.xlsx`);
+        });
+
+        // ==========================================
+        // DELEGAR EVENTOS (VER / ELIMINAR)
+        // ==========================================
+        tablaBody.addEventListener('click', async (e) => {
+            
+            // ELIMINAR UNA PARTIDA
+            if (e.target.closest('.btn-eliminar')) {
+                const id = e.target.closest('.btn-eliminar').dataset.id;
+                if (confirm("¿Estás seguro de eliminar esta partida permanentemente?")) {
+                    try {
+                        await deleteDoc(doc(db, "partidas", id));
+                        cargarPartidas(); 
+                    } catch (error) { alert("Error al eliminar."); }
+                }
+            }
+
+            // VER DETALLES (ABRIR MODAL)
+            if (e.target.closest('.btn-ver')) {
+                const id = e.target.closest('.btn-ver').dataset.id;
+                const p = partidasGlobales.find(x => x.id === id);
+                
+                let jugadorActual = p.jugadores ? p.jugadores[0] : null;
+                let resultadoMapa = p.jugadoresResultadosMapa ? p.jugadoresResultadosMapa[0] : null;
+                
+                let htmlResumen = `
+                    <div class="row g-4 p-3">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body">
+                                    <h6 class="text-primary mb-3"><i class="bi bi-person-badge me-2"></i>Datos del Jugador</h6>
+                                    <p class="info-label">Nombre Completo</p>
+                                    <p class="info-value">${jugadorActual ? jugadorActual.nombres + ' ' + jugadorActual.apellidos : 'N/A'}</p>
+                                    <p class="info-label">Documento</p>
+                                    <p class="info-value">${jugadorActual?.cedula || 'N/A'} - Edad: ${jugadorActual?.edad || 'N/A'}</p>
+                                    <p class="info-label">Contacto</p>
+                                    <p class="info-value mb-0">${jugadorActual?.correo || 'N/A'}<br>${jugadorActual?.celular || ''}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body">
+                                    <h6 class="text-primary mb-3"><i class="bi bi-geo-alt-fill me-2"></i>Progreso del Juego</h6>
+                                    <p class="info-label">Camino</p>
+                                    <p class="info-value">${p.caminoSeleccionado || 'N/A'}</p>
+                                    <p class="info-label">Personaje Jugado</p>
+                                    <p class="info-value text-capitalize">${resultadoMapa?.nombre || 'N/A'}</p>
+                                    <p class="info-label">Puntos de Empatía Obtenidos</p>
+                                    <p class="info-value text-success fs-3 mb-0">${resultadoMapa?.puntosEmpatia || 0} pts</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('resumen').innerHTML = htmlResumen;
+
+                const renderizarCuestionario = (arrayRespuestas) => {
+                    if(!arrayRespuestas || arrayRespuestas.length === 0) return `<div class="p-4 text-center text-muted">No hay registros de este cuestionario.</div>`;
+                    
+                    let html = `<div class="p-3">`;
+                    arrayRespuestas.forEach(resp => {
+                        const icon = resp.fueCorrecta ? `<i class="bi bi-check-circle-fill text-success fs-4"></i>` : `<i class="bi bi-x-circle-fill text-danger fs-4"></i>`;
+                        html += `
+                            <div class="card mb-3 border-0 shadow-sm ${resp.fueCorrecta ? 'border-start border-success border-4' : 'border-start border-danger border-4'}">
+                                <div class="card-body">
+                                    <div class="d-flex gap-3">
+                                        <div class="pt-1">${icon}</div>
+                                        <div class="w-100">
+                                            <p class="mb-2 fw-bold text-dark">Pregunta ${resp.numeroPregunta}: ${resp.preguntaTexto}</p>
+                                            <div class="p-2 rounded ${resp.fueCorrecta ? 'bg-success bg-opacity-10' : 'bg-danger bg-opacity-10'}">
+                                                <p class="mb-1 small"><strong>Eligió:</strong> <span class="${resp.fueCorrecta ? 'text-success fw-bold' : 'text-danger fw-bold'}">${resp.respuestaElegida}</span></p>
+                                                ${!resp.fueCorrecta ? `<p class="mb-0 small text-success"><strong>Correcta era:</strong> ${resp.respuestaCorrecta}</p>` : ''}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    return html + `</div>`;
+                };
+
+                document.getElementById('prequiz').innerHTML = renderizarCuestionario(p.respuestasPreQuiz);
+                document.getElementById('postquiz').innerHTML = renderizarCuestionario(p.respuestasPostQuiz);
+
+                const triggerFirstTabEl = document.querySelector('#myTab li:first-child button')
+                bootstrap.Tab.getInstance(triggerFirstTabEl)?.show() || new bootstrap.Tab(triggerFirstTabEl).show()
+
+                modalDetalles.show();
+            }
+        });
+
+        // ==========================================
+        // LIMPIAR TODAS LAS PARTIDAS
+        // ==========================================
+        document.getElementById('btnLimpiarTodo').addEventListener('click', async () => {
+            const confirmacion = prompt("¡ADVERTENCIA! Estás a punto de borrar TODAS las partidas. Escribe la palabra BORRAR para confirmar:");
+            
+            if (confirmacion === "BORRAR") {
+                const btn = document.getElementById('btnLimpiarTodo');
+                btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+
+                try {
+                    const querySnapshot = await getDocs(collection(db, "partidas"));
+                    const batch = writeBatch(db);
+                    querySnapshot.forEach((documento) => batch.delete(documento.ref));
+                    await batch.commit(); 
+                    
+                    alert("Se han eliminado todas las partidas exitosamente.");
+                    cargarPartidas(); 
+                } catch (error) {
+                    alert("Ocurrió un error al borrar.");
+                } finally {
+                    btn.disabled = false; btn.innerHTML = '<i class="bi bi-trash3-fill"></i> Borrar All';
+                }
+            } else if (confirmacion !== null) {
+                alert("Operación cancelada.");
+            }
+        });
+
+        cargarPartidas();
+
+    </script>
+</body>
+</html>

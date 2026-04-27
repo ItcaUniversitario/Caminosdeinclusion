@@ -1,0 +1,254 @@
+@import url(sliderizquierdo.css);
+@import url(pantalla_inicio.css);
+@import url(registro_usuarios.css);
+@import url(pantalla_seleccionar_camino.css);
+@import url(seleccion_personajes.css);
+@import url(pantalla_quiz.css);
+@import url(pantalla_mapa.css);
+@import url(casillas_mapa.css);
+@import url(cartas.css);
+@import url(pantalla_resultados.css);
+
+/* =========================================
+   EL SECRETO DE LAS PANTALLAS CONSECUTIVAS
+   ========================================= */
+
+/* 1. Apagamos las luces: Oculta TODAS las pantallas por defecto */
+.main-game-area > * {
+    display: none !important;
+}
+
+/* 2. Encendemos el reflector: Muestra SOLO la pantalla que recibe la orden de JS (.activa) */
+.main-game-area > *.activa {
+    display: flex !important; 
+}
+/* 1. VARIABLES MAESTRAS */
+:root {
+    --color-bg-light: #fdf2e9;    
+    --color-purple-dark: #3a1653; 
+    --color-purple-main: #5e2a84; 
+    --color-yellow-btn: #f3a601;  
+    --color-pink-accent: #f06292; 
+    
+    --font-body: 'Fredoka', sans-serif;
+    --hud-glow: 0 0 15px rgba(243, 166, 1, 0.4);
+}
+
+/* 2. RESET Y ESTRUCTURA BASE */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: var(--font-body);
+    color: var(--color-purple-dark);
+    height: 100dvh; 
+    display: flex;
+    flex-direction: column; 
+    overflow: hidden; 
+    position: relative;
+    z-index: 0;
+
+    /* El gradiente ahora usa rgba() para ser una capa púrpura semitransparente sobre la imagen */
+    background: linear-gradient(
+        -45deg, 
+        rgba(235, 220, 255, 0.95), /* Tono lila/púrpura suave */
+        rgba(243, 232, 255, 0.95), /* Tu #f3e8ff con transparencia */
+        rgba(255, 240, 245, 0.95), /* Tu #fff0f5 con transparencia */
+        rgba(235, 220, 255, 0.95)  /* Tono lila/púrpura suave */
+    ), url('../assets/imagenes/generales/fondobody.jpg');
+    background-size: 400% 400%, cover;
+    background-position: center;
+    animation: moverFondo 15s ease infinite;
+}
+
+@keyframes moverFondo {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 3. BANNER SUPERIOR (HEADER / HUD) */
+.game-banner {
+    position: relative; 
+    
+    /* ✅ EVITA QUE EL HEADER SE APLASTE O SE OCULTE */
+    flex-shrink: 0; 
+    
+    width: 100%;
+    height: clamp(60px, 10dvh, 90px); 
+    background: var(--color-purple-dark);
+    border-bottom: 3px solid var(--color-pink-accent);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(0.5rem, 2vw, 1rem); 
+    gap: 10px; 
+    
+    z-index: 10;
+}
+
+.logo-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-width: 0; 
+}
+
+.logo-box:last-child { justify-content: flex-end; }
+
+.logo-img {
+    max-height: clamp(25px, 6dvh, 50px);
+    max-width: 100%; 
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.title-container {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+}
+
+.game-title-img {
+    max-height: clamp(30px, 8dvh, 75px);
+    max-width: 100%;
+    width: auto;
+    object-fit: contain;
+ 
+}
+
+.hidden-text { display: none; }
+
+/* 4. ÁREA DE CONTENIDO GLOBAL (Layout) */
+.layout-container {
+    display: flex;
+    flex: 1; /* Ocupa todo el espacio que deja el header */
+    
+    /* ✅ TRUCO VITAL: Evita que el contenido interno rompa el layout y empuje el header */
+    min-height: 0; 
+    
+    overflow: hidden; 
+}
+/* =========================================
+   5. EL CONTENEDOR PRINCIPAL DEL JUEGO
+   ========================================= */
+.main-game-area {
+    flex: 1; /* Toma todo el espacio disponible al lado del slider/menú */
+    
+    /* ✅ TRUCO VITAL 2: Evita desbordamientos horizontales en Flexbox */
+    min-width: 0; 
+    
+    position: relative;
+    
+    /* ✅ EL SCROLL SOLO VIVE AQUÍ ADENTRO */
+    overflow-y: auto; 
+    overflow-x: hidden;
+    
+
+    /* 👇 AJUSTE DE MARGEN INTERNO 👇 */
+    padding: 2.5rem; /* Margen interno (espacio entre el borde morado y tu contenido) */
+   
+}
+/* Scrollbar Personalizado (Opcional pero recomendado) */
+.main-game-area::-webkit-scrollbar { width: 8px; }
+.main-game-area::-webkit-scrollbar-track { background: rgba(94, 42, 132, 0.05); border-radius: 10px; }
+.main-game-area::-webkit-scrollbar-thumb { background: var(--color-purple-main); border-radius: 10px; }
+
+/* =========================================
+   LA REGLA MÁGICA: HIJOS DEL MAIN (Las Pantallas)
+   ========================================= */
+.main-game-area > * {
+    width: 100%;
+    /* En lugar de height: 100%, usamos min-height para que crezca si hay mucho contenido vertical, 
+       pero nunca sea menor al tamaño de la pantalla */
+    min-height: 100%; 
+    box-sizing: border-box;
+    
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+     
+    
+    animation: cargarPantalla 0.4s ease-out forwards;
+}
+
+/* Reglas universales para no desbordar */
+.main-game-area > * p,
+.main-game-area > * h1,
+.main-game-area > * h2,
+.main-game-area > * h3 {
+    max-width: 800px; 
+    width: 100%;
+    text-align: center;
+    margin: 0; 
+}
+
+.main-game-area > * img,
+.main-game-area > * video,
+.main-game-area > * canvas {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain; 
+    border-radius: 8px; 
+}
+
+.botones-decision {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+@keyframes cargarPantalla {
+    0% { opacity: 0; transform: scale(0.98); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* 6. RESPONSIVIDAD GENERAL (MÓVIL) */
+@media (max-width: 768px) {
+    .layout-container {
+        flex-direction: column-reverse; /* El menú lateral pasa a ser barra inferior */
+    }
+
+    /* Asumo que tienes una clase para tu menú lateral. Aquí le puse .sidebar-mini de ejemplo */
+    .sidebar-mini {
+        width: 100%;
+        height: auto;
+        min-height: 70px;
+        flex-direction: row;
+        justify-content: space-evenly; 
+        padding: 0.5rem 1rem calc(0.5rem + env(safe-area-inset-bottom)); 
+        border-right: none;
+        border-top: 3px solid var(--color-purple-dark);
+        box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
+    }
+}
+
+/* =========================================
+   CONTROL DE PANTALLAS (VISIBILIDAD)
+   ========================================= */
+.pantalla-view, 
+.pantalla-caminos, 
+.pantalla-personajes,
+.pantalla-quiz,
+.pantalla-mapa  {
+    display: none; 
+}
+
+.pantalla-view.activa,
+.pantalla-inicio.activa,
+.pantalla-caminos.activa,
+.pantalla-personajes.activa,
+.pantalla-quiz.activa,
+.pantalla-mapa {
+    /* IMPORTANTE: Mantener en flex para que las reglas de centrado sigan aplicando al mostrarse */
+    display: flex !important; 
+}

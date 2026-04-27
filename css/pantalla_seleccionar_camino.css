@@ -1,0 +1,160 @@
+/* =========================================
+   PANTALLA DE caminos: DISEÑO LIBRE (CORREGIDO Y CENTRADO)
+   ========================================= */
+
+.pantalla-caminos {
+    width: 100%;
+    /* ✅ Reforzamos la estructura flex para asegurar el centrado global */
+    flex-direction: column; 
+    align-items: center; /* Forza todo al centro horizontalmente */
+    justify-content: center; /* Centra verticalmente */
+    
+    animation: popEntrada 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* --- ENCABEZADO --- */
+.cabecera-caminos {
+    /* ✅ CLAVE PARA EL CENTRADO: Obligamos a que tome todo el ancho */
+    width: 100%; 
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los títulos que estén adentro */
+    justify-content: center;
+    text-align: center;
+    margin-bottom: clamp(1rem, 2vw, 2rem);
+    flex-shrink: 0; 
+}
+
+/* --- CONTENEDOR DE CARTAS (FLEX HORIZONTAL INTELIGENTE) --- */
+.contenedor-modulos {
+    display: flex;
+    flex-wrap: wrap; 
+    /* ✅ Aseguramos que las cartas siempre nazcan desde el centro */
+    justify-content: center;
+    align-items: center; 
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    width: 100%; 
+}
+
+/* --- LAS CARTAS DE LOS MÓDULOS --- */
+.btn-modulo {
+    flex: 1 1 280px; 
+    min-height: clamp(250px, 40vh, 400px); 
+    
+    background-color: #ffffff;
+    border: 4px solid var(--color-purple-dark, #2a0a4a);
+    border-radius: 25px;
+    box-shadow: 0 10px 0 var(--color-purple-dark, #2a0a4a);
+    
+    padding: clamp(1.5rem, 3vw, 2rem); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly; 
+    gap: 1.5rem;
+    position: relative; 
+    
+    cursor: pointer;
+    overflow: hidden; 
+    
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                box-shadow 0.2s ease, 
+                background-color 0.3s ease;
+}
+
+/* --- CONFIGURACIÓN PARA IMÁGENES LOCALES --- */
+.icono-modulo {
+    width: 100%;
+    max-width: clamp(90px, 15vw, 150px); 
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icono-modulo img {
+    width: 100%;
+    height: auto;
+    object-fit: contain; 
+    filter: drop-shadow(0px 8px 10px rgba(0, 0, 0, 0.15)); 
+}
+
+.textos-btn-modulo {
+    text-align: center;
+    min-width: 120px; 
+}
+
+.num-modulo {
+    font-size: clamp(1rem, 1.5vw, 1.2rem); 
+    color: var(--color-purple-dark, #2a0a4a);
+    font-weight: 900;
+    margin: 0;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.nombre-modulo {
+    font-family: var(--font-body, 'Fredoka', sans-serif);
+    font-size: clamp(1.4rem, 2.5vw, 2rem); 
+    font-weight: 900;
+    color: var(--color-purple-dark, #2a0a4a);
+    margin: 5px 0 0 0;
+    line-height: 1.1;
+}
+
+/* --- MÓDULOS DESBLOQUEADOS (HOVER MAGIA) --- */
+.btn-modulo:not(.bloqueado):hover {
+    background-color: #ffe0e0; 
+    transform: translateY(-5px); 
+    box-shadow: 0 15px 0 var(--color-purple-dark, #2a0a4a); 
+}
+
+.btn-modulo:not(.bloqueado):hover .icono-modulo {
+    animation: wiggle 0.5s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(-5deg) scale(1.1); }
+    50% { transform: rotate(5deg) scale(1.1); }
+}
+
+.btn-modulo:not(.bloqueado):active {
+    transform: translateY(10px); 
+    box-shadow: 0 0px 0 var(--color-purple-dark, #2a0a4a); 
+}
+
+/* =========================================
+   ESTILOS DE MÓDULO BLOQUEADO (GRIS Y CANDADO)
+   ========================================= */
+
+.btn-modulo.bloqueado {
+    background-color: rgba(255, 255, 255, 0.4); 
+    border-color: rgba(42, 10, 74, 0.3); 
+    box-shadow: 0 10px 0 rgba(42, 10, 74, 0.1); 
+    cursor: not-allowed;
+    filter: grayscale(80%); 
+}
+
+.candado-icono {
+    position: absolute;
+    top: clamp(15px, 2vw, 20px);
+    right: clamp(15px, 2vw, 20px);
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.1));
+}
+
+.btn-modulo.bloqueado .num-modulo,
+.btn-modulo.bloqueado .nombre-modulo {
+    color: rgba(42, 10, 74, 0.5); 
+}
+
+.btn-modulo.bloqueado:hover {
+    transform: none;
+    box-shadow: 0 10px 0 rgba(42, 10, 74, 0.1);
+    background-color: rgba(255, 255, 255, 0.4);
+}
+.btn-modulo.bloqueado:hover .icono-modulo {
+    animation: none;
+    transform: none;
+}

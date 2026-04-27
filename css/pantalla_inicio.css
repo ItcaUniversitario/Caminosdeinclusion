@@ -1,0 +1,215 @@
+/* =========================================
+   PANTALLA DE INICIO: ESTILO VIDEO-JUEGO
+   ========================================= */
+
+/* 1. CLASE PRINCIPAL (Súper limpia, la magia la hace el general.css) */
+.pantalla-inicio {
+    /* El general.css ya lo centra y le da min-height, 
+       solo necesitamos que su contenido ocupe el espacio */
+    flex: 1;
+    display: flex;
+    width: 100%;
+}
+
+/* --- 2. LA TARJETA CONTENEDORA --- */
+.tarjeta-burbuja {
+    display: flex;
+    flex-wrap: wrap; /* Permite que el contenido baje si no hay espacio */
+    align-items: center; 
+    justify-content: center; /* Centra el contenido cuando se apila en móvil */
+    align-content: center; /* Distribuye bien el espacio vertical si se envuelve */
+    
+    width: 100%;
+    gap: clamp(1.5rem, 3vw, 3rem); /* Separación fluida entre video y botones */
+}
+
+@keyframes popEntrada {
+    0% { transform: scale(0.95); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* --- 3. MARCO DEL VIDEO --- */
+.zona-video-casual {
+    /* EL TRUCO DEFINITIVO: 
+       1.5 = Crece más rápido que los botones
+       1   = Puede encogerse si falta espacio
+       450px = Intenta medir esto. Si la pantalla es menor, salta a la siguiente línea */
+    flex: 1.5 1 450px; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    width: 100%; /* Asegura que llene su flex-basis en móviles */
+}
+
+.marco-video-burbuja {
+    aspect-ratio: 16 / 9; 
+    width: 100%;
+    max-height: 100%; 
+    height: auto; 
+    
+    position: relative;
+    border: 1px solid rgba(42, 10, 74, 0.2); 
+    border-radius: 25px;
+    
+    overflow: hidden;
+    background-color: transparent; 
+}
+
+.video-juego {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    display: block;
+}
+
+/* --- 4. MENSAJE SUTIL DE AUDIO --- */
+.mensaje-audio {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    
+    background-color: rgba(58, 22, 83, 0.8); 
+    color: #ffffff;
+    
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    
+    padding: 8px 16px;
+    border-radius: 20px; 
+    
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    backdrop-filter: blur(4px); 
+    z-index: 10; 
+    pointer-events: none; 
+    
+    animation: latidoSutil 2.5s infinite ease-in-out;
+}
+
+@keyframes latidoSutil {
+    0% { transform: scale(1); opacity: 0.85; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.85; }
+}
+
+.ocultar-mensaje {
+    display: none !important;
+}
+
+/* =========================================
+   5. ZONA DE INTERACCIÓN (Panel Derecho / Inferior)
+   ========================================= */
+
+.zona-interaccion-casual {
+    /* Igual que el video, pero con un tamaño base menor (300px) */
+    flex: 1 1 300px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem; 
+    width: 100%;
+}
+
+/* --- TEXTOS Y TÍTULOS --- */
+.textos-casual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.etiqueta-slogan {
+    background-color: var(--color-pink-accent);
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 8px 20px;
+    border-radius: 25px; 
+    box-shadow: 0 4px 10px rgba(240, 98, 146, 0.3);
+}
+
+.titulo-casual {
+    color: var(--color-purple-dark);
+    font-family: var(--font-body);
+    font-size: clamp(2rem, 4vw, 2.8rem); 
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.1;
+}
+
+/* --- CONTENEDOR DE CARDS --- */
+.botones-burbuja-container {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+    gap: 10px; 
+    width: 100%;
+}
+
+/* --- CARDS DE SELECCIÓN --- */
+.btn-burbuja {
+    outline: none;
+    cursor: pointer;
+    background-color: #faf6fe;
+    
+    width: 100px;  
+    height: 160px; 
+    border: 5px solid var(--color-purple-dark);
+    border-radius: 25px; 
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px; 
+    
+    box-shadow: 0 10px 0 var(--color-purple-dark);
+    transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-burbuja:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 0 var(--color-purple-dark);
+    background-color: #ffffff;
+}
+
+.btn-burbuja:active {
+    transform: translateY(10px); 
+    box-shadow: 0 0px 0 var(--color-purple-dark); 
+}
+
+/* --- ÍCONO Y NÚMERO --- */
+.icono-personalizado {
+    width: 60px;  
+    height: 60px; 
+    object-fit: contain; 
+    user-select: none;
+    -webkit-user-drag: none; 
+    pointer-events: none; 
+}
+
+.num-burbuja {
+    font-family: var(--font-body);
+    color: var(--color-purple-dark);
+    font-size: 2rem; 
+    font-weight: 700;
+}
+
+/* --- PIE DE PÁGINA SUTIL --- */
+.pie-casual {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-purple-main);
+    opacity: 0.7; 
+    margin-top: 5px;
+    text-align: center;
+}

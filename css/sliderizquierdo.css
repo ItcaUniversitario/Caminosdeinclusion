@@ -1,0 +1,262 @@
+/* =========================================
+   MÓDULO: MENÚ LATERAL (SIDEBAR MINI) - GAME EDITION
+   ========================================= */
+
+/* 1. Contenedor Principal del Menú (Escritorio) */
+.sidebar-mini {
+    width: clamp(70px, 8vw, 90px); /* Un poquito más ancho para respirar */
+    background: var(--color-purple-main, #5e2a84);
+    border-right: 4px solid var(--color-purple-dark, #2a0a4a);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 0;
+    gap: 1rem; 
+    
+    z-index: 50; /* Lo subimos para que siempre esté al frente */
+    box-shadow: 5px 0 15px rgba(0,0,0,0.25);
+}
+
+/* =========================================
+   2. ESTILOS DE LOS BOTONES
+   ========================================= */
+.btn-mini {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    gap: 6px; 
+    
+    /* Forma de "Tecla" cuadrada */
+    width: 80%; 
+    aspect-ratio: 1 / 1; 
+    border-radius: 15px;
+    
+    background: transparent;
+    border: 2px solid transparent; /* Preparado para el hover */
+    cursor: pointer;
+    color: #ffffff; /* Blanco para máxima legibilidad sobre morado */
+    padding: 8px;
+    
+    /* Animación fluida de rebote */
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* El Icono (Emoji o SVG) */
+.icono-emoji {
+    font-size: 1.6rem; 
+    line-height: 1;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4)); /* Pequeña sombra 3D */
+    transition: transform 0.2s ease;
+}
+
+/* Las letras pequeñitas */
+.texto-btn-mini {
+    font-size: 0.65rem; 
+    font-weight: 800;
+    text-transform: uppercase;
+    font-family: var(--font-body, 'Fredoka', sans-serif);
+    letter-spacing: 0.5px;
+    opacity: 0.8; /* Ligeramente apagado por defecto */
+}
+
+/* --- INTERACCIONES: HOVER Y CLIC --- */
+.btn-mini:hover {
+    transform: translateY(-4px); 
+    background: rgba(255, 255, 255, 0.1); /* Brillo sutil de fondo */
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-mini:hover .texto-btn-mini {
+    opacity: 1;
+    color: var(--color-yellow-btn, #f3a601); /* Letras doradas al pasar el ratón */
+}
+
+.btn-mini:hover .icono-emoji {
+    transform: scale(1.1); /* El icono crece un poco */
+}
+
+.btn-mini:active {
+    /* Efecto "Squish": se hunde y se aplasta un poco al hacer clic */
+    transform: translateY(2px) scale(0.92); 
+    transition: all 0.05s; /* Muy rápido para que se sienta reactivo */
+}
+
+/* --- ESTADO ACTIVO (La pantalla actual) --- */
+/* (Agrega la clase class="btn-mini activo" en tu HTML al botón que corresponda) */
+.btn-mini.activo {
+    background: var(--color-purple-dark, #2a0a4a);
+    border: 2px solid var(--color-yellow-btn, #f3a601);
+    /* Sombra interna para que parezca presionado, brillo externo para destacar */
+    box-shadow: inset 0 4px 8px rgba(0,0,0,0.4), 0 0 10px rgba(243, 166, 1, 0.3);
+    transform: translateY(0);
+}
+
+.btn-mini.activo .texto-btn-mini {
+    opacity: 1;
+    color: var(--color-yellow-btn, #f3a601);
+}
+
+/* =========================================
+   3. RESPONSIVIDAD: VISTA MÓVIL (Dock Inferior)
+   ========================================= */
+@media (max-width: 768px) {
+    .sidebar-mini {
+        width: 100%;
+        height: auto;
+        min-height: 75px; /* Un poco más alto para los pulgares */
+        
+        flex-direction: row;
+        justify-content: space-around; /* Reparte el espacio perfecto */
+        
+        padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom)); 
+        
+        border-right: none;
+        border-top: 4px solid var(--color-purple-dark, #2a0a4a);
+        box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
+    }
+
+    .btn-mini {
+        width: 60px; /* Tamaño exacto en móvil */
+        height: 60px;
+        aspect-ratio: auto;
+        gap: 4px; 
+        border-radius: 12px;
+    }
+
+    .icono-emoji {
+        font-size: 1.4rem; 
+    }
+
+    /* En celulares quitamos el movimiento de hover (porque no hay ratón) */
+    .btn-mini:hover {
+        transform: none;
+        background: transparent;
+        border-color: transparent;
+    }
+
+    .btn-mini.activo {
+        transform: translateY(-8px); /* En móvil, el botón activo flota hacia arriba */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+}
+
+
+
+
+
+/* =========================================
+   MODAL DE CONFIRMACIÓN (REINICIO / INICIO)
+   ========================================= */
+.modal-overlay {
+   position: absolute; /* <--- CAMBIA 'fixed' POR 'absolute' */
+    border-radius: 8px; /* <--- AÑADE ESTO para que respete los bordes de tu main */
+    
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(42, 10, 74, 0.85); 
+    backdrop-filter: blur(5px);
+    
+    display: none; /* Oculto por defecto */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Por encima de TODO */
+    
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Clase para mostrar el modal con JS */
+.modal-overlay.activo {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-contenido {
+    background: #ffffff;
+    border: 4px solid var(--color-purple-dark, #2a0a4a);
+    border-radius: 30px;
+    padding: 2.5rem;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    
+    /* Animación de rebote al entrar */
+    transform: scale(0.8);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.activo .modal-contenido {
+    transform: scale(1);
+}
+
+.modal-icono {
+    font-size: 4.5rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
+}
+
+.modal-titulo {
+    color: var(--color-purple-dark, #2a0a4a);
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+}
+
+.modal-texto {
+    color: #555;
+    font-size: 1.15rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+}
+
+.modal-texto strong {
+    color: #d32f2f; /* Rojo para destacar el peligro */
+}
+
+/* Botones del Modal */
+.modal-botones {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-modal {
+    padding: 0.8rem 1.5rem;
+    border-radius: 15px;
+    font-family: var(--font-body, 'Fredoka', sans-serif);
+    font-weight: 800;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+}
+
+/* Botón Cancelar (Tranquilo) */
+.btn-secundario {
+    background: transparent;
+    color: var(--color-purple-dark, #2a0a4a);
+    border: 3px solid var(--color-purple-dark, #2a0a4a);
+}
+.btn-secundario:hover {
+    background: #f3e8ff;
+    transform: translateY(-2px);
+}
+
+/* Botón Confirmar Salida (Estilo Peligro) */
+.btn-peligro {
+    background: var(--color-pink-accent, #f06292);
+    color: white;
+    border: 3px solid #c2185b;
+    box-shadow: 0 5px 0 #c2185b;
+}
+.btn-peligro:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 0 #c2185b;
+}
+.btn-peligro:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 transparent;
+}

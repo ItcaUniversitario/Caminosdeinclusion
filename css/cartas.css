@@ -1,0 +1,58 @@
+/* ==========================================================================
+   ESTRUCTURA EXACTA PARA QUE LA CARTA NO SALTE AL GIRAR
+   ========================================================================== */
+
+/* 1. La "cámara" que da la perspectiva 3D */
+.escena-carta {
+    perspective: 1000px;
+    width: 100%;
+    max-width: 340px; /* Ancho fijo de la carta */
+    height: 460px;    /* 🚨 ESTA ES LA CLAVE: Altura fija obligatoria */
+    margin: 0 auto;
+}
+
+/* 2. El motor del giro */
+.carta-3d {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Giro con rebote suave */
+    transform-style: preserve-3d;
+}
+
+/* 3. La clase que aplica JavaScript al hacer clic */
+.carta-3d.volteada {
+    transform: rotateY(180deg);
+}
+
+/* 4. Las caras (Frente y Reverso) */
+.cara-carta {
+    position: absolute; /* 🚨 EVITA QUE LA CARTA SALTE O EMPUJE HACIA ABAJO */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Oculta la cara cuando está de espaldas */
+    -webkit-backface-visibility: hidden; /* Para Safari */
+    border-radius: 20px;
+    box-sizing: border-box;
+}
+
+/* 5. Posiciones iniciales */
+.cara-frente {
+    transform: rotateY(0deg);
+    overflow: hidden; /* Para que la caja blanca o la imagen no rompan el borde */
+}
+
+.cara-reverso {
+    transform: rotateY(180deg); /* Empieza dada la vuelta */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    /* Si las opciones son muy largas, permite hacer scroll solo dentro del reverso */
+    overflow-y: auto; 
+}
+
+/* Evitar scrollbars feas en el reverso */
+.cara-reverso::-webkit-scrollbar { width: 6px; }
+.cara-reverso::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }

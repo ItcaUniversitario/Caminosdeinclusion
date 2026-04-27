@@ -1,0 +1,110 @@
+/* ==========================================================================
+   ESTILOS PANTALLA RESULTADOS
+   ========================================================================== */
+.pantalla-resultados {
+    display: none; /* Se cambia a flex con la función cambiarPantalla */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.pantalla-resultados.activa {
+    display: flex !important;
+}
+
+.panel-resultados-centro {
+    background: #ffffff;
+    width: 100%;
+    max-width: 550px;
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 15px 35px rgba(58, 22, 83, 0.15);
+    border: 3px solid var(--color-purple-main, #5e2a84);
+    text-align: center;
+}
+
+.cabecera-resultados .icono-corona {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: -10px;
+    animation: flotar 3s ease-in-out infinite;
+}
+
+.cabecera-resultados h2 {
+    color: var(--color-purple-dark, #3a1653);
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.lista-ranking-final {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+/* Tarjeta individual del ranking */
+.tarjeta-ranking {
+    display: flex;
+    align-items: center;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 12px 20px;
+    transition: transform 0.2s;
+}
+
+.tarjeta-ranking:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.tarjeta-ranking.ganador {
+    background: #fff8e1;
+    border-color: #ffc107;
+}
+
+.puesto-ranking {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #94a3b8;
+    width: 40px;
+}
+
+.ganador .puesto-ranking {
+    color: #ff9800;
+}
+
+.avatar-ranking {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+    border: 2px solid var(--color-purple-main, #5e2a84);
+    margin-right: 15px;
+}
+
+.info-ranking {
+    flex: 1;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.nombre-ranking {
+    font-weight: 800;
+    color: var(--color-purple-dark, #3a1653);
+    font-size: 1.1rem;
+}
+
+.pts-ranking {
+    color: var(--color-pink-accent, #f06292);
+    font-weight: 900;
+    font-size: 1.2rem;
+}

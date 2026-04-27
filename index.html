@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HUD - Caminos de Inclusión</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/stylegeneral.css">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';">
+
+</head>
+
+<body>
+
+    <header class="game-banner">
+        <div class="logo-box">
+            <img src="assets/imagenes/generales/logo_fundacioncacmu.png" alt="CACMU" class="logo-img">
+        </div>
+
+        <div class="title-container">
+            <img src="assets/imagenes/generales/banner_cde.png" alt="Caminos de Inclusión" class="game-title-img">
+
+        </div>
+
+        <div class="logo-box">
+            <img src="assets/imagenes/generales/logo_itca.png" alt="ITCA" class="logo-img">
+        </div>
+    </header>
+
+    <div class="layout-container">
+
+        <aside class="sidebar-mini">
+            <button class="btn-mini" title="Inicio">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span class="texto-btn-mini">Inicio</span>
+            </button>
+
+            <button class="btn-mini" title="Perfil">
+                <span class="icono-emoji">👤</span>
+                <span class="texto-btn-mini">Perfil</span>
+            </button>
+
+            <button class="btn-mini" title="Audio">
+                <span class="icono-emoji">🔊</span>
+                <span class="texto-btn-mini">Audio</span>
+            </button>
+
+        <a href="admin/admin-dashboard.html" target="_blank" style="text-decoration: none;">
+    <button class="btn-mini" title="Ajustes">
+        <span class="icono-emoji">⚙️</span>
+        <span class="texto-btn-mini">Ajustes</span>
+    </button>
+</a>
+        </aside>
+        <main class="main-game-area">
+
+            <div class="pantalla-inicio activa">
+                <div class="tarjeta-burbuja">
+
+                    <div class="zona-video-casual">
+                        <div class="marco-video-burbuja">
+                            <video controls autoplay loop muted class="video-juego">
+                                <source src="assets/videos/videosaludocati_rossy.mp4" type="video/mp4">
+                                Tu navegador no soporta videos.
+                            </video>
+                            <div class="mensaje-audio" id="alertaAudio">
+                                🔊 Activa el audio
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="zona-interaccion-casual">
+                        <div class="textos-casual">
+                            <span class="etiqueta-slogan">UN VIAJE HACIA UN AVIDA SIN VIOLENCIA</span>
+                            <p class="pie-casual">Tus decisiones importan. Construimos un entorno que abraza todas las
+                                diversidades, promueve la equidad y le dice NO a la violencia de género.</p>
+                            <h1 class="titulo-casual">¿Quiénes juegan hoy?</h1>
+                        </div>
+
+                        <div class="botones-burbuja-container">
+                            <button class="btn-burbuja">
+                                <img src="assets/imagenes/iconos/icon_un_jugador.png" alt="1 Jugador"
+                                    class="icono-personalizado">
+                                <span class="num-burbuja">1</span>
+                            </button>
+
+                            <button class="btn-burbuja">
+                                <img src="assets/imagenes/iconos/icon_dos_jugadores.png" alt="2 Jugadores"
+                                    class="icono-personalizado">
+                                <span class="num-burbuja">2</span>
+                            </button>
+
+                            <button class="btn-burbuja">
+                                <img src="assets/imagenes/iconos/icon_tres_jugadores.png" alt="3 Jugadores"
+                                    class="icono-personalizado">
+                                <span class="num-burbuja">3</span>
+                            </button>
+
+                            <button class="btn-burbuja btn-arcoiris">
+                                <img src="assets/imagenes/iconos/icon_tres_jugadores.png" alt="Modo Diverso"
+                                    class="icono-personalizado">
+                                <span class="num-burbuja">4</span>
+                            </button>
+                        </div>
+
+
+
+                        <div id="zona-formularios" class="zona-formularios-casual"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="pantalla-caminos ">
+                <div class="tarjeta-caminos">
+                    <div class="cabecera-caminos">
+                        <h1 class="titulo-casual">Módulos de Aprendizaje</h1>
+                        <p class="pie-casual">Selecciona el camino que deseas explorar hoy para continuar la aventura.
+                        </p>
+                    </div>
+
+                    <div class="contenedor-modulos">
+                        <button class="btn-modulo modulo-violencia">
+                            <div class="icono-modulo">
+                                <img src="assets/imagenes/iconos/icono_nivel1.png" alt="Módulo 1">
+                            </div>
+                            <div class="textos-btn-modulo">
+                                <h2 class="num-modulo">Camino 1</h2>
+                                <p class="nombre-modulo">Prevención de la Violencia de Género</p>
+                            </div>
+                        </button>
+
+                        <button class="btn-modulo bloqueado">
+                            <div class="candado-icono">🔒</div>
+                            <div class="icono-modulo">
+                                <img src="assets/imagenes/iconos/icono_nivel2.png" alt="Módulo 2">
+                            </div>
+                            <div class="textos-btn-modulo">
+                                <h2 class="num-modulo">Camino 2</h2>
+                                <p class="nombre-modulo">Masculinidades</p>
+                            </div>
+                        </button>
+
+                        <button class="btn-modulo bloqueado">
+                            <div class="candado-icono">🔒</div>
+                            <div class="icono-modulo">
+                                <img src="assets/imagenes/iconos/icono_nivel3.png" alt="Módulo 3">
+                            </div>
+                            <div class="textos-btn-modulo">
+                                <h2 class="num-modulo">Camino 3</h2>
+                                <p class="nombre-modulo">Estereotipos</p>
+                            </div>
+                        </button>
+
+                        <button class="btn-modulo bloqueado">
+                            <div class="candado-icono">🔒</div>
+                            <div class="icono-modulo">
+                                <img src="assets/imagenes/iconos/icono_nivel4.png" alt="Módulo 4">
+                            </div>
+                            <div class="textos-btn-modulo">
+                                <h2 class="num-modulo">Módulo 4</h2>
+                                <p class="nombre-modulo">Micromachismos</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="pantalla-personajes">
+
+
+                <div class="cabecera-personajes">
+
+                    <div class="zona-izq">
+                        <button class="btn-volver-casual" id="btn-volver-caminos">
+                            ⬅ Volver a Caminos
+                        </button>
+                    </div>
+
+                    <div class="zona-centro">
+
+                        <h1 class="titulo-casual">Elige tu Personaje</h1>
+
+                    </div>
+
+                    <div class="zona-der">
+                        <div class="etiqueta-turno" id="indicador-turno-texto">
+                            Turno de: <strong>Cargando...</strong>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="layout-dual-personajes">
+
+                    <div class="zona-manual-instrucciones">
+                        <div class="tarjeta-manual">
+                            <h2>📖 Instrucciones del Viaje</h2>
+
+                            <p class="intro-manual">
+                                Explora historias reales, toma decisiones y fortalece tu empatía en este recorrido
+                                preventivo.
+                            </p>
+
+                            <ul class="lista-instrucciones">
+                                <li>
+                                    <strong>1. Elige tu ficha:</strong>
+                                    Selecciona un personaje que te acompañará en la ruta.
+                                </li>
+                                <li>
+                                    <strong>2. Pre-Quiz:</strong>
+                                    Evaluaremos tus conocimientos iniciales antes de empezar.
+                                </li>
+                                <li>
+                                    <strong>3. Decide con respeto:</strong>
+                                    Escucha las vivencias y elige el camino de la equidad.
+                                </li>
+                                <li>
+                                    <strong>4. Suma puntos:</strong>
+                                    Tus decisiones miden tu nivel de compromiso y empatía.
+                                </li>
+                                <li>
+                                    <strong>5. Post-Quiz:</strong>
+                                    Analizaremos cuánto aprendiste al finalizar el recorrido.
+                                </li>
+                            </ul>
+
+                            <div class="nota-manual">
+                                💡 <em>Tip: ¡Compara tus resultados finales para ver tu progreso!</em>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="zona-grilla-personajes">
+                        <div class="contenedor-personajes">
+
+                            <button class="card-personajes ficha-personaje" id="personaje-paula" data-personaje="paula">
+                                <div class="icono-personajes"><img src="assets/imagenes/personajes/camino1/paula.png"
+                                        alt="Paula"></div>
+                                <div class="textos-btn-personajes">
+                                    <h2 class="nombre-personajes">Paula</h2>
+                                </div>
+                            </button>
+
+                            <button class="card-personajes ficha-personaje" id="personaje-nina" data-personaje="nina">
+                                <div class="icono-personajes"><img src="assets/imagenes/personajes/camino1/nina.png"
+                                        alt="Nina"></div>
+                                <div class="textos-btn-personajes">
+                                    <h2 class="nombre-personajes">Nina</h2>
+                                </div>
+                            </button>
+
+                            <button class="card-personajes ficha-personaje" id="personaje-josefa"
+                                data-personaje="josefa">
+                                <div class="icono-personajes"><img src="assets/imagenes/personajes/camino1/josefa.png"
+                                        alt="Josefa"></div>
+                                <div class="textos-btn-personajes">
+                                    <h2 class="nombre-personajes">Josefa</h2>
+                                </div>
+                            </button>
+
+                            <button class="card-personajes ficha-personaje" id="personaje-martina"
+                                data-personaje="martina">
+                                <div class="icono-personajes"><img src="assets/imagenes/personajes/camino1/martina.png"
+                                        alt="Martina"></div>
+                                <div class="textos-btn-personajes">
+                                    <h2 class="nombre-personajes">Martina</h2>
+                                </div>
+                            </button>
+
+                            <button class="card-personajes ficha-personaje" id="personaje-paty" data-personaje="paty">
+                                <div class="icono-personajes"><img src="assets/imagenes/personajes/camino1/paty.png"
+                                        alt="Paty"></div>
+                                <div class="textos-btn-personajes">
+                                    <h2 class="nombre-personajes">Paty</h2>
+                                </div>
+                            </button>
+
+                            <button class="card-personajes ficha-personaje" id="personaje-yuleisy" data-personaje="yuleisy">
+                                <div class="icono-personajes"><img src="assets/imagenes/personajes/camino1/yuleisy.png"
+                                        alt="yuleisy"></div>
+                                <div class="textos-btn-personajes">
+                                    <h2 class="nombre-personajes">Yuleisy</h2>
+                                </div>
+                            </button>
+
+                            <button class="card-personajes ficha-personaje" id="personaje-mia"
+                                data-personaje="mia">
+                                <div class="icono-personajes"><img
+                                        src="assets/imagenes/personajes/camino1/mia.png" alt="mia"></div>
+                                <div class="textos-btn-personajes">
+                                    <h2 class="nombre-personajes">Mía</h2>
+                                </div>
+                            </button>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="pantalla-quiz" id="pantalla-quiz">
+
+                <div class="etiqueta-fase">
+                    <h1>📝 Fase: <strong id="etiqueta-fase-texto">PRE-QUIZ</strong></h1>
+                </div>
+
+                <div class="contenedor-central-quiz">
+
+                    <div class="zona-progreso">
+                        <span class="texto-progreso" id="texto-progreso-quiz">Pregunta 1 de 5</span>
+                        <div class="barra-progreso-fondo">
+                            <div class="barra-progreso-llena" id="barra-progreso-quiz" style="width: 20%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="mensaje-instruccion-quiz" id="instruccion-quiz">
+                        💡 <strong>¡A debatir en equipo!</strong> Elijan una respuesta juntos. <span
+                            class="texto-verde">VERDE</span> si acertaron, <span class="texto-rojo">ROJO</span> si hay
+                        algo nuevo por aprender.
+                    </div>
+
+                    <h2 class="texto-pregunta" id="texto-pregunta-quiz">Cargando la pregunta...</h2>
+
+                    <div class="zona-opciones" id="contenedor-opciones-quiz"></div>
+
+                    <button class="btn-siguiente-quiz bloqueado" id="btn-siguiente-quiz">Siguiente Pregunta ➡</button>
+
+                </div>
+            </div>
+            <div class="pantalla-mapa" id="pantalla-mapa" style="display: none;">
+
+                <div class="panel-lateral-mapa">
+
+                    <div class="contenedor-reloj-mapa">
+                        <span class="icono-reloj">⏱️</span>
+                        <div class="tiempo-texto">
+                            <span class="etiqueta-tiempo">TIEMPO DE JUEGO</span>
+                            <span id="reloj-juego">00:00</span>
+                        </div>
+                    </div>
+
+                    <div class="hud-scores-multijugador" id="contenedor-scores-global"
+                        style="width: 100%; margin: 20px 0;">
+                    </div>
+
+                    <div class="contenedor-ruleta-lateral"
+                        style="display: flex; flex-direction: column; align-items: center; margin-top: auto; padding-bottom: 20px;">
+                        <div class="flecha-indicadora"
+                            style="font-size: 24px; color: #333; margin-bottom: -10px; z-index: 10;">▼</div>
+
+                        <button class="ruleta-base" id="ruleta-interactiva">
+                            <div class="rueda-colores" id="rueda-grafica">
+                                <span class="num-ruleta n1">1</span>
+                                <span class="num-ruleta n2">2</span>
+                                <span class="num-ruleta n3">3</span>
+                                <span class="num-ruleta n4">4</span>
+                                <span class="num-ruleta n5">5</span>
+                                <span class="num-ruleta n6">6</span>
+                            </div>
+                            <div class="centro-ruleta" id="texto-centro-ruleta">GIRAR</div>
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="panel-principal-mapa">
+
+                    <div class="contenedor-mapa-visual">
+                        <img src="assets/imagenes/mapas/mapa_camino1.jpeg" class="imagen-fondo-mapa"
+                            alt="Mapa del camino">
+                        <div id="capa-fichas"></div>
+                    </div>
+
+                </div>
+
+                <div id="gameModal" class="modal-overlay-juego"></div>
+
+            </div>
+
+
+
+
+            <div id="modal-pj-overlay" class="modal-pj-overlay">
+                <div class="modal-pj-contenedor">
+                    <button class="modal-pj-btn-cerrar" id="btn-cerrar-modal-pj">×</button>
+
+                    <div class="modal-pj-grid">
+                        <div class="modal-pj-col-izq">
+                            <img src="" id="modal-pj-img" alt="Personaje" class="modal-pj-imagen-full">
+                        </div>
+
+                        <div class="modal-pj-col-der">
+                            <h2 id="modal-pj-nombre" class="modal-pj-titulo">Nombre</h2>
+                            <p id="modal-pj-historia" class="modal-pj-texto">Historia...</p>
+
+                            <button id="btn-confirmar-personaje" class="modal-pj-btn-accion">
+                                Seleccionar personaje
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<div class="pantalla-resultados" id="pantalla-resultados" style="display: none;">
+    <div class="panel-resultados-centro">
+        
+        <div class="cabecera-resultados">
+            <span class="icono-corona">👑</span>
+            <h2>¡Viaje Completado!</h2>
+            <p>Gracias por recorrer los Caminos de Inclusión. Así quedó el nivel de empatía de nuestro equipo:</p>
+        </div>
+
+        <div id="contenedor-ranking-final" class="lista-ranking-final">
+            </div>
+
+        <div class="acciones-resultados">
+            <button id="btn-volver-inicio" class="btn-imbabura primario" style="background: linear-gradient(to right, #9C27B0, #7B1FA2); color: white; border: none; box-shadow: 0 4px 10px rgba(156, 39, 176, 0.4); width: 100%; font-size: 1.2rem; padding: 15px; border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 20px;">
+                Volver al Inicio 🏠
+            </button>
+        </div>
+
+    </div>
+</div>
+        </main>
+
+    </div>
+    <script type="module" src="./js/main.js"></script>
+</body>
+
+</html>
