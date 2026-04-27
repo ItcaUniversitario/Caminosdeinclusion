@@ -256,20 +256,20 @@ export function evaluarAccionCasilla(posicionFinal, pasosSobrantes = 0) {
 
     switch (casillaData.tipo) {
         // 🚨 CAMBIO: Unificamos a un solo tipo 'carta'
-        case 'carta': 
+        case 'carta':
             mostrarCartaSituacion(casillaData, jugadorActual);
             break;
-            
-        case 'video':  
-        case 'parada': 
+
+        case 'video':
+        case 'parada':
             mostrarVideoEducativo(casillaData, jugadorActualIndex, pasosSobrantes);
             break;
-            
+
         case 'info':
             mostrarDatoImportante(casillaData, jugadorActualIndex, pasosSobrantes);
             break;
 
-       case 'meta':
+        case 'meta':
             mostrarVideoReflexionFinal(casillaData, jugadorActual);
             break;
 
@@ -278,6 +278,7 @@ export function evaluarAccionCasilla(posicionFinal, pasosSobrantes = 0) {
             break;
     }
 }
+
 export async function mostrarCartaSituacion(casillaData, jugadorActual) {
     console.log(`🃏 Iniciando evento de carta para ${jugadorActual.nombreJugador} (${jugadorActual.nombre})`);
 
@@ -285,20 +286,22 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
     if (!modal) return;
 
     const numeroCamino = sessionStorage.getItem('caminoSeleccionadoNum') || 1;
-    const personajeIdBusqueda = `${jugadorActual.id.toLowerCase()}_c${numeroCamino}`;
-    
-    // Obtenemos el nombre en minúsculas (ej: "paula", "josefa")
-    const idPersonaje = jugadorActual.id.toLowerCase(); 
+
+    // 🚨 BLINDAJE: Buscamos el ID, si no existe buscamos el nombre, y lo pasamos a minúsculas
+    const idBruto = jugadorActual.id || jugadorActual.nombre || "paula";
+    const idPersonaje = idBruto.toLowerCase();
+
+    const personajeIdBusqueda = `${idPersonaje}_c${numeroCamino}`;
 
     // 🎨 1. DICCIONARIO DE COLORES (Mantenemos los colores solo para botones y bordes)
     const paletaPersonajes = {
-        'paula':   { principal: '#D81B60' }, 
-        'nina':    { principal: '#B71C1C' }, 
-        'josefa':  { principal: '#E65100' }, 
-        'martina': { principal: '#2E7D32' }, 
-        'paty':    { principal: '#455A64' }, 
-        'yuleisy': { principal: '#1565C0' }, 
-        'mia':     { principal: '#00ACC1' }  
+        'paula': { principal: '#D81B60' },
+        'nina': { principal: '#B71C1C' },
+        'josefa': { principal: '#E65100' },
+        'martina': { principal: '#2E7D32' },
+        'paty': { principal: '#455A64' },
+        'yuleisy': { principal: '#1565C0' },
+        'mia': { principal: '#00ACC1' }
     };
 
     const colores = paletaPersonajes[idPersonaje] || { principal: '#673AB7' };
@@ -319,21 +322,21 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
     background: url('${rutaReverso}') center/cover no-repeat; 
     border-top: 8px solid ${colorCarta};`;
 
-    // Pantalla de Carga (Todo el resto de tu código sigue igual)
+    // Pantalla de Carga (Modificada para quitar la barra superior)
     modal.innerHTML = `
-        <div class="modal-contenido" style="background: transparent; box-shadow: none; padding: 0;">
-            <div id="modalDescription" style="width: 100%;">
-                <div style="text-align:center; padding: 20px; background: white; border-radius: 20px; border-top: 5px solid ${colorCarta};">
-                    <p>Leyendo la situación de ${jugadorActual.nombre}...</p>
-                    <div class="spinner-carga">⏳</div>
-                </div>
+    <div class="modal-contenido" style="background: transparent; box-shadow: none; padding: 0;">
+        <div id="modalDescription" style="width: 100%;">
+            <div style="text-align:center; padding: 20px; background: white; border-radius: 20px;">
+                <p>Leyendo la situación de ${jugadorActual.nombre}...</p>
+                <div class="spinner-carga">⏳</div>
             </div>
         </div>
-    `;
+    </div>
+`;
     modal.style.display = 'flex';
 
-    
-try {
+
+    try {
         const carta = await obtenerCartaAleatoria(personajeIdBusqueda);
 
         if (carta) {
@@ -345,23 +348,26 @@ try {
                         
                         <div class="cara-carta cara-frente" id="cara-frontal" style="${estiloFrente}">
                           <h2 style="margin: 0; color: white; text-transform: uppercase; letter-spacing: 1px; z-index: 2; position: relative; text-shadow: 1px 1px 4px rgba(0,0,0,0.6);">
-    Situación
-</h2>
-                            <img src="${jugadorActual.imagenFull || jugadorActual.imagen}" alt="${jugadorActual.nombre}" style="width: 140px; border-radius: 10px; margin-top: 15px; z-index: 1; position: relative;">
+                            Situación
+                        </h2>
+                                    <img src="${jugadorActual.imagenFull || jugadorActual.imagen}" alt="${jugadorActual.nombre}" style="width: 140px; border-radius: 10px; margin-top: 15px; z-index: 1; position: relative;">
                             
                             <div style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; background: rgba(255,255,255,0.95); padding: 15px; border-radius: 15px; z-index: 20; box-shadow: 0 -5px 15px rgba(0,0,0,0.2); border: 2px solid ${colorCarta}; box-sizing: border-box;">
-                                <p style="font-size: 1.05rem; color: #333; font-weight: 500; line-height: 1.4; margin: 0 0 15px 0;">
-                                    ${carta.descripcion}
-                                </p>
-                                <button id="btn-dar-vuelta" class="btn-inclusion" style="background: ${colorCarta}; color: white; width: 100%; border-radius: 10px; padding: 10px; font-weight: bold; cursor: pointer; border: none; font-size: 1.1rem;">
-                                    Tomar Decisión 🔄
-                                </button>
+                             <p style="font-family: var(--font-body, 'Fredoka', sans-serif); font-size: 1.3rem; color: #333; font-weight: 500; line-height: 1.5; margin: 0 0 20px 0; text-align: justify; -webkit-font-smoothing: antialiased; transform: translateZ(0);">
+                                ${carta.descripcion}
+                            </p>
+                        <button id="btn-dar-vuelta" class="btn-inclusion" style="font-family: var(--font-body, 'Fredoka', sans-serif); background: ${colorCarta}; color: white; width: 100%; border-radius: 10px; padding: 15px; font-weight: bold; cursor: pointer; border: none; font-size: 1.3rem;">
+                            Tomar Decisión 🔄
+                        </button>
                             </div>
                         </div>
 
-                        <div class="cara-carta cara-reverso" id="cara-trasera" style="${estiloReverso}">
-                           <h3 id="titulo-reverso" style="color: #222; margin-top: 0;">¿Qué decides hacer?</h3>
-                            <div id="contenedor-opciones-reverso" style="display: flex; flex-direction: column; gap: 8px; width: 100%; position: relative; z-index: 30;"></div>
+                       <div class="cara-carta cara-reverso" id="cara-trasera" style="${estiloReverso}">
+                            <h3 id="titulo-reverso" style="font-family: var(--font-body, 'Fredoka', sans-serif); color: #222; margin-top: 50px; margin-bottom: 30px; text-align: center; font-size: 1.8rem; -webkit-font-smoothing: antialiased;">
+                                ¿Qué decides hacer?
+                            </h3>
+                            
+                            <div id="contenedor-opciones-reverso" style="display: flex; flex-direction: column; justify-content: center; gap: 20px; width: 100%; padding: 0 25px; flex-grow: 1; position: relative; z-index: 30; box-sizing: border-box;"></div>
                         </div>
 
                     </div>
@@ -373,8 +379,8 @@ try {
                 document.getElementById('cara-frontal').style.pointerEvents = 'none';
             };
 
-          const opciones = [
-               { texto: carta.opcion_empatica, puntos: 4, mov: 3, retro: carta.retro_empatica },
+            const opciones = [
+                { texto: carta.opcion_empatica, puntos: 3, mov: 3, retro: carta.retro_empatica },
                 { texto: carta.opcion_poco_empatica, puntos: 2, mov: 1, retro: carta.retro_poco_empatica },
                 { texto: carta.opcion_nada_empatica, puntos: 0, mov: -2, retro: carta.retro_nada_empatica }
             ];
@@ -394,34 +400,59 @@ try {
             opcionesValidas.forEach(op => {
                 const btn = document.createElement('button');
                 btn.className = 'btn-opcion-carta';
-                btn.style.cssText = "padding: 10px; border-radius: 10px; border: 2px solid #ddd; background: rgba(255,255,255,0.95); cursor: pointer; text-align: left; font-size: 0.9rem; font-weight: 600; color: #333; position: relative;";
+              btn.style.cssText = `
+                font-family: var(--font-body, 'Fredoka', sans-serif); 
+                padding: 18px; 
+                border-radius: 12px; 
+                border: 2px solid #ddd; 
+                background: rgba(255,255,255,0.98); 
+                cursor: pointer; 
+                text-align: justify; 
+                font-size: 1.3rem; 
+                font-weight: 600; 
+                color: #333; 
+                position: relative; 
+                -webkit-font-smoothing: antialiased; 
+                transform: translateZ(0);
+                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            `;
                 btn.innerText = op.texto;
 
                 btn.onmouseover = () => btn.style.borderColor = colorCarta;
                 btn.onmouseout = () => btn.style.borderColor = '#ddd';
 
-                btn.onclick = () => {
+              btn.onclick = () => {
                     if (op.puntos > 0) {
                         personajesElegidos[jugadorActualIndex].puntosEmpatia += op.puntos;
                         actualizarHUD();
                         if (window.playSound) window.playSound('success');
                     }
 
-                    tituloReverso.innerText = "Resultado:";
+                    // 🚨 MAGIA: Ocultamos el título original que estaba pegado arriba
+                    tituloReverso.style.display = 'none';
+
                     let textoMovimiento = op.mov > 0 ? `¡Avanzas ${op.mov} casillas! 🚀` : `Retrocedes ${Math.abs(op.mov)} casillas. 🚶`;
                     let colorCaja = op.puntos === 4 ? '#4CAF50' : (op.puntos === 2 ? '#FF9800' : '#F44336');
 
+                    // 🚨 Inyectamos TODO (Título + Caja + Botón) en el contenedor centrado
+                    // 🚨 Inyectamos TODO (Título + Caja + Botón) en el contenedor centrado
                     contOpciones.innerHTML = `
-                        <div class="retroalimentacion-box" style="background: rgba(255,255,255,0.95); padding: 12px; border-radius: 10px; text-align: left; border-left: 6px solid ${colorCaja}; margin-bottom: 15px;">
-                            <p style="font-size: 0.95rem; color: #333; margin-top:0;">${op.retro}</p>
-                            <h4 style="margin: 5px 0; color: ${colorCaja};">${op.puntos > 0 ? `+${op.puntos} Puntos ✨` : '0 Puntos 😔'}</h4>
-                            <h4 style="margin: 0; color: #333;">${textoMovimiento}</h4>
+                        <h3 style="font-family: var(--font-body, 'Fredoka', sans-serif); color: #222; text-align: center; font-size: 2.2rem; margin: 0 0 20px 0; -webkit-font-smoothing: antialiased;">
+                            Resultado
+                        </h3>
+
+                        <div class="retroalimentacion-box" style="font-family: var(--font-body, 'Fredoka', sans-serif); background: rgba(255,255,255,0.95); padding: 20px; border-radius: 15px; border: 2px solid ${colorCaja}; box-shadow: 0 8px 15px rgba(0,0,0,0.1); margin-bottom: 25px; -webkit-font-smoothing: antialiased; transform: translateZ(0);">
+                            
+                            <p style="font-size: 1.25rem; color: #333; margin-top:0; line-height: 1.4; text-align: justify;">${op.retro}</p>
+                            
+                            <h4 style="margin: 15px 0 10px 0; font-size: 1.4rem; color: ${colorCaja}; text-align: center;">${op.puntos > 0 ? `+${op.puntos} Puntos ✨` : '0 Puntos 😔'}</h4>
+                            <h4 style="margin: 0; font-size: 1.3rem; color: #333; text-align: center;">${textoMovimiento}</h4>
                         </div>
-                        <button id="btn-continuar-viaje" class="btn-inclusion" style="background: ${colorCarta}; color: white; width: 100%; border-radius: 10px; padding: 12px; font-weight: bold; cursor: pointer; border: none; font-size: 1.1rem; position: relative;">
+
+                        <button id="btn-continuar-viaje" class="btn-inclusion" style="font-family: var(--font-body, 'Fredoka', sans-serif); background: ${colorCarta}; color: white; width: 100%; border-radius: 12px; padding: 18px; font-weight: bold; cursor: pointer; border: none; font-size: 1.4rem; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                             Continuar Viaje 🚀
                         </button>
                     `;
-
                     document.getElementById('btn-continuar-viaje').onclick = () => {
                         cerrarModalYContinuar(op.mov);
                     };
@@ -469,16 +500,16 @@ function resolverDilema(esEmpatica, puntos) {
 function cerrarModalYContinuar(movimientoExtra = 0) {
     const modal = document.getElementById('gameModal');
     if (modal) modal.style.display = 'none';
-    
+
     if (movimientoExtra !== 0) {
         // 🚨 LA MAGIA: Si el movimiento es mayor a 0 (positivo), evalúa la nueva casilla.
         // Si es menor a 0 (negativo/retroceso), será 'false' y solo pasará el turno.
         const vaHaciaAdelante = movimientoExtra > 0;
-        
+
         console.log(`🚀 Movimiento post-carta: ${movimientoExtra} casillas. ¿Evalúa nueva casilla?: ${vaHaciaAdelante}`);
-        
+
         // Le pasamos esa variable a la función moverFicha
-        moverFicha(movimientoExtra, vaHaciaAdelante); 
+        moverFicha(movimientoExtra, vaHaciaAdelante);
     } else {
         // Si la carta dio 0 puntos de movimiento, pasamos turno directo
         pasarAlSiguienteTurno();
@@ -492,11 +523,11 @@ function cerrarModalYContinuar(movimientoExtra = 0) {
 // ==========================================================================
 export function mostrarDatoImportante(casillaData, jugadorId, pasosSobrantes = 0) {
     console.log("💡 Abriendo modal de Dato Importante (i)");
-    
-    if (window.playSound) window.playSound('success'); 
+
+    if (window.playSound) window.playSound('success');
 
     const modal = document.getElementById('gameModal');
-    if (!modal) return; 
+    if (!modal) return;
 
     // RECONSTRUIMOS EL MODAL ESPECÍFICO PARA EL DATO CURIOSO
     modal.innerHTML = `
@@ -539,13 +570,13 @@ export function mostrarDatoImportante(casillaData, jugadorId, pasosSobrantes = 0
         if (btnEntendido) {
             btnEntendido.onclick = () => {
                 modal.style.display = 'none';
-                
+
                 // 🚨 EVALÚA LOS PASOS Y CONTINÚA
                 if (pasosSobrantes > 0) {
                     console.log(`🚀 Continuando viaje... Faltan ${pasosSobrantes} pasos.`);
                     moverFicha(pasosSobrantes, true);
                 } else {
-                    pasarAlSiguienteTurno(); 
+                    pasarAlSiguienteTurno();
                 }
             };
         }
@@ -562,7 +593,7 @@ export function mostrarDatoImportante(casillaData, jugadorId, pasosSobrantes = 0
 // 🚨 MIRA LA PRIMERA LÍNEA: Ya tiene pasosSobrantes = 0
 export function mostrarVideoEducativo(casillaData, jugadorId, pasosSobrantes = 0) {
     console.log("▶️ Abriendo reproductor de video");
-    
+
     const modal = document.getElementById('gameModal');
     if (!modal) return;
 
@@ -590,16 +621,16 @@ export function mostrarVideoEducativo(casillaData, jugadorId, pasosSobrantes = 0
     modal.style.display = 'flex';
 
     const modalVideo = document.getElementById('modalVideo');
-    
-   const cerrarVideo = () => {
+
+    const cerrarVideo = () => {
         if (modalVideo) modalVideo.pause();
         modal.style.display = 'none';
-        
+
         // ======================================================
         // 🌟 NUEVA LÓGICA: RECOMPENSA POR VER EL VIDEO
         // ======================================================
         const jugador = personajesElegidos[jugadorActualIndex];
-        
+
         // 1. Si el jugador no tiene su "mochila" de videos vistos, se la creamos
         if (!jugador.videosVistos) {
             jugador.videosVistos = [];
@@ -609,10 +640,10 @@ export function mostrarVideoEducativo(casillaData, jugadorId, pasosSobrantes = 0
         if (!jugador.videosVistos.includes(casillaData.id)) {
             jugador.videosVistos.push(casillaData.id); // Lo guardamos para que no repita
             jugador.puntosEmpatia = (jugador.puntosEmpatia || 0) + 2; // Sumamos 2 puntos
-            
+
             actualizarHUD(); // Refrescamos las tarjetas de puntos en pantalla
-            if (window.playSound) window.playSound('success'); 
-            
+            if (window.playSound) window.playSound('success');
+
             // Le avisamos al jugador para que sienta la recompensa
             alert(`✨ ¡Excelente, ${jugador.nombre}! Has ganado 2 puntos de empatía por informarte.`);
         }
@@ -621,7 +652,7 @@ export function mostrarVideoEducativo(casillaData, jugadorId, pasosSobrantes = 0
         // 🚨 CONTINUAR EL VIAJE NORMALMENTE
         if (pasosSobrantes > 0) {
             console.log(`🚀 Continuando viaje... Faltan ${pasosSobrantes} pasos.`);
-            moverFicha(pasosSobrantes, true); 
+            moverFicha(pasosSobrantes, true);
         } else {
             pasarAlSiguienteTurno();
         }
@@ -678,10 +709,10 @@ export function mostrarVentaja(casillaData, jugadorActual, pasosSobrantes = 0) {
         if (btnVentaja) {
             btnVentaja.onclick = () => {
                 modal.style.display = 'none';
-                
+
                 // Le damos 2 pasos de impulso + los pasos sobrantes (por si traía de antes)
                 const totalAvanzar = 2 + pasosSobrantes;
-                
+
                 // Llamamos a moverFicha con 'true' para que evalúe a dónde llega después de este salto
                 moverFicha(totalAvanzar, true);
             };
@@ -711,7 +742,7 @@ export function finalizarJuego(jugadorActual) {
 // ==========================================================================
 export function mostrarVideoReflexionFinal(casillaData, jugadorActual) {
     console.log("🏁 Meta alcanzada. Iniciando cierre pedagógico.");
-    
+
     const modal = document.getElementById('gameModal');
     if (!modal) return;
 
@@ -748,11 +779,11 @@ export function mostrarVideoReflexionFinal(casillaData, jugadorActual) {
         if (idPartida) {
             try {
                 const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js");
-                const { db } = await import('./firebase.js'); 
-                
+                const { db } = await import('./firebase.js');
+
                 const partidaRef = doc(db, "partidas", idPartida);
                 await updateDoc(partidaRef, {
-                    jugadoresResultadosMapa: personajesElegidos, 
+                    jugadoresResultadosMapa: personajesElegidos,
                     fechaFinMapa: new Date().toISOString()
                 });
                 sessionStorage.setItem('personajesSeleccionados', JSON.stringify(personajesElegidos));
@@ -765,14 +796,14 @@ export function mostrarVideoReflexionFinal(casillaData, jugadorActual) {
         // 🚨 PASO 2: PROCEDER AL POST-QUIZ
         console.log("📝 Preparando Post-Quiz...");
         try {
-            const caminoActual = parseInt(sessionStorage.getItem('caminoSeleccionadoNum')) || 1; 
+            const caminoActual = parseInt(sessionStorage.getItem('caminoSeleccionadoNum')) || 1;
             const listo = await prepararCuestionario(caminoActual);
-            
+
             console.log("✅ ¿El cuestionario está listo?:", listo);
 
             if (listo) {
                 console.log("🔄 Cambiando a la pantalla del Quiz...");
-                
+
                 if (typeof cambiarPantalla === 'function') {
                     cambiarPantalla('pantalla-quiz');
                 } else {
@@ -781,8 +812,8 @@ export function mostrarVideoReflexionFinal(casillaData, jugadorActual) {
                     const pantallaDestino = document.getElementById('pantalla-quiz');
                     if (pantallaDestino) pantallaDestino.classList.add('activa');
                 }
-                
-                iniciarQuizUI("POST"); 
+
+                iniciarQuizUI("POST");
             } else {
                 console.error("❌ El cuestionario no se cargó correctamente.");
             }
@@ -792,7 +823,7 @@ export function mostrarVideoReflexionFinal(casillaData, jugadorActual) {
     };
 
     // 🚨 ESTO ES LO QUE FALTABA: CONECTAR LOS EVENTOS 🚨
-    
+
     // 1. Si el video termina de reproducirse solo, salta al quiz automáticamente
     if (videoFinal) {
         videoFinal.onended = finalizarYEntrarAlQuiz;

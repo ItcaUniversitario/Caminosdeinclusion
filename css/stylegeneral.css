@@ -149,10 +149,11 @@ body {
     /* ✅ EL SCROLL SOLO VIVE AQUÍ ADENTRO */
     overflow-y: auto; 
     overflow-x: hidden;
+    width: 100%;
+    height: 100%; /* Asegura que baje hasta el final */
     
 
-    /* 👇 AJUSTE DE MARGEN INTERNO 👇 */
-    padding: 2.5rem; /* Margen interno (espacio entre el borde morado y tu contenido) */
+   
    
 }
 /* Scrollbar Personalizado (Opcional pero recomendado) */
@@ -251,4 +252,32 @@ body {
 .pantalla-mapa {
     /* IMPORTANTE: Mantener en flex para que las reglas de centrado sigan aplicando al mostrarse */
     display: flex !important; 
+}
+
+
+
+/* 🚨 Agrupamos todas las pantallas separadas por comas */
+.pantalla-inicio, 
+.pantalla-caminos,
+.pantalla-personajes,
+.pantalla-quiz,
+.pantalla-mapa, 
+.pantalla-perfil, 
+.pantalla-ajustes /* <-- Añade aquí cualquier otra pantalla que tengas */ {
+    
+    position: relative !important; /* Mantiene el ancla para que los modales no se escapen */
+    width: 100%;
+    height: 100%;
+    
+    /* 🚨 EL TRUCO MAGISTRAL PARA TODAS LAS PANTALLAS */
+    padding: 25px; /* Empuja el contenido hacia adentro creando el margen */
+    box-sizing: border-box; /* Obliga al padding a calcularse hacia adentro */
+    
+    /* Nota: Si alguna de estas pantallas ya tenía display: flex; en otra parte 
+       de tu CSS, no te preocupes, esto no lo sobreescribe, solo le suma el padding. */
+}
+.pantalla-personajes
+ { /* <-- Reemplaza por la clase real de tu pantalla si es distinta */
+    padding-top: 50px !important; /* Esto empujará todo el contenido hacia abajo */
+    box-sizing: border-box;
 }

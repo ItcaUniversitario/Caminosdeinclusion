@@ -54,12 +54,12 @@
                 <span class="texto-btn-mini">Audio</span>
             </button>
 
-        <a href="admin/admin-dashboard.html" target="_blank" style="text-decoration: none;">
-    <button class="btn-mini" title="Ajustes">
-        <span class="icono-emoji">⚙️</span>
-        <span class="texto-btn-mini">Ajustes</span>
-    </button>
-</a>
+            <a href="admin/admin-dashboard.html" target="_blank" style="text-decoration: none;">
+                <button class="btn-mini" title="Ajustes">
+                    <span class="icono-emoji">⚙️</span>
+                    <span class="texto-btn-mini">Ajustes</span>
+                </button>
+            </a>
         </aside>
         <main class="main-game-area">
 
@@ -282,7 +282,8 @@
                                 </div>
                             </button>
 
-                            <button class="card-personajes ficha-personaje" id="personaje-yuleisy" data-personaje="yuleisy">
+                            <button class="card-personajes ficha-personaje" id="personaje-yuleisy"
+                                data-personaje="yuleisy">
                                 <div class="icono-personajes"><img src="assets/imagenes/personajes/camino1/yuleisy.png"
                                         alt="yuleisy"></div>
                                 <div class="textos-btn-personajes">
@@ -290,10 +291,9 @@
                                 </div>
                             </button>
 
-                            <button class="card-personajes ficha-personaje" id="personaje-mia"
-                                data-personaje="mia">
-                                <div class="icono-personajes"><img
-                                        src="assets/imagenes/personajes/camino1/mia.png" alt="mia"></div>
+                            <button class="card-personajes ficha-personaje" id="personaje-mia" data-personaje="mia">
+                                <div class="icono-personajes"><img src="assets/imagenes/personajes/camino1/mia.png"
+                                        alt="mia"></div>
                                 <div class="textos-btn-personajes">
                                     <h2 class="nombre-personajes">Mía</h2>
                                 </div>
@@ -337,19 +337,19 @@
             </div>
             <div class="pantalla-mapa" id="pantalla-mapa" style="display: none;">
 
-                <div class="panel-lateral-mapa">
+                <div class="panel-izquierdo">
 
                     <div class="contenedor-reloj-mapa">
-                        <span class="icono-reloj">⏱️</span>
+                    
                         <div class="tiempo-texto">
                             <span class="etiqueta-tiempo">TIEMPO DE JUEGO</span>
-                            <span id="reloj-juego">00:00</span>
+                            <span id="reloj-juego">00:00min</span>
                         </div>
                     </div>
 
-                    <div class="hud-scores-multijugador" id="contenedor-scores-global"
-                        style="width: 100%; margin: 20px 0;">
-                    </div>
+                   <div id="contenedor-scores-global" class="hud-scores-multijugador"></div>
+
+                   
 
                     <div class="contenedor-ruleta-lateral"
                         style="display: flex; flex-direction: column; align-items: center; margin-top: auto; padding-bottom: 20px;">
@@ -368,7 +368,7 @@
                             <div class="centro-ruleta" id="texto-centro-ruleta">GIRAR</div>
                         </button>
                     </div>
-
+                    
                 </div>
 
                 <div class="panel-principal-mapa">
@@ -381,10 +381,12 @@
 
                 </div>
 
+
                 <div id="gameModal" class="modal-overlay-juego"></div>
 
-            </div>
 
+
+            </div>
 
 
 
@@ -408,28 +410,30 @@
                     </div>
                 </div>
             </div>
-<div class="pantalla-resultados" id="pantalla-resultados" style="display: none;">
-    <div class="panel-resultados-centro">
-        
-        <div class="cabecera-resultados">
-            <span class="icono-corona">👑</span>
-            <h2>¡Viaje Completado!</h2>
-            <p>Gracias por recorrer los Caminos de Inclusión. Así quedó el nivel de empatía de nuestro equipo:</p>
-        </div>
+            <div class="pantalla-resultados" id="pantalla-resultados" style="display: none;">
+                <div class="panel-resultados-centro">
 
-        <div id="contenedor-ranking-final" class="lista-ranking-final">
+                    <div class="cabecera-resultados">
+                        <span class="icono-corona">👑</span>
+                        <h2>¡Viaje Completado!</h2>
+                        <p>Gracias por recorrer los Caminos de Inclusión. Así quedó el nivel de empatía de nuestro
+                            equipo:</p>
+                    </div>
+
+                    <div id="contenedor-ranking-final" class="lista-ranking-final">
+                    </div>
+
+                    <div class="acciones-resultados">
+                        <button id="btn-volver-inicio" class="btn-imbabura primario"
+                            style="background: linear-gradient(to right, #9C27B0, #7B1FA2); color: white; border: none; box-shadow: 0 4px 10px rgba(156, 39, 176, 0.4); width: 100%; font-size: 1.2rem; padding: 15px; border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 20px;">
+                            Volver al Inicio 🏠
+                        </button>
+                    </div>
+
+                </div>
             </div>
 
-        <div class="acciones-resultados">
-            <button id="btn-volver-inicio" class="btn-imbabura primario" style="background: linear-gradient(to right, #9C27B0, #7B1FA2); color: white; border: none; box-shadow: 0 4px 10px rgba(156, 39, 176, 0.4); width: 100%; font-size: 1.2rem; padding: 15px; border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 20px;">
-                Volver al Inicio 🏠
-            </button>
-        </div>
-
-    </div>
-</div>
         </main>
-
     </div>
     <script type="module" src="./js/main.js"></script>
 </body>
