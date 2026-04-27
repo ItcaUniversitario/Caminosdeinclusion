@@ -24,16 +24,19 @@ export function configurarBotonesJugadores() {
             boton.blur(); 
             
             // ==========================================
-            // 🔊 ACTIVAR AUDIO SOLO DEL VIDEO DE INICIO
+            // 🔊 REINICIAR Y ACTIVAR AUDIO DEL VIDEO
             // ==========================================
             if (videoInicio) {
-                videoInicio.muted = false; // Le quitamos el silencio
+                // 1. ⏪ EL SECRETO: Regresamos el video al segundo cero
+                videoInicio.currentTime = 0; 
                 
-                // Si el video estaba pausado, lo forzamos a reproducir
-                if (videoInicio.paused) {
-                    videoInicio.play().catch(error => console.warn("Bloqueo de navegador:", error));
-                }
+                // 2. 🔊 Le quitamos el silencio
+                videoInicio.muted = false; 
+                
+                // 3. ▶️ Forzamos la reproducción desde el inicio
+                videoInicio.play().catch(error => console.warn("Bloqueo de navegador:", error));
             }
+            // ==========================================
             // ==========================================
             
             // Asumo que totalJugadores y jugadorActual están declaradas globalmente en tu archivo
