@@ -8,8 +8,7 @@
     justify-content: center;
     width: 100%;
     min-height: 100vh;
-    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
-    padding: 20px;
+  
     box-sizing: border-box;
 }
 

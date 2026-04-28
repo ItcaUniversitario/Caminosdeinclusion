@@ -142,6 +142,20 @@ const contenidoExtra = {
             <li><strong>16 Días de Activismo:</strong> Del 25 de nov. al 10 de dic.</li>
         </ul>`
     },
+     29: {
+        titulo: "Femicidio: La Expresión Extrema",
+        descripcion: `El femicidio es el asesinato de una mujer motivado por razones de género. Es el resultado de relaciones de poder desiguales y discriminación estructural.
+        
+        <ul style="text-align: left; margin-top: 15px; padding-left: 20px; line-height: 1.5;">
+            <li style="margin-bottom: 8px;"><strong>Legislación:</strong> Ecuador tipificó el femicidio como delito en el año 2014.</li>
+            <li style="margin-bottom: 8px;"><strong>Frecuencia (Ecuador 2025):</strong> Ocurre un femicidio aproximadamente cada 22 horas.</li>
+            <li><strong>Perfil del agresor:</strong> En el 33% de los casos, el agresor tenía o había tenido un vínculo sentimental con la víctima.</li>
+        </ul>
+
+        <div style="margin-top: 18px; padding: 12px 15px; background: rgba(156, 39, 176, 0.08); border-left: 5px solid #9C27B0; border-radius: 0 10px 10px 0; font-style: italic; color: #4A148C; text-align: left; font-weight: 500;">
+            "La violencia contra la mujer es una ofensa a la dignidad humana y una manifestación de las relaciones de poder históricamente desiguales entre mujeres y hombres".
+        </div>`
+    },
     
 
 };
