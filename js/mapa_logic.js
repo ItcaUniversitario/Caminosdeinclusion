@@ -593,36 +593,32 @@ export function mostrarDatoImportante(casillaData, jugadorId, pasosSobrantes = 0
     }, 50);
 }
 
-
 // ==========================================================================
 // 🎬 MOSTRAR VIDEO EDUCATIVO (Casilla "Parada")
 // ==========================================================================
-// ==========================================================================
-// 🎬 MOSTRAR VIDEO EDUCATIVO (Casilla "Parada")
-// ==========================================================================
-// 🚨 MIRA LA PRIMERA LÍNEA: Ya tiene pasosSobrantes = 0
 export function mostrarVideoEducativo(casillaData, jugadorId, pasosSobrantes = 0) {
     console.log("▶️ Abriendo reproductor de video");
 
     const modal = document.getElementById('gameModal');
     if (!modal) return;
 
-    // RECONSTRUIMOS EL MODAL ESPECÍFICO PARA EL VIDEO
     modal.innerHTML = `
-        <div class="modal-contenido" style="background: white; border-radius: 20px; padding: 20px; max-width: 500px; width: 90%; text-align: center; position: relative;">
-            <h2 style="color: #4A148C; margin-top: 0; font-size: 1.5rem;">🎬 ${casillaData.titulo || "Parada Educativa"}</h2>
-            <p style="margin-bottom: 15px; font-weight: 500; color: #333;">
+        <div class="modal-contenido" style="background: white; border-radius: 20px; padding: 25px; max-width: 800px; width: 95%; text-align: center; position: relative;">
+            <h2 style="color: #4A148C; margin-top: 0; font-size: 1.8rem;">🎬 ${casillaData.titulo || "Parada Educativa"}</h2>
+            <p style="margin-bottom: 20px; font-weight: 500; color: #333; font-size: 1.1rem;">
                 ${casillaData.descripcion || "Tómate un momento para ver este video antes de continuar."}
             </p>
             
-            <div style="border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); margin-bottom: 15px; background: black;">
-                <video id="modalVideo" width="100%" controls controlsList="nodownload">
+            <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.4); margin-bottom: 20px; background: black; display: flex; justify-content: center; align-items: center;">
+                
+                <video id="modalVideo" width="100%" style="max-height: 60vh; width: auto; max-width: 100%; outline: none;" controls autoplay controlsList="nodownload">
                     <source src="${casillaData.rutaVideo || 'assets/videos/default.mp4'}" type="video/mp4">
                     Tu navegador no soporta videos.
                 </video>
+
             </div>
             
-            <button id="btnSaltarVideo" style="background: #E91E63; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; font-size: 1.1rem; cursor: pointer; position: relative; z-index: 10; box-shadow: 0 4px 6px rgba(233, 30, 99, 0.4);">
+            <button id="btnSaltarVideo" style="background: #E91E63; color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: 800; font-size: 1.2rem; cursor: pointer; position: relative; z-index: 10; box-shadow: 0 6px 12px rgba(233, 30, 99, 0.3); text-transform: uppercase; transition: transform 0.2s ease;">
                 Continuar Viaje
             </button>
         </div>
@@ -632,29 +628,36 @@ export function mostrarVideoEducativo(casillaData, jugadorId, pasosSobrantes = 0
 
     const modalVideo = document.getElementById('modalVideo');
 
+    // 🚀 CAMBIO: Forzamos la reproducción por código justo al abrir el modal
+    if (modalVideo) {
+        // El timeout pequeño asegura que el navegador ya haya "pintado" el modal en pantalla
+        setTimeout(() => {
+            modalVideo.play().catch(error => {
+                console.warn("⚠️ El navegador pausó el autoplay automático por políticas de sonido:", error);
+            });
+        }, 100);
+    }
+
     const cerrarVideo = () => {
         if (modalVideo) modalVideo.pause();
         modal.style.display = 'none';
 
         // ======================================================
-        // 🌟 NUEVA LÓGICA: RECOMPENSA POR VER EL VIDEO
+        // 🌟 LÓGICA: RECOMPENSA POR VER EL VIDEO
         // ======================================================
         const jugador = personajesElegidos[jugadorActualIndex];
 
-        // 1. Si el jugador no tiene su "mochila" de videos vistos, se la creamos
         if (!jugador.videosVistos) {
             jugador.videosVistos = [];
         }
 
-        // 2. Si el ID de este video NO está en su mochila, le damos el premio
         if (!jugador.videosVistos.includes(casillaData.id)) {
-            jugador.videosVistos.push(casillaData.id); // Lo guardamos para que no repita
-            jugador.puntosEmpatia = (jugador.puntosEmpatia || 0) + 2; // Sumamos 2 puntos
+            jugador.videosVistos.push(casillaData.id); 
+            jugador.puntosEmpatia = (jugador.puntosEmpatia || 0) + 2; 
 
-            actualizarHUD(); // Refrescamos las tarjetas de puntos en pantalla
+            actualizarHUD(); 
             if (window.playSound) window.playSound('success');
 
-            // Le avisamos al jugador para que sienta la recompensa
             alert(`✨ ¡Excelente, ${jugador.nombre}! Has ganado 2 puntos de empatía por informarte.`);
         }
         // ======================================================
@@ -668,15 +671,18 @@ export function mostrarVideoEducativo(casillaData, jugadorId, pasosSobrantes = 0
         }
     };
 
-    // Si el video termina naturalmente, pasa el turno
     if (modalVideo) {
         modalVideo.onended = cerrarVideo;
     }
 
-    // Si el usuario decide saltarlo con el botón
     setTimeout(() => {
         const btnSaltar = document.getElementById('btnSaltarVideo');
-        if (btnSaltar) btnSaltar.onclick = cerrarVideo;
+        if (btnSaltar) {
+            btnSaltar.onclick = cerrarVideo;
+            
+            btnSaltar.onmouseover = () => btnSaltar.style.transform = 'scale(1.02)';
+            btnSaltar.onmouseout = () => btnSaltar.style.transform = 'scale(1)';
+        }
     }, 50);
 }
 // ==========================================================================
