@@ -237,44 +237,92 @@ async function finalizarQuiz() {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
 // ==========================================
-// 🏆 CONSTRUIR RANKING FINAL (REFLEJANDO PUNTAJES)
+// 🏆 CONSTRUIR RANKING FINAL Y NAVEGACIÓN INTERNA
 // ==========================================
 export function construirResultadosFinales() {
     const contenedorRanking = document.getElementById('contenedor-ranking-final');
+    const pantallaResultados = document.getElementById('pantalla-resultados');
+    
+    // 🚨 Buscamos la pantalla de caminos por su clase
+    const pantallaCaminos = document.querySelector('.pantalla-caminos');
+
     if (!contenedorRanking) return;
     
     contenedorRanking.innerHTML = ''; 
 
-    // 1. Recuperamos los datos actualizados de la sesión
+    // 1. Recuperamos los datos de la sesión para armar el podio
     const datosGuardados = sessionStorage.getItem('personajesSeleccionados');
     let jugadoresFinales = JSON.parse(datosGuardados) || [];
 
-    // 2. Ordenamos de mayor a menor según los puntos de empatía acumulados en el mapa
+    // 2. Ordenamos por empatía (de mayor a menor)
     jugadoresFinales.sort((a, b) => (b.puntosEmpatia || 0) - (a.puntosEmpatia || 0));
 
-    // 3. Generamos las tarjetas para el podio
+    // 3. Generamos las tarjetas del ranking
     jugadoresFinales.forEach((jugador, index) => {
-        const esGanador = index === 0 ? 'ganador' : '';
         const medalla = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : `#${index + 1}`));
+        const esGanador = index === 0 ? 'ganador' : '';
         
         const tarjeta = document.createElement('div');
         tarjeta.className = `tarjeta-ranking ${esGanador}`;
         
-        // Usamos los puntos de empatía que se actualizaron durante el juego
-        const puntos = jugador.puntosEmpatia || 0;
-
         tarjeta.innerHTML = `
             <div class="puesto-ranking">${medalla}</div>
             <img class="avatar-ranking" src="${jugador.imagenFull || jugador.imagen}" alt="${jugador.nombre}">
             <div class="info-ranking">
                 <span class="nombre-ranking">${jugador.nombreJugador || 'Jugador'} (${jugador.nombre})</span>
-                <span class="pts-ranking">${puntos} pts de empatía</span>
+                <span class="pts-ranking">${jugador.puntosEmpatia || 0} pts de empatía</span>
             </div>
         `;
-        
         contenedorRanking.appendChild(tarjeta);
     });
 
-    console.log("🏁 Podio generado con éxito basado en los puntos de empatía.");
+    // ==========================================
+    // ⚡ LÓGICA DE LOS BOTONES (Cambio de pantalla)
+    // ==========================================
+    
+    // BOTÓN 1: JUGAR DE NUEVO (Mismo equipo, elegir otro camino)
+    const btnReintentar = document.getElementById('btn-jugar-de-nuevo');
+    if (btnReintentar) {
+        btnReintentar.onclick = () => {
+            console.log("🔄 Preparando el mismo equipo para un nuevo camino...");
+
+            // Limpiamos los puntos y mazos para que la nueva partida esté fresca
+            const jugadoresReset = jugadoresFinales.map(j => ({
+                ...j,
+                puntosEmpatia: 0,
+                posicionTablero: 0,
+                cartasJugadas: [] 
+            }));
+            sessionStorage.setItem('personajesSeleccionados', JSON.stringify(jugadoresReset));
+
+            // OCULTAR RESULTADOS Y MOSTRAR CAMINOS
+            if (pantallaResultados) pantallaResultados.style.display = 'none';
+            if (pantallaCaminos) {
+                pantallaCaminos.style.display = 'flex'; // Asegúrate que sea flex o block según tu CSS
+                // Si tienes animaciones en tu CSS, podrías usar: pantallaCaminos.classList.add('fade-in');
+            }
+        };
+    }
+
+    // BOTÓN 2: VOLVER AL INICIO (Nueva partida completa)
+    const btnInicio = document.getElementById('btn-volver-inicio');
+    if (btnInicio) {
+        btnInicio.onclick = () => {
+            console.log("🏠 Reiniciando juego desde cero...");
+            sessionStorage.removeItem('personajesSeleccionados');
+            // Como todo está en el index, recargar es la forma más segura de limpiar TODO
+            window.location.reload(); 
+        };
+    }
 }

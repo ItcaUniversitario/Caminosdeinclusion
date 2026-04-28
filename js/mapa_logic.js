@@ -105,17 +105,18 @@ function girarRuleta() {
     }, 500);
 }
 // ==========================================================================
-// 🚀 FUNCIÓN PRINCIPAL DE MOVIMIENTO (Con Paradas y Continuación)
+// 🚀 FUNCIÓN PRINCIPAL DE MOVIMIENTO (Paso a Paso animado)
 // ==========================================================================
-function moverFicha(casillasAvanzadas, evaluarEvento = true) {
+export async function moverFicha(casillasAvanzadas, evaluarEvento = true) {
     fichaEnMovimiento = true;
 
     let posicionActual = posicionesFichas[jugadorActualIndex];
     let nuevaPosicion = posicionActual;
     const totalCasillas = camino1.casillas.length - 1;
 
-    let pasosSobrantes = 0; // 🚨 NUEVA VARIABLE PARA GUARDAR EL CAMBIO
+    let pasosSobrantes = 0; 
 
+    // 1. CALCULAMOS EL DESTINO FINAL (y las paradas obligatorias)
     if (evaluarEvento && casillasAvanzadas > 0) {
         for (let i = 1; i <= casillasAvanzadas; i++) {
             let posicionEvaluada = posicionActual + i;
@@ -131,28 +132,48 @@ function moverFicha(casillasAvanzadas, evaluarEvento = true) {
             if (casillaDestino && (casillaDestino.tipo === 'info' || casillaDestino.tipo === 'video' || casillaDestino.tipo === 'parada')) {
                 console.log(`🛑 Parada obligatoria. Faltan ${casillasAvanzadas - i} pasos por dar.`);
                 nuevaPosicion = posicionEvaluada;
-                pasosSobrantes = casillasAvanzadas - i; // Calculamos lo que le falta caminar
+                pasosSobrantes = casillasAvanzadas - i; 
                 break;
             }
             nuevaPosicion = posicionEvaluada;
         }
     } else {
+        // Movimiento hacia atrás (ej. -2 casillas) o saltos sin evaluar
         nuevaPosicion = posicionActual + casillasAvanzadas;
         if (nuevaPosicion > totalCasillas) nuevaPosicion = totalCasillas;
         if (nuevaPosicion < 0) nuevaPosicion = 0;
     }
 
-    posicionesFichas[jugadorActualIndex] = nuevaPosicion;
-    moverFichaFisicamente(jugadorActualIndex, nuevaPosicion);
+    // ====================================================================
+    // 🌟 LA MAGIA DE LOS PASITOS (Animación casilla por casilla)
+    // ====================================================================
+    let direccion = nuevaPosicion > posicionActual ? 1 : -1; // 1 si avanza, -1 si retrocede
+    let totalPasos = Math.abs(nuevaPosicion - posicionActual);
+    let velocidadPaso = 300; // Milisegundos por casilla (300ms es rápido pero se alcanza a ver)
 
+    // Damos los pasitos uno por uno
+    for (let i = 0; i < totalPasos; i++) {
+        posicionActual += direccion;
+        
+        // Actualizamos la posición real en la memoria
+        posicionesFichas[jugadorActualIndex] = posicionActual;
+        
+        // Movemos el muñequito en la pantalla a esta casilla intermedia
+        moverFichaFisicamente(jugadorActualIndex, posicionActual);
+
+        // Hacemos una micropausa antes de dar el siguiente paso
+        await new Promise(resolve => setTimeout(resolve, velocidadPaso));
+    }
+    // ====================================================================
+
+    // Cuando termina de caminar, disparamos el evento o pasamos el turno
     setTimeout(() => {
         if (evaluarEvento) {
-            // 🚨 LE ENVIAMOS LOS PASOS SOBRANTES A LA SIGUIENTE FUNCIÓN
             evaluarAccionCasilla(nuevaPosicion, pasosSobrantes);
         } else {
             pasarAlSiguienteTurno();
         }
-    }, 1000);
+    }, 400); // 400ms de respiro al llegar a la casilla final antes de abrir el modal
 }
 function pasarAlSiguienteTurno() {
     jugadorActualIndex = (jugadorActualIndex + 1) % personajesElegidos.length;
@@ -348,19 +369,14 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
     // ======================================================
     // 🌟 NUEVA LÓGICA: EL MAZO DE CARTAS
     // ======================================================
-    // Si el jugador no tiene su historial de cartas, se lo creamos
     if (!jugadorActual.cartasJugadas) {
         jugadorActual.cartasJugadas = [];
     }
 
     try {
-        // 🚨 PASAMOS EL HISTORIAL A LA FUNCIÓN DE FIREBASE
-        // Le enviamos a Firebase el array de cartasJugadas para que NO las devuelva
         const carta = await obtenerCartaAleatoria(personajeIdBusqueda, jugadorActual.cartasJugadas);
 
         if (carta) {
-            // 🚨 GUARDAMOS LA CARTA EN LA MOCHILA PARA QUE NO SE REPITA NUNCA MÁS
-            // Usamos carta.id (si lo tienes en tu BD) o la descripción como identificador único
             const identificadorCarta = carta.id || carta.descripcion;
             jugadorActual.cartasJugadas.push(identificadorCarta);
 
@@ -444,10 +460,24 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
                 btn.onmouseout = () => btn.style.borderColor = '#ddd';
 
               btn.onclick = () => {
+                    // 🚨 MAGIA DE SONIDOS AQUÍ 🚨
                     if (op.puntos > 0) {
+                        // Suma puntos y toca sonido de acierto
                         personajesElegidos[jugadorActualIndex].puntosEmpatia += op.puntos;
                         actualizarHUD();
-                        if (window.playSound) window.playSound('success');
+                        
+                        const sonidoCorrecto = document.getElementById('sonidoAcierto');
+                        if (sonidoCorrecto) {
+                            sonidoCorrecto.currentTime = 0; // Reinicia el audio por si se toca rápido
+                            sonidoCorrecto.play().catch(e => console.warn("El navegador bloqueó el audio", e));
+                        }
+                    } else {
+                        // 0 puntos, toca sonido de error
+                        const sonidoIncorrecto = document.getElementById('sonidoError');
+                        if (sonidoIncorrecto) {
+                            sonidoIncorrecto.currentTime = 0;
+                            sonidoIncorrecto.play().catch(e => console.warn("El navegador bloqueó el audio", e));
+                        }
                     }
 
                     tituloReverso.style.display = 'none';

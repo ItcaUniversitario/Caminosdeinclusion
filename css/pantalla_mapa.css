@@ -343,7 +343,7 @@ div#pantalla-mapa.activa {
 
     /* ✅ El translate y el transform-origin están perfectos aquí */
     transform: translate(calc(-50% + var(--desfaseX, 0px)), calc(-100% + var(--desfaseY, 0px))) perspective(500px) rotateX(15deg);
-    transition: left 0.8s ease-in-out, top 0.8s ease-in-out, transform 0.8s ease-in-out; 
+   transition: left 0.3s ease-in-out, top 0.3s ease-in-out; 
     z-index: 50;
     pointer-events: none; 
     transform-origin: bottom center;

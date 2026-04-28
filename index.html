@@ -10,9 +10,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/stylegeneral.css">
-    <meta http-equiv="Content-Security-Policy"
-        content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';">
-
+    
+<meta http-equiv="Content-Security-Policy" 
+      content="default-src 'self'; 
+               script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; 
+               connect-src 'self' http://127.0.0.1:* ws://127.0.0.1:* https://*.googleapis.com https://*.firebaseio.com https://*.firebase.com https://www.gstatic.com; 
+               img-src 'self' data: blob: *; 
+               style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+               font-src 'self' data: https://fonts.gstatic.com;">
 </head>
 
 <body>
@@ -53,8 +58,9 @@
                 <span class="texto-btn-mini">Sonido</span>
             </button>
 
-            <a href="admin/admin-dashboard.html" target="_blank" style="text-decoration: none; display: flex; justify-content: center; align-items: center;">
- 
+            <a href="admin/admin-dashboard.html" target="_blank"
+                style="text-decoration: none; display: flex; justify-content: center; align-items: center;">
+
                 <button class="btn-mini" title="Ajustes">
                     <img src="assets/imagenes/iconos/icono_administrador.png" alt="Ajustes" class="icono-custom">
 
@@ -83,8 +89,10 @@
                     </div>
                     <div class="zona-interaccion-casual">
                         <div class="textos-casual">
-                            <span class="etiqueta-slogan" style="font-size: 1rem; text-align: justify;">UN VIAJE HACIA UNA VIDA SIN VIOLENCIA</span>
-                            <p class="pie-casual" style="font-size: 1.5rem; text-align: justify;">Tus decisiones importan. Construimos un entorno que abraza todas las
+                            <span class="etiqueta-slogan" style="font-size: 1rem; text-align: justify;">UN VIAJE HACIA
+                                UNA VIDA SIN VIOLENCIA</span>
+                            <p class="pie-casual" style="font-size: 1.5rem; text-align: justify;">Tus decisiones
+                                importan. Construimos un entorno que abraza todas las
                                 diversidades, promueve la equidad y le dice NO a la violencia de género.</p>
                             <h1 class="titulo-casual">¿Cuántos juegan hoy?</h1>
                         </div>
@@ -424,12 +432,15 @@
 
                     <div id="contenedor-ranking-final" class="lista-ranking-final">
                     </div>
+                    <div class="acciones-resultados"
+                        style="display: flex; flex-direction: column; gap: 15px; margin-top: 25px;">
 
-                    <div class="acciones-resultados">
-                        <button id="btn-volver-inicio" class="btn-imbabura primario"
-                            style="background: linear-gradient(to right, #9C27B0, #7B1FA2); color: white; border: none; box-shadow: 0 4px 10px rgba(156, 39, 176, 0.4); width: 100%; font-size: 1.2rem; padding: 15px; border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 20px;">
-                            Volver al Inicio 🏠
+                        
+                        <button id="btn-volver-inicio" class="btn-imbabura"
+                            style="background: transparent; color: #4A148C; border: 2px solid #4A148C; width: 100%; font-size: 1.15rem; padding: 14px; border-radius: 12px; cursor: pointer; font-weight: bold; transition: all 0.2s ease;">
+                            Volver al Menú Principal 🏠
                         </button>
+
                     </div>
 
                 </div>
@@ -438,11 +449,11 @@
         </main>
     </div>
     <audio id="musicaFondo" loop>
-    <source src="assets/sonido/sonido_de_fondo.mp3" type="audio/mpeg">
-    Tu navegador no soporta el elemento de audio.
-</audio>
-<audio id="sonidoAcierto" src="assets/sonido/sonido_correcto.mp3"></audio>
-<audio id="sonidoError" src="assets/sonido/sonido_incorrecto.mp3"></audio>
+        <source src="assets/sonido/sonido_de_fondo.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+    <audio id="sonidoAcierto" src="assets/sonido/sonido_correcto.mp3"></audio>
+    <audio id="sonidoError" src="assets/sonido/sonido_incorrecto.mp3"></audio>
 
     <script type="module" src="./js/main.js"></script>
 </body>
