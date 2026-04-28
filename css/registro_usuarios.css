@@ -238,3 +238,20 @@ select.input-casual {
     margin-top: 3px; /* Empuja el cuadrito un poquito abajo para alinear con la 1ra línea */
     flex-shrink: 0;
 }
+
+/* Asegúrate de usar la clase real de tu botón */
+.btn-siguiente {
+    display: flex;               /* Permite centrar el contenido perfectamente */
+    justify-content: center;     /* Centra horizontalmente */
+    align-items: center;         /* Centra verticalmente */
+    width: 100%;                 /* Para que ocupe todo el ancho disponible */
+    padding: 15px;               /* 🚨 EL PADDING VA AQUÍ, EN EL BOTÓN */
+    cursor: pointer;             /* Cambia la flechita por la mano */
+    border: none;
+    border-radius: 10px;
+}
+
+/* 🚀 ESTA ES LA CLAVE: Desactiva los clics en el texto/iconos internos */
+.btn-siguiente * {
+    pointer-events: none; 
+}

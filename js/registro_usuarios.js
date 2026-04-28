@@ -71,7 +71,7 @@ function mostrarFormularioPasoAPaso(contenedor, textosSeleccion, contenedorBoton
     // --- HTML DEL FORMULARIO ---
     formElement.innerHTML = `
         <button type="button" class="btn-volver-casual" id="btn-volver">
-            ⬅️ Volver y cancelar
+            ⬅️ Volver y cancelar registro
         </button>
 
         <h3><span style="font-size: 1.8rem;">👤</span> Registrar Jugador ${jugadorActual} de ${totalJugadores}</h3>
@@ -87,7 +87,7 @@ function mostrarFormularioPasoAPaso(contenedor, textosSeleccion, contenedorBoton
                     </select>
                     <input type="text" class="input-casual input-doc" id="cedula_j" placeholder="Ej: 1002345678" required>
                     <button type="button" class="btn-buscar-usuario" id="btn-buscar">
-                        🔍 Buscar
+                        🔍 Buscar usuario
                     </button>
                 </div>
             </div>
@@ -168,7 +168,7 @@ function mostrarFormularioPasoAPaso(contenedor, textosSeleccion, contenedorBoton
             return;
         }
 
-        btnBuscar.innerHTML = "⏳ Buscando...";
+        btnBuscar.innerHTML = "⏳ Buscando usuario...";
         btnBuscar.disabled = true;
 
         try {
@@ -186,7 +186,7 @@ function mostrarFormularioPasoAPaso(contenedor, textosSeleccion, contenedorBoton
                 if (datos.tipoDocumento) document.getElementById('tipo_doc_j').value = datos.tipoDocumento;
                 if (datos.sexo) document.getElementById('sexo_j').value = datos.sexo.toLowerCase(); 
                 
-                btnBuscar.innerHTML = "✅ Encontrado";
+                btnBuscar.innerHTML = "✅ Usuario encontrado";
                 btnBuscar.style.backgroundColor = "#2E7D32"; 
             } else {
                 alert("Usuario no encontrado. Por favor completa tus datos para poder continuar con el juego.");

@@ -30,39 +30,61 @@
     0% { transform: scale(0.95); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }
 }
-
 /* --- 3. MARCO DEL VIDEO --- */
 .zona-video-casual {
-    /* EL TRUCO DEFINITIVO: 
-       1.5 = Crece más rápido que los botones
-       1   = Puede encogerse si falta espacio
-       450px = Intenta medir esto. Si la pantalla es menor, salta a la siguiente línea */
+    /* Mantenemos tu layout perfecto exactamente igual */
     flex: 1.5 1 450px; 
     display: flex;
     justify-content: center; 
     align-items: center; 
-    width: 100%; /* Asegura que llene su flex-basis en móviles */
+    width: 100%; 
+    padding: 15px; /* Solo agregué un poquito de padding para que la sombra 3D no se corte con otros elementos */
 }
 
 .marco-video-burbuja {
+    /* Tu tamaño y proporción intactos */
     aspect-ratio: 16 / 9; 
     width: 100%;
     max-height: 100%; 
     height: auto; 
-    
     position: relative;
-    border: 1px solid rgba(42, 10, 74, 0.2); 
+    overflow: hidden;
+    
+    /* Fondo oscuro por si el video tarda un segundo en cargar */
+    background-color: #1a0b2e; 
+    
+    /* 🚀 EL EFECTO 3D ESTILO JUEGO */
     border-radius: 25px;
     
-    overflow: hidden;
-    background-color: transparent; 
+    /* 1. Un borde interno blanco o muy clarito para darle brillo al marco */
+    border: 6px solid #FDFBFB; 
+    
+    /* 2. La magia del 3D con box-shadow:
+       - El primer valor (0 10px 0 #7B1FA2) crea un "suelo" morado sólido, dándole grosor físico.
+       - El segundo valor (0 20px 25px rgba(0,0,0,0.3)) crea la sombra proyectada en la pared. */
+    box-shadow: 
+        0 10px 0 #7B1FA2, 
+        0 20px 25px rgba(0, 0, 0, 0.3);
+        
+    /* Pequeña animación: hace que parezca flotar un poquito suavemente */
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+
+/* Opcional: si quieres que tenga un micro-efecto al pasar el mouse */
+.marco-video-burbuja:hover {
+    transform: translateY(-3px);
 }
 
 .video-juego {
+    /* Todo tu código original */
     width: 100%;
     height: 100%;
     object-fit: cover; 
     display: block;
+    
+    /* Le damos un borde un par de píxeles menor al del padre para que encaje como un guante */
+    border-radius: 19px; 
 }
 
 /* --- 4. MENSAJE SUTIL DE AUDIO --- */
