@@ -57,13 +57,13 @@
     border-radius: 25px;
     
     /* 1. Un borde interno blanco o muy clarito para darle brillo al marco */
-    border: 6px solid #FDFBFB; 
+    border: 6px solid #e7e0e9; 
     
     /* 2. La magia del 3D con box-shadow:
        - El primer valor (0 10px 0 #7B1FA2) crea un "suelo" morado sólido, dándole grosor físico.
        - El segundo valor (0 20px 25px rgba(0,0,0,0.3)) crea la sombra proyectada en la pared. */
     box-shadow: 
-        0 10px 0 #7B1FA2, 
+        0 10px 0 #3f1055, 
         0 20px 25px rgba(0, 0, 0, 0.3);
         
     /* Pequeña animación: hace que parezca flotar un poquito suavemente */
