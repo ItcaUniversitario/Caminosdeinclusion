@@ -528,9 +528,6 @@ function cerrarModalYContinuar(movimientoExtra = 0) {
 // ==========================================================================
 // 💡 MOSTRAR DATO IMPORTANTE (Casilla "i")
 // ==========================================================================
-// ==========================================================================
-// 💡 MOSTRAR DATO IMPORTANTE (Casilla "i")
-// ==========================================================================
 export function mostrarDatoImportante(casillaData, jugadorId, pasosSobrantes = 0) {
     console.log("💡 Abriendo modal de Dato Importante (i)");
 
@@ -539,28 +536,43 @@ export function mostrarDatoImportante(casillaData, jugadorId, pasosSobrantes = 0
     const modal = document.getElementById('gameModal');
     if (!modal) return;
 
-    // RECONSTRUIMOS EL MODAL ESPECÍFICO PARA EL DATO CURIOSO
+    // RECONSTRUIMOS EL MODAL (100% Justificado, SIN cortar palabras)
     modal.innerHTML = `
-        <div class="modal-contenido" style="background: white; border-radius: 20px; padding: 25px; max-width: 400px; width: 90%; text-align: center; position: relative;">
+        <div class="modal-contenido" style="background: white; border-radius: 20px; padding: 30px; max-width: 650px; width: 90%; text-align: center; position: relative;">
             
             <div style="text-align: center; animation: fadeIn 0.5s ease;">
                 <div style="font-size: 3.5rem; margin-bottom: -10px; animation: flotar 3s ease-in-out infinite;">
                     💡
                 </div>
-                <span style="background-color: #FF9800; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 2px 5px rgba(255, 152, 0, 0.4);">
+                <span style="background-color: #FF9800; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 2px 5px rgba(255, 152, 0, 0.4);">
                     Conocimiento Adquirido
                 </span>
-                <h3 style="color: #4A148C; font-size: 1.4rem; margin: 15px 0 10px 0; font-weight: 800;">
+                <h3 style="color: #4A148C; font-size: 1.6rem; margin: 15px 0 15px 0; font-weight: 800;">
                     ${casillaData.titulo || "Dato Importante"}
                 </h3>
-                <div style="background: linear-gradient(135deg, #FDFBFB 0%, #F3E5F5 100%); padding: 20px; border-radius: 12px; box-shadow: 0 8px 20px rgba(74, 20, 140, 0.08); border: 1px solid #E1BEE7; position: relative; margin-bottom: 20px;">
-                    <span style="color: #444; font-size: 1.05rem; line-height: 1.6; margin: 0; position: relative; z-index: 1; font-weight: 500; display: block;">
+                
+                <div style="background: linear-gradient(135deg, #FDFBFB 0%, #F3E5F5 100%); padding: 25px; border-radius: 12px; box-shadow: 0 8px 20px rgba(74, 20, 140, 0.08); border: 1px solid #E1BEE7; position: relative; margin-bottom: 25px;">
+                    <span style="color: #444; 
+                                 font-size: 1.15rem; 
+                                 line-height: 1.6; 
+                                 margin: 0; 
+                                 position: relative; 
+                                 z-index: 1; 
+                                 font-weight: 500; 
+                                 display: block; 
+                                 text-align: justify; 
+                                 text-justify: inter-word; 
+                                 -webkit-hyphens: none;
+                                 -ms-hyphens: none;
+                                 hyphens: none; 
+                                 word-break: keep-all;
+                                 overflow-wrap: normal;">
                         ${casillaData.descripcion || "Recuerda siempre mantener el respeto y la empatía en tu camino."}
                     </span>
                 </div>
             </div>
             
-            <button id="btn-entendido-info" class="btn-imbabura primario" style="background: linear-gradient(to right, #9C27B0, #7B1FA2); color: white; border: none; box-shadow: 0 4px 10px rgba(156, 39, 176, 0.4); width: 100%; font-size: 1.1rem; padding: 12px; border-radius: 10px; cursor: pointer; position: relative; z-index: 10;">
+            <button id="btn-entendido-info" class="btn-imbabura primario" style="background: linear-gradient(to right, #9C27B0, #7B1FA2); color: white; border: none; box-shadow: 0 4px 10px rgba(156, 39, 176, 0.4); width: 100%; font-size: 1.2rem; padding: 14px; border-radius: 10px; cursor: pointer; position: relative; z-index: 10; font-weight: bold; text-transform: uppercase; transition: transform 0.2s ease;">
                 ¡Entendido! ✨
             </button>
             
@@ -571,19 +583,15 @@ export function mostrarDatoImportante(casillaData, jugadorId, pasosSobrantes = 0
         </style>
     `;
 
-    // Mostramos el modal
     modal.style.display = 'flex';
 
-    // Asignamos el clic
     setTimeout(() => {
         const btnEntendido = document.getElementById('btn-entendido-info');
         if (btnEntendido) {
             btnEntendido.onclick = () => {
                 modal.style.display = 'none';
 
-                // 🚨 EVALÚA LOS PASOS Y CONTINÚA
                 if (pasosSobrantes > 0) {
-                    console.log(`🚀 Continuando viaje... Faltan ${pasosSobrantes} pasos.`);
                     moverFicha(pasosSobrantes, true);
                 } else {
                     pasarAlSiguienteTurno();
@@ -592,7 +600,6 @@ export function mostrarDatoImportante(casillaData, jugadorId, pasosSobrantes = 0
         }
     }, 50);
 }
-
 // ==========================================================================
 // 🎬 MOSTRAR VIDEO EDUCATIVO (Casilla "Parada")
 // ==========================================================================

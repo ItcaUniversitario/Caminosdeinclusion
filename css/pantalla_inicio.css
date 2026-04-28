@@ -1,7 +1,6 @@
 /* =========================================
    PANTALLA DE INICIO: ESTILO VIDEO-JUEGO
    ========================================= */
-
 /* 1. CLASE PRINCIPAL (Súper limpia, la magia la hace el general.css) */
 .pantalla-inicio {
     /* El general.css ya lo centra y le da min-height, 
@@ -9,6 +8,10 @@
     flex: 1;
     display: flex;
     width: 100%;
+    
+    /* 🚀 Agrega estas dos líneas para el centrado perfecto: */
+    justify-content: center; /* Centra el contenido de forma horizontal */
+    align-items: center;     /* Centra el contenido de forma vertical */
 }
 
 /* --- 2. LA TARJETA CONTENEDORA --- */
