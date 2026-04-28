@@ -1,6 +1,6 @@
 // js/mapa_logic.js
 import { camino1 } from './data/datacamino1.js';
-import { obtenerCartaAleatoria } from './firebase.js';
+import { obtenerCartaAleatoria, precargarCartas} from './firebase.js';
 import { prepararCuestionario, iniciarQuizUI } from './quiz_logic.js';
 import { cambiarPantalla } from './main.js'; // Para hacer el cambio de vista
 
@@ -17,12 +17,15 @@ export function inicializarMapa() {
 
     personajesElegidos = JSON.parse(datosGuardados) || [];
 
-
     if (personajesElegidos.length === 0) {
         console.error("❌ Error: No se encontraron personajes seleccionados.");
         alert("¡Ups! Parece que no has seleccionado a tus personajes. Por favor, regresa al inicio.");
         return;
     }
+
+    // 🚀 NUEVO: Iniciamos la descarga masiva y silenciosa de las cartas
+    const numeroCamino = sessionStorage.getItem('caminoSeleccionadoNum') || 1;
+    precargarCartas(personajesElegidos, numeroCamino);
 
     if (posicionesFichas.length === 0) {
         posicionesFichas = personajesElegidos.map(() => 0);
@@ -287,7 +290,6 @@ export function evaluarAccionCasilla(posicionFinal, pasosSobrantes = 0) {
             break;
     }
 }
-
 export async function mostrarCartaSituacion(casillaData, jugadorActual) {
     console.log(`🃏 Iniciando evento de carta para ${jugadorActual.nombreJugador} (${jugadorActual.nombre})`);
 
@@ -302,7 +304,7 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
 
     const personajeIdBusqueda = `${idPersonaje}_c${numeroCamino}`;
 
-    // 🎨 1. DICCIONARIO DE COLORES (Mantenemos los colores solo para botones y bordes)
+    // 🎨 1. DICCIONARIO DE COLORES 
     const paletaPersonajes = {
         'paula': { principal: '#D81B60' },
         'nina': { principal: '#B71C1C' },
@@ -317,7 +319,6 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
     const colorCarta = colores.principal;
 
     // 🖼️ 2. CARGAMOS TUS FONDOS DINÁMICAMENTE
-    // Si tus imágenes son .jpg, cambia el .png por .jpg aquí abajo
     const rutaFrente = `assets/imagenes/fondos_cartillas/${idPersonaje}_frente.jpg`;
     const rutaReverso = `assets/imagenes/fondos_cartillas/${idPersonaje}_reverso.jpg`;
 
@@ -331,25 +332,37 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
     background: url('${rutaReverso}') center/cover no-repeat; 
     border-top: 8px solid ${colorCarta};`;
 
-    // Pantalla de Carga (Modificada para quitar la barra superior)
+    // Pantalla de Carga
     modal.innerHTML = `
     <div class="modal-contenido" style="background: transparent; box-shadow: none; padding: 0;">
         <div id="modalDescription" style="width: 100%;">
             <div style="text-align:center; padding: 20px; background: white; border-radius: 20px;">
-                <p>Leyendo la situación de ${jugadorActual.nombre}...</p>
+                <p>Mezclando el mazo de ${jugadorActual.nombre}...</p>
                 <div class="spinner-carga">⏳</div>
             </div>
         </div>
     </div>
-`;
+    `;
     modal.style.display = 'flex';
 
+    // ======================================================
+    // 🌟 NUEVA LÓGICA: EL MAZO DE CARTAS
+    // ======================================================
+    // Si el jugador no tiene su historial de cartas, se lo creamos
+    if (!jugadorActual.cartasJugadas) {
+        jugadorActual.cartasJugadas = [];
+    }
 
     try {
-        const carta = await obtenerCartaAleatoria(personajeIdBusqueda);
+        // 🚨 PASAMOS EL HISTORIAL A LA FUNCIÓN DE FIREBASE
+        // Le enviamos a Firebase el array de cartasJugadas para que NO las devuelva
+        const carta = await obtenerCartaAleatoria(personajeIdBusqueda, jugadorActual.cartasJugadas);
 
         if (carta) {
-            // console.log("✅ Datos de la carta cargados en memoria oculta"); // Oculto por seguridad
+            // 🚨 GUARDAMOS LA CARTA EN LA MOCHILA PARA QUE NO SE REPITA NUNCA MÁS
+            // Usamos carta.id (si lo tienes en tu BD) o la descripción como identificador único
+            const identificadorCarta = carta.id || carta.descripcion;
+            jugadorActual.cartasJugadas.push(identificadorCarta);
 
             document.getElementById('modalDescription').innerHTML = `
                 <div class="escena-carta">
@@ -398,7 +411,6 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
             let opcionesValidas = opciones.filter(op => op.texto);
 
             // 🚨 ALGORITMO PROFESIONAL PARA MEZCLAR (Fisher-Yates)
-            // Esto garantiza que el orden sea 100% aleatorio en cada turno
             for (let i = opcionesValidas.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [opcionesValidas[i], opcionesValidas[j]] = [opcionesValidas[j], opcionesValidas[i]];
@@ -438,14 +450,11 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
                         if (window.playSound) window.playSound('success');
                     }
 
-                    // 🚨 MAGIA: Ocultamos el título original que estaba pegado arriba
                     tituloReverso.style.display = 'none';
 
                     let textoMovimiento = op.mov > 0 ? `¡Avanzas ${op.mov} casillas! 🚀` : `Retrocedes ${Math.abs(op.mov)} casillas. 🚶`;
                     let colorCaja = op.puntos === 4 ? '#4CAF50' : (op.puntos === 2 ? '#FF9800' : '#F44336');
 
-                    // 🚨 Inyectamos TODO (Título + Caja + Botón) en el contenedor centrado
-                    // 🚨 Inyectamos TODO (Título + Caja + Botón) en el contenedor centrado
                     contOpciones.innerHTML = `
                         <h3 style="font-family: var(--font-body, 'Fredoka', sans-serif); color: #222; text-align: center; font-size: 2.2rem; margin: 0 0 20px 0; -webkit-font-smoothing: antialiased;">
                             Resultado
@@ -471,11 +480,11 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
             });
 
         } else {
-            // ZONA SEGURA (Por si ese personaje no tiene cartas en este nivel)
+            // ZONA SEGURA (Si el jugador ya vació todo su mazo y no quedan cartas nuevas)
             document.getElementById('modalDescription').innerHTML = `
                 <div style="background: white; padding: 30px; border-radius: 20px; text-align: center; border-top: 5px solid ${colorCarta};">
-                    <h3 style="color: ${colorCarta};">📍 Zona Segura</h3>
-                    <p>No hay situaciones complejas en este momento para ${jugadorActual.nombre}. ¡Sigue adelante!</p>
+                    <h3 style="color: ${colorCarta};">📍 Zona de Refugio</h3>
+                    <p>¡Vaya! Ya has superado todas las situaciones de tu mazo actual. Tómate un respiro y sigue adelante.</p>
                     <button id="btn-zona-segura" class="btn-inclusion" style="margin-top:15px; background: ${colorCarta}; color: white; width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; border: none; cursor: pointer;">
                         Continuar viaje
                     </button>
@@ -485,10 +494,9 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
         }
     } catch (error) {
         console.error("🔥 Error al cargar carta:", error);
-        cerrarModalYContinuar(); // En caso de error, dejamos que siga jugando
+        cerrarModalYContinuar(); 
     }
 }
-
 // ==========================================================================
 // 🛠️ FUNCIONES DE APOYO PARA LA CARTA
 // ==========================================================================
