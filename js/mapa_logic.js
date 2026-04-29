@@ -191,7 +191,33 @@ function pasarAlSiguienteTurno() {
     }
 
     actualizarHUD();
-    console.log(`🔄 Turno de: ${personajesElegidos[jugadorActualIndex].nombre}. Ruleta lista.`);
+   // 🚨 LLAMAS A LA ANIMACIÓN JUSTO AQUÍ 🚨
+    const jugadorQueLeToca = personajesElegidos[jugadorActualIndex];
+    anunciarCambioDeTurno(jugadorQueLeToca.nombre);
+}
+// ==========================================================================
+// 📢 FUNCIÓN PARA ANUNCIAR EL NUEVO TURNO
+// ==========================================================================
+export function anunciarCambioDeTurno(nombreJugador) {
+    const banner = document.getElementById('banner-cambio-turno');
+    const textoJugador = document.getElementById('texto-turno-jugador');
+    
+    if (!banner || !textoJugador) return;
+
+    // 1. Ponemos el nombre exacto del jugador en el letrero
+    textoJugador.innerText = `¡Es el turno de ${nombreJugador}!`;
+
+    // 2. Disparamos la animación CSS
+    banner.classList.add('mostrar-animacion');
+
+    // (Opcional) Si tienes un sonido de 'Nuevo Turno', este es el lugar:
+    // const sonido = document.getElementById('sonidoNuevoTurno');
+    // if (sonido) { sonido.currentTime = 0; sonido.play(); }
+
+    // 3. Ocultamos el cartel automáticamente después de 2.5 segundos
+    setTimeout(() => {
+        banner.classList.remove('mostrar-animacion');
+    }, 2500);
 }
 // js/mapa_logic.js
 function dibujarCasillas() {

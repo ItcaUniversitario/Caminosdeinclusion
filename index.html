@@ -10,15 +10,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/stylegeneral.css">
-    
-<meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
+
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
                script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; 
                connect-src 'self' http://127.0.0.1:* ws://127.0.0.1:* https://*.googleapis.com https://*.firebaseio.com https://*.firebase.com https://www.gstatic.com; 
                img-src 'self' data: blob: *; 
                style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
                font-src 'self' data: https://fonts.gstatic.com;">
 </head>
+
 <body>
     <header class="game-banner">
         <div class="logo-box">
@@ -349,8 +349,8 @@
 
                     <div class="contenedor-reloj-mapa">
 
-                            <span class="etiqueta-tiempo">TIEMPO</span>
-                            <span id="reloj-juego">00:00min</span>
+                        <span class="etiqueta-tiempo">TIEMPO</span>
+                        <span id="reloj-juego">00:00min</span>
                     </div>
 
                     <div id="contenedor-scores-global" class="hud-scores-multijugador"></div>
@@ -389,6 +389,13 @@
 
 
                 <div id="gameModal" class="modal-overlay-juego"></div>
+                <div id="banner-cambio-turno">
+    <h2 id="texto-turno-jugador">¡Turno de ...!</h2>
+    <p>
+        Gira la ruleta para avanzar 
+        <img src="assets/imagenes/iconos/icono_ruleta.png" alt="Ruleta" class="icono-ruleta-texto">
+    </p>
+</div>
 
 
 
@@ -431,7 +438,7 @@
                     <div class="acciones-resultados"
                         style="display: flex; flex-direction: column; gap: 15px; margin-top: 25px;">
 
-                        
+
                         <button id="btn-volver-inicio" class="btn-imbabura"
                             style="background: transparent; color: #4A148C; border: 2px solid #4A148C; width: 100%; font-size: 1.15rem; padding: 14px; border-radius: 12px; cursor: pointer; font-weight: bold; transition: all 0.2s ease;">
                             Volver al Menú Principal 🏠

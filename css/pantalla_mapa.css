@@ -533,7 +533,74 @@ div#pantalla-mapa.activa {
     border-color: #ffffff transparent transparent transparent; 
 }
 
+/* =======================================================
+   ANIMACIÓN DE CAMBIO DE TURNO (ESTILO POP-UP GAMER)
+   ======================================================= */
+#banner-cambio-turno {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    
+    /* 🚨 ESTADO OCULTO: Centrado pero reducido a tamaño cero */
+    transform: translate(-50%, -50%) scale(0); 
+    opacity: 0;
+    
+    background: linear-gradient(135deg, var(--color-purple-main, #5e2a84), var(--color-purple-dark, #3a1653));
+    border: 4px solid var(--color-yellow-btn, #f3a601);
+    border-radius: 30px;
+    padding: 30px 60px;
+    text-align: center;
+    
+    z-index: 2000; /* Por encima del mapa, la ruleta y los scores */
+    
+    /* Sombra profunda y brillo interno dorado */
+    box-shadow: 
+        0 20px 40px rgba(0,0,0,0.6), 
+        inset 0 0 20px rgba(243, 166, 1, 0.3);
+        
+    pointer-events: none; /* Evita que el usuario le haga clic accidentalmente */
+    
+    /* Animación de "Bote" o rebote */
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 
+/* 🚨 LA CLASE QUE ACTIVA LA ANIMACIÓN */
+#banner-cambio-turno.mostrar-animacion {
+    transform: translate(-50%, -50%) scale(1); /* Crece a tamaño real */
+    opacity: 1;
+}
+
+#texto-turno-jugador {
+    color: #ffffff;
+    font-size: 3.5rem; /* Letra gigante */
+    margin: 0 0 10px 0;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.5); /* Sombra dura para lectura */
+    font-family: var(--font-body, 'Fredoka', sans-serif);
+    line-height: 1.1;
+}
+
+#banner-cambio-turno p {
+    color: var(--color-yellow-btn, #f3a601);
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: 800;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+    font-family: var(--font-body, 'Fredoka', sans-serif);
+}
+/* =======================================================
+   ICONO DE LA RULETA EN EL TEXTO
+   ======================================================= */
+.icono-ruleta-texto {
+    width: 32px;            /* Tamaño ajustado para que quede del porte de la letra */
+    height: 32px;
+    object-fit: contain;    /* Evita que tu icono se deforme */
+    vertical-align: middle; /* 🚨 LA CLAVE: Lo alinea con el centro del texto */
+    margin-left: 8px;       /* Un pequeño espacio separado de la palabra "avanzar" */
+    margin-bottom: 4px;     /* Corrección visual fina hacia arriba */
+    
+    /* Le damos una sombra para que parezca un sticker 3D */
+    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.4)); 
+}
 
 
 
