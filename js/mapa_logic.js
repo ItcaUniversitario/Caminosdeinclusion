@@ -11,7 +11,7 @@ let posicionesFichas = [];  // Guardará en qué casilla está cada jugador
 let fichaEnMovimiento = false;
 export function inicializarMapa() {
     console.log(`🗺️ Cargando Mapa: ${camino1.nombre}...`);
-
+ 
     // ✅ CAMBIO AQUÍ: Usamos 'personajesSeleccionados' que es el nombre que pusimos en el sessionStorage
     const datosGuardados = sessionStorage.getItem('personajesSeleccionados');
 
@@ -311,6 +311,7 @@ export function evaluarAccionCasilla(posicionFinal, pasosSobrantes = 0) {
             break;
     }
 }
+
 export async function mostrarCartaSituacion(casillaData, jugadorActual) {
     console.log(`🃏 Iniciando evento de carta para ${jugadorActual.nombreJugador} (${jugadorActual.nombre})`);
 
@@ -460,19 +461,17 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
                 btn.onmouseout = () => btn.style.borderColor = '#ddd';
 
               btn.onclick = () => {
-                    // 🚨 MAGIA DE SONIDOS AQUÍ 🚨
+                    // 🚨 MAGIA DE SONIDOS AQUÍ (Se mantiene igual)
                     if (op.puntos > 0) {
-                        // Suma puntos y toca sonido de acierto
                         personajesElegidos[jugadorActualIndex].puntosEmpatia += op.puntos;
                         actualizarHUD();
                         
                         const sonidoCorrecto = document.getElementById('sonidoAcierto');
                         if (sonidoCorrecto) {
-                            sonidoCorrecto.currentTime = 0; // Reinicia el audio por si se toca rápido
+                            sonidoCorrecto.currentTime = 0; 
                             sonidoCorrecto.play().catch(e => console.warn("El navegador bloqueó el audio", e));
                         }
                     } else {
-                        // 0 puntos, toca sonido de error
                         const sonidoIncorrecto = document.getElementById('sonidoError');
                         if (sonidoIncorrecto) {
                             sonidoIncorrecto.currentTime = 0;
@@ -482,26 +481,58 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
 
                     tituloReverso.style.display = 'none';
 
-                    let textoMovimiento = op.mov > 0 ? `¡Avanzas ${op.mov} casillas! 🚀` : `Retrocedes ${Math.abs(op.mov)} casillas. 🚶`;
-                    let colorCaja = op.puntos === 4 ? '#4CAF50' : (op.puntos === 2 ? '#FF9800' : '#F44336');
+                    // ========================================================
+                    // 🚨 NUEVA LÓGICA CON ICONOS LOCALES 🚨
+                    // ========================================================
+                    
+                    // 1. Define aquí tus rutas locales (¡Cambia estas rutas por las tuyas!)
+                    const rutaIconoCorrecto = 'assets/imagenes/iconos/icono_resp_empatica.png'; // Ej. Empática
+                    const rutaIconoRegular = 'assets/imagenes/iconos/icono_resp_pocoempatica.png'; // Ej. Poco Empática
+                    const rutaIconoError = 'assets/imagenes/iconos/icono_resp_nadaempatica.png';   // Ej. Nada Empática
 
+                    let textoMovimiento = op.mov > 0 ? `¡Avanzas ${op.mov} casillas! 🚀` : `Retrocedes ${Math.abs(op.mov)} casillas. 🚶`;
+                    
+                    // Evaluamos los puntos para asignar color y LA RUTA DEL ICONO
+                    let colorCaja, rutaIconoFinal;
+                    
+                    if (op.puntos >= 3) {
+                        // Respuesta Muy Empática
+                        colorCaja = '#4CAF50'; // Verde
+                        rutaIconoFinal = rutaIconoCorrecto; // Asignamos la ruta local
+                    } else if (op.puntos > 0) {
+                        // Respuesta Poco Empática
+                        colorCaja = '#FF9800'; // Naranja
+                        rutaIconoFinal = rutaIconoRegular;
+                    } else {
+                        // Respuesta Nada Empática
+                        colorCaja = '#F44336'; // Rojo
+                        rutaIconoFinal = rutaIconoError;
+                    }
+
+                    // 🎨 RENDERIZAMOS EL RESULTADO (HTML actualizado)
+                   // 🎨 RENDERIZAMOS EL RESULTADO (AJUSTADO PARA QUE NO SE CORTE NI SALGA SCROLL)
                     contOpciones.innerHTML = `
-                        <h3 style="font-family: var(--font-body, 'Fredoka', sans-serif); color: #222; text-align: center; font-size: 2.2rem; margin: 0 0 20px 0; -webkit-font-smoothing: antialiased;">
+                        <h3 style="font-family: var(--font-body, 'Fredoka', sans-serif); color: #222; text-align: center; font-size: 2rem; margin: 15px 0 10px 0; padding-top: 5px; -webkit-font-smoothing: antialiased;">
                             Resultado
                         </h3>
 
-                        <div class="retroalimentacion-box" style="font-family: var(--font-body, 'Fredoka', sans-serif); background: rgba(255,255,255,0.95); padding: 20px; border-radius: 15px; border: 2px solid ${colorCaja}; box-shadow: 0 8px 15px rgba(0,0,0,0.1); margin-bottom: 25px; -webkit-font-smoothing: antialiased; transform: translateZ(0);">
+                        <div class="retroalimentacion-box" style="font-family: var(--font-body, 'Fredoka', sans-serif); background: rgba(255,255,255,0.95); padding: 15px; border-radius: 15px; border: 2px solid ${colorCaja}; box-shadow: 0 8px 15px rgba(0,0,0,0.1); margin-bottom: 15px; -webkit-font-smoothing: antialiased; transform: translateZ(0); position: relative;">
                             
-                            <p style="font-size: 1.25rem; color: #333; margin-top:0; line-height: 1.4; text-align: justify;">${op.retro}</p>
+                            <img src="${rutaIconoFinal}" alt="Resultado" style="display: block; width: 60px; height: 60px; margin: 0 auto 10px auto; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
                             
-                            <h4 style="margin: 15px 0 10px 0; font-size: 1.4rem; color: ${colorCaja}; text-align: center;">${op.puntos > 0 ? `+${op.puntos} Puntos ✨` : '0 Puntos 😔'}</h4>
-                            <h4 style="margin: 0; font-size: 1.3rem; color: #333; text-align: center;">${textoMovimiento}</h4>
+                            <p style="font-size: 1.15rem; color: #333; margin-top:0; line-height: 1.3; text-align: justify;">${op.retro}</p>
+                            
+                            <div style="background: ${colorCaja}20; padding: 10px; border-radius: 10px; margin-top: 10px;">
+                                <h4 style="margin: 0 0 5px 0; font-size: 1.3rem; color: ${colorCaja}; text-align: center;">${op.puntos > 0 ? `+${op.puntos} Puntos ✨` : '0 Puntos 😔'}</h4>
+                                <h4 style="margin: 0; font-size: 1.1rem; color: #333; text-align: center;">${textoMovimiento}</h4>
+                            </div>
                         </div>
 
-                        <button id="btn-continuar-viaje" class="btn-inclusion" style="font-family: var(--font-body, 'Fredoka', sans-serif); background: ${colorCarta}; color: white; width: 100%; border-radius: 12px; padding: 18px; font-weight: bold; cursor: pointer; border: none; font-size: 1.4rem; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                            Continuar Viaje 🚀
+                        <button id="btn-continuar-viaje" class="btn-inclusion" style="font-family: var(--font-body, 'Fredoka', sans-serif); background: ${colorCarta}; color: white; width: 100%; border-radius: 12px; padding: 15px; font-weight: bold; cursor: pointer; border: none; font-size: 1.3rem; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.1); flex-shrink: 0;">
+                            Continuar Viaje 
                         </button>
                     `;
+                    
                     document.getElementById('btn-continuar-viaje').onclick = () => {
                         cerrarModalYContinuar(op.mov);
                     };
