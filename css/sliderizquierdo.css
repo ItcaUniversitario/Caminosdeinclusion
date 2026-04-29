@@ -2,11 +2,15 @@
    MÓDULO: MENÚ LATERAL (SIDEBAR MINI) - GAME EDITION
    ========================================= */
 
-/* 1. Contenedor Principal del Menú (Escritorio) */
+/* 1. Contenedor Principal del Menú (Escritorio - ESTILO 3D GAMER) */
 .sidebar-mini {
-    width: clamp(70px, 8vw, 90px); /* Un poquito más ancho para respirar */
-    background: var(--color-purple-main, #5e2a84);
-    border-right: 4px solid var(--color-purple-dark, #2a0a4a);
+    width: clamp(70px, 8vw, 90px); 
+    
+    /* 🚨 1. FONDO CON VOLUMEN: Degradado horizontal para dar sensación curva */
+    background: linear-gradient(90deg, #6c3296, var(--color-purple-main, #5e2a84), #3e1959);
+    
+    /* Quitamos el borde plano, la sombra hará ese trabajo ahora */
+    border-right: none; 
     
     display: flex;
     flex-direction: column;
@@ -14,10 +18,15 @@
     padding: 1.5rem 0;
     gap: 1rem; 
     
-    z-index: 50; /* Lo subimos para que siempre esté al frente */
-    box-shadow: 5px 0 15px rgba(0,0,0,0.25);
+    z-index: 50; 
+    
+    /* 🚨 2. EFECTO 3D LATERAL */
+    box-shadow: 
+        inset 3px 0 6px rgba(255, 255, 255, 0.15),   /* Brillo en el borde izquierdo (luz) */
+        inset -8px 0 15px rgba(0, 0, 0, 0.3),        /* Curvatura oscura antes de llegar al borde derecho */
+        6px 0 0px var(--color-purple-dark, #2a0a4a), /* El "plástico" o grosor sólido hacia la derecha */
+        15px 0 25px rgba(0,0,0,0.4);                 /* Sombra profunda que proyecta sobre el mapa */
 }
-
 /* =========================================
    2. ESTILOS DE LOS BOTONES (EFECTO 3D GAMER)
    ========================================= */

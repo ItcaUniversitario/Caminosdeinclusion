@@ -81,24 +81,33 @@ body {
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
-
-/* 3. BANNER SUPERIOR (HEADER / HUD) */
+/* 3. BANNER SUPERIOR (HEADER / HUD - ESTILO 3D GAMER) */
 .game-banner {
     position: relative; 
     
-    /* ✅ EVITA QUE EL HEADER SE APLASTE O SE OCULTE */
+    /* EVITA QUE EL HEADER SE APLASTE O SE OCULTE */
     flex-shrink: 0; 
     
     width: 100%;
     height: clamp(60px, 10dvh, 90px); 
-    background: var(--color-purple-dark);
-    border-bottom: 3px solid var(--color-pink-accent);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    
+    /* 🚨 1. FONDO CON VOLUMEN: Un degradado suave para que no se vea plano */
+    background: linear-gradient(180deg, var(--color-purple-dark), #1a082b); 
+    
+    /* 🚨 2. SOMBRAS 3D: La magia del panel de control */
+    border-bottom: none; /* Quitamos el borde plano y lo pasamos a la sombra */
+    box-shadow: 
+        inset 0 3px 6px rgba(255, 255, 255, 0.15),  /* Luz rebotando en el borde superior */
+        inset 0 -5px 10px rgba(0, 0, 0, 0.3),       /* Curvatura interna en la parte de abajo */
+        0 6px 0px var(--color-pink-accent),         /* El "plástico" o grosor físico en color rosa */
+        0 15px 25px rgba(0, 0, 0, 0.5);             /* La sombra que proyecta sobre el mapa del juego */
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 25px;
-   padding: 0 clamp(10px, 4vw, 40px);
+    
+    /* Dejamos solo el padding dinámico que tenías, es perfecto */
+    padding: 0 clamp(10px, 4vw, 40px);
     gap: 10px; 
     
     z-index: 10;
