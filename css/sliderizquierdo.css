@@ -21,11 +21,11 @@
     z-index: 50; 
     
     /* 🚨 2. EFECTO 3D LATERAL */
-    box-shadow: 
-        inset 3px 0 6px rgba(255, 255, 255, 0.15),   /* Brillo en el borde izquierdo (luz) */
-        inset -8px 0 15px rgba(0, 0, 0, 0.3),        /* Curvatura oscura antes de llegar al borde derecho */
-        6px 0 0px var(--color-purple-dark, #2a0a4a), /* El "plástico" o grosor sólido hacia la derecha */
-        15px 0 25px rgba(0,0,0,0.4);                 /* Sombra profunda que proyecta sobre el mapa */
+   box-shadow: 
+        inset 3px 0 6px rgba(255, 255, 255, 0.15),   
+        inset -8px 0 15px rgba(0, 0, 0, 0.3),        
+        6px 0 0px var(--color-purple-dark, #2a0a4a), 
+        15px 15px 25px rgba(0,0,0,0.4); /* Le sumamos 15px en el eje Y para que baje */
 }
 /* =========================================
    2. ESTILOS DE LOS BOTONES (EFECTO 3D GAMER)
