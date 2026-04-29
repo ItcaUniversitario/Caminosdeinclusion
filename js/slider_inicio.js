@@ -35,7 +35,7 @@ export function configurarSidebar() {
 
             if (estaSilenciado) {
                 iconoAudio.src = rutaAudioOff;
-                textoAudio.textContent = 'Silenciado';
+                textoAudio.textContent = 'Silencio';
                 if (typeof window.controlarMusica === 'function') {
                     window.controlarMusica(true); 
                 }

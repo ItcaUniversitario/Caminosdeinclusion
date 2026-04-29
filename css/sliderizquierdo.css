@@ -19,7 +19,7 @@
 }
 
 /* =========================================
-   2. ESTILOS DE LOS BOTONES
+   2. ESTILOS DE LOS BOTONES (EFECTO 3D GAMER)
    ========================================= */
 .btn-mini {
     display: flex;
@@ -28,19 +28,52 @@
     justify-content: center;
     gap: 6px; 
     
-    /* Forma de "Tecla" cuadrada */
-    width: 80%; 
-    aspect-ratio: 1 / 1; 
-    border-radius: 15px;
+    /* 🚨 1. TAMAÑO EXACTO Y BORDES REDONDEADOS */
+    width: 85px;         
+    height: 85px;        
+    border-radius: 18px;    /* 👈 ¡Aquí están tus bordes! Le puse 18px para que se vean bien suaves y como teclas de verdad */
     
-    background: transparent;
-    border: 2px solid transparent; /* Preparado para el hover */
+    /* 🚨 2. CONTROL DE COMPORTAMIENTO */
+    box-sizing: border-box; 
+    flex-shrink: 0;      
+    overflow: hidden;       /* Evita que el contenido desborde los bordes curvos */
+    
+    /* 🚨 3. ESTILO 3D GAMER */
+    background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+    border: 1px solid rgba(255,255,255,0.4); /* Borde de cristal */
+    
+    box-shadow: 
+        0 6px 0px rgba(0, 0, 0, 0.4),            /* El plástico/grosor del botón */
+        0 10px 15px rgba(0, 0, 0, 0.3),          /* Sombra en la pared */
+        inset 0 2px 5px rgba(255,255,255,0.2);   /* Brillo superior */
+        
     cursor: pointer;
-    color: #ffffff; /* Blanco para máxima legibilidad sobre morado */
+    color: #ffffff; 
     padding: 8px;
     
-    /* Animación fluida de rebote */
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Animación del clic */
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.2s;
+}
+
+/* EFECTO 1: Al pasar el mouse por encima (Se ilumina) */
+.btn-mini:hover {
+    background: linear-gradient(180deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1));
+    transform: translateY(-2px); /* Se levanta un poquito pidiendo que lo cliquen */
+    box-shadow: 
+        0 8px 0px rgba(0, 0, 0, 0.4), 
+        0 15px 20px rgba(0, 0, 0, 0.4),
+        inset 0 2px 5px rgba(255,255,255,0.3);
+}
+
+/* 🚨 EFECTO 2: EL CLIC FÍSICO 3D (Cuando lo presionas) */
+.btn-mini:active {
+    transform: translateY(6px); /* El botón se "hunde" físicamente */
+    
+    /* Al hundirse, desaparece su grosor y la sombra se hace muy chiquita */
+    box-shadow: 
+        0 0px 0px rgba(0, 0, 0, 0.4),            /* Grosor aplastado (desaparece) */
+        0 2px 5px rgba(0, 0, 0, 0.5),            /* Sombra en la pared pequeña */
+        inset 0 4px 10px rgba(0, 0, 0, 0.2);     /* Hundimiento interno */
 }
 .icono-custom {
     width: 50px;  /* El mismo tamaño que tenía tu SVG */
@@ -69,12 +102,6 @@
     opacity: 0.8; /* Ligeramente apagado por defecto */
 }
 
-/* --- INTERACCIONES: HOVER Y CLIC --- */
-.btn-mini:hover {
-    transform: translateY(-4px); 
-    background: rgba(255, 255, 255, 0.1); /* Brillo sutil de fondo */
-    border-color: rgba(255, 255, 255, 0.2);
-}
 
 .btn-mini:hover .texto-btn-mini {
     opacity: 1;
@@ -85,11 +112,6 @@
     transform: scale(1.1); /* El icono crece un poco */
 }
 
-.btn-mini:active {
-    /* Efecto "Squish": se hunde y se aplasta un poco al hacer clic */
-    transform: translateY(2px) scale(0.92); 
-    transition: all 0.05s; /* Muy rápido para que se sienta reactivo */
-}
 
 /* --- ESTADO ACTIVO (La pantalla actual) --- */
 /* (Agrega la clase class="btn-mini activo" en tu HTML al botón que corresponda) */
