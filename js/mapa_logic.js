@@ -287,6 +287,15 @@ export function evaluarAccionCasilla(posicionFinal, pasosSobrantes = 0) {
         return;
     }
 
+    // 🚨 AQUÍ VA LA MAGIA DEL SONIDO GENERAL 🚨
+    // Al colocarlo aquí, sonará para cartas, videos, info y la meta automáticamente.
+    const sonidoApertura = document.getElementById('sonidoAperturaModal');
+    if (sonidoApertura) {
+        sonidoApertura.currentTime = 0; // Reinicia el sonido por si la acción es muy rápida
+        sonidoApertura.play().catch(e => console.warn("El navegador bloqueó el audio general", e));
+    }
+
+    // El enrutador de pantallas
     switch (casillaData.tipo) {
         // 🚨 CAMBIO: Unificamos a un solo tipo 'carta'
         case 'carta':
@@ -413,8 +422,15 @@ export async function mostrarCartaSituacion(casillaData, jugadorActual) {
                     </div>
                 </div>
             `;
+document.getElementById('btn-dar-vuelta').onclick = () => {
+                // 🚨 1. REPRODUCIR SONIDO DE GIRO (FLIP)
+                const sonidoGiro = document.getElementById('sonidoGiroCarta');
+                if (sonidoGiro) {
+                    sonidoGiro.currentTime = 0;
+                    sonidoGiro.play().catch(e => console.warn("El navegador bloqueó el audio", e));
+                }
 
-            document.getElementById('btn-dar-vuelta').onclick = () => {
+                // 2. Ejecutar la animación 3D que ya tenías
                 document.getElementById('tarjeta-animada').classList.add('volteada');
                 document.getElementById('cara-frontal').style.pointerEvents = 'none';
             };

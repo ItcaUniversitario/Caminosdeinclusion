@@ -64,74 +64,154 @@ div#pantalla-mapa.activa {
     border: 5px solid white; /* Un borde blanco como marco de foto */
 }
 
-
-
 /* ====================================
    PANEL IZQUIERDO (CONTENEDOR PRINCIPAL)
    ==================================== */
 #pantalla-mapa .panel-izquierdo {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.2rem; /* Le dimos un poquito más de aire entre componentes */
     height: 100%;
+    
     /* 🚨 ESTO EVITA QUE LA RULETA SE CORTE ABAJO 🚨 */
-    max-height: calc(100vh - 3rem); 
+    /* Descontamos el banner superior (aprox 90px) y dejamos margen */
+    max-height: calc(100vh - clamp(60px, 10dvh, 90px) - 20px); 
+    padding-bottom: 30px; /* Margen final para un scroll suave al final de la ruleta */
+    
     overflow-y: auto; 
     scrollbar-width: none; 
 }
 #pantalla-mapa .panel-izquierdo::-webkit-scrollbar { display: none; }
 
-/* Reloj */
+
+/* ====================================
+   RELOJ (ESTILO 3D GAMER INTEGRADO)
+   ==================================== */
 #pantalla-mapa .contenedor-reloj-mapa {
-    background: #ffffff;
+    /* 🚨 Volumen plástico blanco en lugar de color plano */
+    background: linear-gradient(145deg, #ffffff, #f1f5f9); 
     border-radius: 20px;
-    padding: 1rem;
+    padding: 1rem 1.2rem;
     display: flex;
     align-items: center;
     gap: 1rem;
-    box-shadow: 0 8px 25px rgba(58, 22, 83, 0.05);
+    
     border: 2px solid #e2e8f0;
+    
+    /* 🚨 EL GROSOR 3D: Coincide visualmente con las tarjetas de los jugadores */
+    box-shadow: 
+        0 6px 0px #cbd5e1,                  /* Plástico gris del grosor inferior */
+        0 12px 15px rgba(0,0,0,0.1),        /* Sombra suave proyectada en la mesa */
+        inset 0 -3px 5px rgba(0,0,0,0.02);  /* Ligera curva interna */
+        
+    flex-shrink: 0; /* Evita que el reloj se aplaste si falta espacio vertical */
 }
-#pantalla-mapa .icono-reloj { font-size: 2.5rem; }
-#pantalla-mapa .tiempo-texto { display: flex; flex-direction: column; }
-#pantalla-mapa .etiqueta-tiempo { font-size: 0.75rem; font-weight: 800; color: #94a3b8; letter-spacing: 1px; }
-#pantalla-mapa #reloj-juego { font-size: 2.2rem; font-weight: 900; color: var(--color-purple-dark, #3a1653); line-height: 1; }
+
+/* Icono del reloj */
+#pantalla-mapa .icono-reloj { 
+    font-size: 2.5rem; 
+    filter: drop-shadow(0 3px 2px rgba(0,0,0,0.15)); /* Le da sombra al emoji/icono */
+}
+
+#pantalla-mapa .tiempo-texto { 
+    display: flex; 
+    flex-direction: column; 
+}
+
+#pantalla-mapa .etiqueta-tiempo { 
+    font-size: 0.8rem; 
+    font-weight: 800; 
+    color: #64748b; 
+    letter-spacing: 1.5px; 
+    text-transform: uppercase;
+    margin-bottom: -2px; /* Acerca sutilmente la palabra a los números */
+}
+
+/* Los números del cronómetro */
+#pantalla-mapa #reloj-juego { 
+    align-items: center;
+    font-size: 2.2rem; 
+    font-weight: 900; 
+    color: var(--color-purple-dark, #3a1653); 
+    line-height: 1; 
+    /* 🚨 Sombra de texto para dar sensación de "Pantalla Digital" */
+    text-shadow: 0 2px 4px rgba(58, 22, 83, 0.2); 
+}
 /* ====================================
-   HUD SCORE (PANEL IZQUIERDO - DISEÑO COMPACTO)
+   HUD SCORE (SOLUCIÓN SIN CORTES - ESTILO DARK/LIGHT)
    ==================================== */
 
-#pantalla-mapa .hud-scores-multijugador {
-    position: relative !important;
-    display: flex !important;
-    flex-direction: column !important; /* Apila a los jugadores si hay varios */
-    gap: 5px !important;
-    width: 100% !important;
-    margin: 5px 0 !important;
-    z-index: 50 !important;
-}
-
-/* La tarjeta base */
+/* 1. La tarjeta base (Cuando están esperando su turno - GRIS) */
 #pantalla-mapa .tarjeta-score-jugador {
     position: relative !important;
     width: 100% !important;
-    background: #ffffff !important;
-    padding: 2px 12px !important; 
+    background: #cbd5e1 !important; /* Fondo gris claro */
+    padding: 6px 12px !important; 
     
-    border: 2px solid #e2e8f0 !important;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
+    border: 2px solid #94a3b8 !important; /* Borde gris */
+    border-radius: 15px !important;
+    
+    /* Grosor 3D plano gris */
+    box-shadow: 0 4px 0px #64748b !important; 
+    
     box-sizing: border-box !important;
     display: flex !important;
     align-items: center !important;
     gap: 12px !important;
+    
+    /* 🚨 SIN TRANSLATEX: Solo reposo */
+    transform: translateY(0) !important; 
     transition: all 0.3s ease !important;
 }
 
-/* Brillo especial cuando es el turno de este jugador */
+/* Texto del jugador inactivo (Gris oscuro) */
+#pantalla-mapa .tarjeta-score-jugador .nombre-score {
+    color: #475569 !important; 
+    font-size: 1rem !important; 
+    font-weight: 800 !important; 
+    margin: 0 !important;
+    white-space: normal !important; 
+    word-wrap: break-word !important; 
+    line-height: 1.1 !important;
+}
+
+/* Burbuja de puntos inactiva (Fondo claro, texto gris) */
+#pantalla-mapa .tarjeta-score-jugador .puntos-score {
+    background: #e2e8f0 !important;
+    color: #475569 !important;
+    font-size: 1.2rem !important; 
+    font-weight: 900 !important; 
+    padding: 4px 12px !important;
+    border-radius: 20px !important;
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.1) !important; 
+    flex-shrink: 0 !important; 
+}
+
+/* ====================================
+   2. LA MAGIA: TARJETA DEL TURNO ACTIVO (MORADO)
+   ==================================== */
 #pantalla-mapa .tarjeta-score-jugador.turno-activo {
-    border-color: var(--color-purple-main, #5e2a84) !important;
-    background: #fdfaef !important;
-    transform: scale(1.02) !important;
-    box-shadow: 0 px 15px rgba(94, 42, 132, 0.15) !important;
+    background: var(--color-purple-main, #5e2a84) !important;
+    border: 2px solid var(--color-purple-dark, #3a1653) !important;
+    
+    /* Grosor 3D Morado + sombra profunda */
+    box-shadow: 0 6px 0px var(--color-purple-dark, #3a1653), 0 10px 15px rgba(0,0,0,0.3) !important;
+    
+    /* 🚨 LA SOLUCIÓN AL CORTE: Lo levantamos hacia ARRIBA un poquito, no hacia la derecha, y no lo ensanchamos */
+    transform: translateY(-4px) !important; 
+    z-index: 10 !important;
+}
+
+/* El texto del jugador activo pasa a ser Blanco */
+#pantalla-mapa .tarjeta-score-jugador.turno-activo .nombre-score {
+    color: #ffffff !important;
+}
+
+/* La burbuja de puntos activa pasa a ser Blanca con texto Morado */
+#pantalla-mapa .tarjeta-score-jugador.turno-activo .puntos-score {
+    background: #ffffff !important;
+    color: var(--color-purple-main, #5e2a84) !important;
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2) !important; 
 }
 
 /* Círculo de la foto */
@@ -188,6 +268,7 @@ div#pantalla-mapa.activa {
     box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2) !important; 
     flex-shrink: 0 !important; /* 🚨 Evita que la burbuja de puntos se aplaste */
 }
+
 /* ==========================================================================
    DISEÑO DE RULETA V3: ESTILO "AMETHYST PERSPECTIVE" (3D DE CRISTAL)
    ========================================================================== */
@@ -196,7 +277,7 @@ div#pantalla-mapa.activa {
     position: relative; /* ¡CLAVE! Ya no es absolute */
     width: 100%;
     margin-top: auto; /* Empuja la ruleta hacia abajo dentro del panel lateral */
-    padding-bottom: 20px;
+    padding-bottom: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -245,45 +326,60 @@ div#pantalla-mapa.activa {
     transform: translateY(12px); /* Quitamos el rotateX(15deg) de aquí para un clic más limpio */
     box-shadow: 0 4px 0px var(--color-purple-dark), 0 10px 15px rgba(0, 0, 0, 0.4);
 }
-/* 4. La Rueda (Colores Variados de Morado y Cristal Facetado) */
+/* ==========================================================================
+   DISEÑO DE RULETA V3: ESTILO "AMETHYST PERSPECTIVE" (CORRECCIÓN DE CONTRASTE)
+   ========================================================================== */
+
+/* 4. La Rueda (Cortes nítidos y alto contraste) */
 #pantalla-mapa .rueda-colores {
     position: absolute;
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    /* Un degradado cónico elegante con tus morados y un lila suave */
+    
+    /* 🚨 CORTES EXACTOS: En lugar de difuminar, hacemos que el color termine exactamente donde empieza el otro (cada 60 grados) */
     background: conic-gradient(
-        var(--color-purple-dark) 0deg 60deg,  /* Deep Violet */
-        #b39ddb 60deg 120deg,                   /* Lavender soft (Nuevo) */
-        var(--color-purple-main) 120deg 180deg,  /* Main Purple */
-        #e1bee7 180deg 240deg,                   /* Lilac light (Nuevo) */
+        var(--color-purple-dark) 0deg 60deg,   
+        #d1b3e8 60deg 120deg,                  /* Lila claro pastel */
+        var(--color-purple-dark) 120deg 180deg,  
+        #d1b3e8 180deg 240deg,                  
         var(--color-purple-dark) 240deg 300deg,
-        var(--color-purple-main) 300deg 360deg
+        #d1b3e8 300deg 360deg
     );
     
     border: 4px solid var(--color-purple-dark);
     transform: rotate(var(--giro, 0deg));
     transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
     
-    /* Superposición para dar brillo de cristal facetado */
     mask-image: radial-gradient(circle, black 40%, rgba(0,0,0,0.8) 100%);
 }
 
-/* 5. Los Números (Limpios, Sutiles, y Súper-Visibles con Glow) */
+/* 5. Los Números (LA SOLUCIÓN DE LECTURA) */
 #pantalla-mapa .num-ruleta {
     position: absolute;
-    z-index: 50; /* Por encima de la rueda de colores */
+    z-index: 50; 
     width: 40px; height: 40px;
     left: 50%; top: 50%;
     margin-left: -20px; margin-top: -20px;
     text-align: center; line-height: 40px;
-    font-weight: 900; font-size: 1.6rem; /* Más grandes */
-    color: #ffffff;
+    font-family: var(--font-body);
     
+    font-weight: 900; 
+    font-size: 1.8rem; /* Un poco más grandes para que destaquen */
+    color: #ffffff; /* Letra blanca pura */
+    
+    /* 🚨 EL TRUCO GAMER: Delineado oscuro múltiple + Sombra de caída */
+    text-shadow: 
+        -2px -2px 0 var(--color-purple-dark, #2b1055),  
+         2px -2px 0 var(--color-purple-dark, #2b1055),
+        -2px  2px 0 var(--color-purple-dark, #2b1055),
+         2px  2px 0 var(--color-purple-dark, #2b1055),
+         0 5px 8px rgba(0,0,0,0.7); /* Sombra que lo despega de la rueda */
+         
     transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Matemática Radial Unificada (translateY -58px para que encajen perfectos en 180px) */
+/* Matemática Radial (Mantenemos tu configuración, es perfecta) */
 #pantalla-mapa .n1 { transform: rotate(30deg) translateY(-58px) rotate(calc(-30deg - var(--giro, 0deg))); }
 #pantalla-mapa .n2 { transform: rotate(90deg) translateY(-58px) rotate(calc(-90deg - var(--giro, 0deg))); }
 #pantalla-mapa .n3 { transform: rotate(150deg) translateY(-58px) rotate(calc(-150deg - var(--giro, 0deg))); }
@@ -291,16 +387,22 @@ div#pantalla-mapa.activa {
 #pantalla-mapa .n5 { transform: rotate(270deg) translateY(-58px) rotate(calc(-270deg - var(--giro, 0deg))); }
 #pantalla-mapa .n6 { transform: rotate(330deg) translateY(-58px) rotate(calc(-330deg - var(--giro, 0deg))); }
 
-/* 6. El Centro "Botón de Encendido/Gema Glow" Informulativo */
+/* 6. El Centro (Gema Dorada) */
 #pantalla-mapa .centro-ruleta {
+
     position: relative;
-    z-index: 80; /* Más alto que los números */
-    background: #ffffff;
+    z-index: 80; 
+    
+    /* 🚨 Fondo de Gema: Degradado radial brillante */
+    background: radial-gradient(circle, #ffe066 10%, #f3a601 90%);
     color: var(--color-purple-dark, #3a1653);
     
-    border: 5px solid var(--color-yellow-btn);
-    /* Brillo exterior (Glow) usando tu variable hud-glow */
-    box-shadow: var(--hud-glow, 0 0 15px rgba(243, 166, 1, 0.4)), inset 0 0 10px rgba(0,0,0,0.1);
+    border: 3px solid #fff59d; /* Borde amarillo clarito */
+    
+    /* Brillo exterior enorme + Sombra interna para dar volumen curvo */
+    box-shadow: 
+        0 0 25px rgba(243, 166, 1, 0.8), 
+        inset 0 -5px 10px rgba(0,0,0,0.25);
     
     width: 65px;
     height: 65px;
@@ -316,7 +418,6 @@ div#pantalla-mapa.activa {
 }
 
 #pantalla-mapa .centro-ruleta::after {
-    
     font-size: 0.85rem;
     margin-top: 2px;
 }
