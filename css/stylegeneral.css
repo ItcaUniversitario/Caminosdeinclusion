@@ -12,7 +12,6 @@
 /* =========================================
    EL SECRETO DE LAS PANTALLAS CONSECUTIVAS
    ========================================= */
-
 /* 1. Apagamos las luces: Oculta TODAS las pantallas por defecto */
 .main-game-area > * {
     display: none !important;
@@ -22,12 +21,19 @@
 .main-game-area > *.activa {
     display: flex !important;
     flex-direction: column;
-    /* Cambia height: 100% por min-height */
     min-height: 100%; 
     height: auto; 
     width: 100%;
-    justify-content: flex-start; /* Mejor que center si el contenido es largo */
+    
+    /* 🚨 LA SOLUCIÓN AL CENTRADO: */
+    justify-content: center; /* Centra verticalmente (arriba/abajo) */
+    align-items: center;     /* Centra horizontalmente (izquierda/derecha) */
+    
     padding-bottom: 40px; /* Espacio extra para que no choque con el menú inferior */
+    
+    /* 💡 Tip pro: Si el contenido es más alto que la pantalla, esto permite 
+       hacer scroll sin que se corte la parte de arriba */
+    overflow-y: auto; 
 }
 /* 1. VARIABLES MAESTRAS */
 :root {
@@ -258,7 +264,7 @@ body {
 }
 
 .pantalla-view.activa,
-.pantalla-inicio.activa,
+.pantalla-inicio.activa, 
 .pantalla-caminos.activa,
 .pantalla-personajes.activa,
 .pantalla-quiz.activa,
@@ -268,6 +274,10 @@ body {
 }
 
 
+/* ==========================================================================
+   ALINEACIÓN GLOBAL DE PANTALLAS - CENTRADO PERFECTO (Flexbox)
+   (Soluciona el problema de contenido "solo arriba")
+   ========================================================================== */
 
 /* 🚨 Agrupamos todas las pantallas separadas por comas */
 .pantalla-inicio, 
@@ -278,19 +288,21 @@ body {
 .pantalla-perfil, 
 .pantalla-ajustes /* <-- Añade aquí cualquier otra pantalla que tengas */ {
     
-    position: relative !important; /* Mantiene el ancla para que los modales no se escapen */
+    position: relative; /* Mantiene el ancla para modales, ¡pero sin !important si no es necesario! */
     width: 100%;
     height: 100%;
     
-    /* 🚨 EL TRUCO MAGISTRAL PARA TODAS LAS PANTALLAS */
-    padding: 25px; /* Empuja el contenido hacia adentro creando el margen */
-    box-sizing: border-box; /* Obliga al padding a calcularse hacia adentro */
+    /* 🚨 LA MAGIA DE FLEXBOX PARA CENTRADO PERFECTO */
+    display: flex;           /* 🚨 Convierte la pantalla en un contenedor Flex */
+    flex-direction: column;  /* 🚨 Apila los elementos en columna (uno sobre otro) */
+    justify-content: center; /* 🚨 Centra verticalmente en el eje de la columna */
+    align-items: center;     /* 🚨 Centra horizontalmente en el eje transversal */
     
-    /* Nota: Si alguna de estas pantallas ya tenía display: flex; en otra parte 
-       de tu CSS, no te preocupes, esto no lo sobreescribe, solo le suma el padding. */
+    /* Un margen mínimo general para respirar, no para empujar asimétricamente */
+    padding: 25px;           
+    box-sizing: border-box;  /* Asegura que el padding no rompa el diseño */
+    
+    /* Nota: Flexbox con justify-content: center y align-items: center 
+       distribuirá el espacio sobrante equitativamente arriba, abajo, izquierda y derecha. */
 }
-.pantalla-personajes
- { /* <-- Reemplaza por la clase real de tu pantalla si es distinta */
-    padding-top: 50px !important; /* Esto empujará todo el contenido hacia abajo */
-    box-sizing: border-box;
-}
+
