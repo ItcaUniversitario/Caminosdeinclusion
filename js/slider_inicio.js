@@ -63,7 +63,7 @@ const musicaFondo = document.getElementById('musicaFondo');
 
 // 🚨 CONFIGURACIÓN INICIAL DEL VOLUMEN (0.2 es el 20%)
 if (musicaFondo) {
-    musicaFondo.volume = 0.15; 
+    musicaFondo.volume = 0.05; 
 }
 
 let audioIniciado = false;
@@ -71,7 +71,7 @@ let audioIniciado = false;
 function iniciarAudioGlobal() {
     if (!audioIniciado && musicaFondo) {
         // Doble seguridad de volumen antes de dar Play
-        musicaFondo.volume = 0.15; 
+        musicaFondo.volume = 0.05; 
         
         musicaFondo.play().then(() => {
             audioIniciado = true;
