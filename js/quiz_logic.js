@@ -319,7 +319,7 @@ export function construirResultadosFinales() {
     const btnInicio = document.getElementById('btn-volver-inicio');
     if (btnInicio) {
         btnInicio.onclick = () => {
-            console.log("🏠 Reiniciando juego desde cero...");
+            console.log(" Reiniciando juego desde cero...");
             sessionStorage.removeItem('personajesSeleccionados');
             // Como todo está en el index, recargar es la forma más segura de limpiar TODO
             window.location.reload(); 

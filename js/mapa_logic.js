@@ -807,20 +807,20 @@ export function mostrarVideoReflexionFinal(casillaData, jugadorActual) {
     const modal = document.getElementById('gameModal');
     if (!modal) return;
 
-    modal.innerHTML = `
-        <div class="modal-contenido" style="background: white; border-radius: 20px; padding: 25px; max-width: 600px; width: 90%; text-align: center; border-top: 10px solid #FFD700;">
-            <h2 style="color: #4A148C; margin-top: 0;">✨ ¡Objetivo Cumplido!</h2>
-            <p style="margin-bottom: 20px; font-weight: 600; color: #444;">
+   modal.innerHTML = `
+        <div class="modal-contenido" style="background: white; border-radius: 25px; padding: 35px; max-width: 900px; width: 95%; text-align: center; border-top: 12px solid #FFD700; box-shadow: 0 25px 50px rgba(0,0,0,0.5);">
+            <h2 style="color: #4A148C; margin-top: 0; font-size: 2.2rem;">✨ ¡Objetivo Cumplido!</h2>
+            <p style="margin-bottom: 25px; font-weight: 600; color: #444; font-size: 1.2rem;">
                 ${jugadorActual.nombre}, antes de ver los resultados finales, compartamos esta breve reflexión.
             </p>
             
-            <div style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.3); background: black; margin-bottom: 20px;">
-                <video id="videoReflexionFinal" width="100%" controls autoplay>
+            <div style="border-radius: 20px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.4); background: black; margin-bottom: 25px;">
+                <video id="videoReflexionFinal" width="100%" style="display: block; max-height: 60vh; object-fit: cover;" controls autoplay>
                     <source src="${casillaData.rutaVideo || 'assets/videos/reflexion_final.mp4'}" type="video/mp4">
                 </video>
             </div>
             
-            <button id="btnIrAlPostQuiz" style="background: #4CAF50; color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; font-size: 1.2rem; cursor: pointer;">
+            <button id="btnIrAlPostQuiz" style="background: #4CAF50; color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-weight: bold; font-size: 1.4rem; cursor: pointer; transition: transform 0.2s, background 0.2s;">
                 Ir al Post-Quiz 📝
             </button>
         </div>
