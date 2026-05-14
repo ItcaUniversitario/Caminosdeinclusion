@@ -217,13 +217,14 @@ export function anunciarCambioDeTurno(nombreJugador) {
     // 3. Ocultamos el cartel automáticamente después de 2.5 segundos
     setTimeout(() => {
         banner.classList.remove('mostrar-animacion');
-    }, 2500);
+    }, 3000);
 }
 // js/mapa_logic.js
 function dibujarCasillas() {
     console.log("📍 El mapa ya tiene las casillas en la imagen. Colocando jugadores...");
     colocarFichasEnInicio();
 }
+
 // Función para crear los avatares reales
 function colocarFichasEnInicio() {
     const capaFichas = document.getElementById('capa-fichas');
@@ -273,24 +274,31 @@ function inicializarHUDMultijugador() {
 }
 // Función que anima el movimiento físico de la ficha sobre tu imagen
 function moverFichaFisicamente(indexJugador, indexCasillaDestino) {
-    const ficha = document.getElementById(`ficha-jugador-${indexJugador}`);
-    const dataCasilla = camino1.casillas[indexCasillaDestino];
+    const ficha = document.getElementById(`ficha-jugador-${indexJugador}`);
+    const dataCasilla = camino1.casillas[indexCasillaDestino];
 
-    if (ficha && dataCasilla) {
-        // Coordenada matemática exacta de la casilla
-        ficha.style.left = `${dataCasilla.x}%`;
-        ficha.style.top = `${dataCasilla.y}%`;
-        const posicionesX = [0, 0, 0, 0, 0, 0, 0];
+    if (ficha && dataCasilla) {
+        // Coordenada matemática exacta de la casilla
+        ficha.style.left = `${dataCasilla.x}%`;
+        ficha.style.top = `${dataCasilla.y}%`;
+        
+        // Si hay varios jugadores, se separan un poquito a la izquierda y derecha
+        const posicionesX = [-20, 0, 20, -10, 10, -30, 30];
 
-        const desfaseX = posicionesX[indexJugador] || 0;
-        const desfaseY = 0; // 🚨 ¡CERO! Todos los pies pisan exactamente la misma coordenada Y.
+        const desfaseX = posicionesX[indexJugador] || 0;
+        const desfaseY = 0; // 🚨 ¡CERO! Todos los pies pisan exactamente la misma coordenada Y.
 
-        ficha.style.setProperty('--desfaseX', `${desfaseX}px`);
-        ficha.style.setProperty('--desfaseY', `${desfaseY}px`);
+        ficha.style.setProperty('--desfaseX', `${desfaseX}px`);
+        ficha.style.setProperty('--desfaseY', `${desfaseY}px`);
 
-        // Z-Index para que el que está en el centro resalte un poco más
-        ficha.style.zIndex = 100 - indexJugador;
-    }
+        // 🔥 LA SOLUCIÓN AQUÍ: Usamos CSS Transform para mover el ancla a los pies
+        // -50% centra al muñeco horizontalmente en la coordenada X.
+        // -100% sube al muñeco toda su propia altura, para que la parte más baja (los pies) quede en la coordenada Y.
+        ficha.style.transform = `translate(calc(-50% + var(--desfaseX)), calc(-100% + var(--desfaseY)))`;
+
+        // Z-Index para que el que está en el centro resalte un poco más
+        ficha.style.zIndex = 100 - indexJugador;
+    }
 }
 // ==========================================================================
 // 🧠 EL CEREBRO: LÓGICA DE EVENTOS POR CASILLA

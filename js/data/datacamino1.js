@@ -37,15 +37,14 @@ export const personajesData = {
         imagenFull: "assets/imagenes/personajes/camino1/mia.png"
     }
 };
-// js/data/datacamino1.js
+
 
 // =======================================================================
 // 1. EL ESQUELETO DEL MAPA (Solo IDs, tipos y coordenadas)
 // =======================================================================
 const posicionesBase = [
-   { id: 0, tipo: 'carta', x: 34.15, y: 22.66 },
-    { id: 1, tipo: 'carta', x: 28.75, y: 27.92 },
-    { id: 2, tipo: 'carta', x: 24.58, y: 30.26 },
+    { id: 1, tipo: 'carta', x: 34.89, y: 20.83 },
+    { id: 2, tipo: 'carta', x: 27.87, y: 26.18 },
     { id: 3, tipo: 'video', x: 20.19, y: 33.76 },
     { id: 4, tipo: 'carta', x: 15.92, y: 38.05 },
     { id: 5, tipo: 'info', x: 12.43, y: 44.28 },

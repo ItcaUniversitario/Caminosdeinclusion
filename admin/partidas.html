@@ -102,14 +102,14 @@
 
             <div class="table-responsive" id="tableWrapper" style="display: none;">
                 <table class="table table-hover align-middle">
-                    <thead>
+                   <thead>
                         <tr>
                             <th>Fecha Inicio</th>
                             <th>Cédula</th>
                             <th>Jugador</th>
                             <th>Camino</th>
                             <th>Puntos Empatía</th>
-                            <th>Estado</th>
+                            <th>Tiempo</th> <th>Estado</th>
                             <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
@@ -290,7 +290,27 @@
         searchInput.addEventListener('input', aplicarFiltros);
         filtroCamino.addEventListener('change', aplicarFiltros);
         filtroFecha.addEventListener('change', aplicarFiltros); // Detecta cuando escoges fecha en el calendario
+// ==========================================
+        // UTILIDAD: CALCULAR TIEMPO DE JUEGO EN MAPA
+        // ==========================================
+        function calcularTiempo(inicioObj, finString) {
+            if (!inicioObj || !finString) return 'N/A';
+            try {
+                // Convertir fechaInicio (Timestamp) a objeto Date
+                let dInicio = inicioObj.toDate ? inicioObj.toDate() : new Date(inicioObj);
+                
+                // Convertir fechaFinMapa (String ISO) a objeto Date
+                let dFin = new Date(finString);
+                
+                let diffMs = dFin - dInicio;
+                if (diffMs < 0 || isNaN(diffMs)) return 'N/A';
 
+                let minutos = Math.floor(diffMs / 60000);
+                let segundos = Math.floor((diffMs % 60000) / 1000);
+                
+                return `${minutos}m ${segundos}s`;
+            } catch(e) { return 'N/A'; }
+        }
         // ==========================================
         // RENDERIZAR TABLA
         // ==========================================
@@ -311,6 +331,10 @@
                 const cedulas = partida.jugadores ? partida.jugadores.map(j => j.cedula).join(', ') : 'N/A';
                 const nombres = partida.jugadores ? partida.jugadores.map(j => `${j.nombres} ${j.apellidos}`).join('<br>') : 'N/A';
                 
+                // NUEVO: Calcular tiempo
+              // NUEVO: Calcular tiempo exacto de juego en el mapa
+                const tiempoPartida = calcularTiempo(partida.fechaInicio, partida.fechaFinMapa);
+                
                 let ptsEmpatia = "N/A";
                 if (partida.jugadoresResultadosMapa && partida.jugadoresResultadosMapa.length > 0) {
                     ptsEmpatia = partida.jugadoresResultadosMapa.map(r => `<span class="badge bg-success">${r.puntosEmpatia} pts</span>`).join(' ');
@@ -327,7 +351,7 @@
                     <td>${nombres}</td>
                     <td><small>${partida.caminoSeleccionado || 'N/A'}</small></td>
                     <td>${ptsEmpatia}</td>
-                    <td>${estadoBadge}</td>
+                    <td><span class="badge bg-info text-dark"><i class="bi bi-clock me-1"></i>${tiempoPartida}</span></td> <td>${estadoBadge}</td>
                     <td class="text-center">
                         <div class="btn-group">
                             <button class="btn btn-sm btn-outline-primary btn-ver" data-id="${partida.id}" title="Ver Reporte">
@@ -368,6 +392,7 @@
 
                 let fila = {
                     "Fecha de Inicio": formatearFecha(p.fechaInicio),
+                    "Tiempo de Juego": calcularTiempo(p.fechaInicio, p.fechaFinMapa), // 
                     "Estado Partida": estadoText,
                     "Cédula": j.cedula || 'N/A',
                     "Nombres": j.nombres || 'N/A',
@@ -461,6 +486,8 @@
                                     <h6 class="text-primary mb-3"><i class="bi bi-geo-alt-fill me-2"></i>Progreso del Juego</h6>
                                     <p class="info-label">Camino</p>
                                     <p class="info-value">${p.caminoSeleccionado || 'N/A'}</p>
+                                    <p class="info-label">Tiempo en el Mapa</p>
+                                    <p class="info-value">${calcularTiempo(p.fechaInicio, p.fechaFinMapa)}</p>
                                     <p class="info-label">Personaje Jugado</p>
                                     <p class="info-value text-capitalize">${resultadoMapa?.nombre || 'N/A'}</p>
                                     <p class="info-label">Puntos de Empatía Obtenidos</p>

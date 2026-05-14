@@ -427,36 +427,26 @@ div#pantalla-mapa.activa {
    ========================================================================== */
 .ficha-jugador-mapa {
     position: absolute;
-    height: 85px !important; 
-    width: auto !important; 
+    width: clamp(50px, 8vw, 85px); 
+    height: auto;
     
-    border-radius: 0; 
-    border: none;
-    overflow: visible; 
-    background: none; 
-
-    filter: 
-        drop-shadow(1.5px 0px 0px #ffffff) 
-        drop-shadow(-1.5px 0px 0px #ffffff) 
-        drop-shadow(0px 1.5px 0px #ffffff) 
-        drop-shadow(0px -1.5px 0px #ffffff)
-        drop-shadow(0px 8px 6px rgba(0, 0, 0, 0.5));
-
-    /* ✅ El translate y el transform-origin están perfectos aquí */
-    transform: translate(calc(-50% + var(--desfaseX, 0px)), calc(-100% + var(--desfaseY, 0px))) perspective(500px) rotateX(15deg);
-   transition: left 0.3s ease-in-out, top 0.3s ease-in-out; 
-    z-index: 50;
-    pointer-events: none; 
+    /* El transform inicial lo dejamos básico para cuando la ficha recién se crea */
+    transform: translate(-50%, -100%); 
+    
     transform-origin: bottom center;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    pointer-events: none; 
 }
 
 .ficha-jugador-mapa img {
     height: 85px !important; 
     max-height: 85px !important;
-    width: auto !important; 
+    width: 100%; 
     display: block;
     position: relative;
     z-index: 2; 
+    filter: drop-shadow(0 4px 4px rgba(0,0,0,0.4));
 }
 
 /* ==========================================================================
