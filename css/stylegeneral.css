@@ -20,6 +20,7 @@
 /* Modifica esta parte en tu CSS global */
 .main-game-area > *.activa {
     display: flex !important;
+    height: max-content !important;
     flex-direction: column;
     min-height: 100%; 
     height: auto; 
@@ -29,7 +30,7 @@
     justify-content: center; /* Centra verticalmente (arriba/abajo) */
     align-items: center;     /* Centra horizontalmente (izquierda/derecha) */
     
-    padding-bottom: 40px; /* Espacio extra para que no choque con el menú inferior */
+    padding-bottom: 80px; /* Espacio extra para que no choque con el menú inferior */
     
     /* 💡 Tip pro: Si el contenido es más alto que la pantalla, esto permite 
        hacer scroll sin que se corte la parte de arriba */
@@ -170,8 +171,11 @@ body {
     
     position: relative;
     
-    /* ✅ EL SCROLL SOLO VIVE AQUÍ ADENTRO */
-    overflow-y: auto; 
+   -webkit-overflow-scrolling: touch; 
+    touch-action: pan-y; /* Le dice a la pantalla táctil: "Aquí se vale deslizar el dedo arriba/abajo" */
+    
+    /* Cambiamos 'auto' por 'scroll' para forzar a que el carril de la barra siempre exista */
+    overflow-y: scroll !important; 
     overflow-x: hidden;
     width: 100%;
     height: 100%; /* Asegura que baje hasta el final */
