@@ -185,10 +185,21 @@ body {
    
 }
 /* Scrollbar Personalizado (Opcional pero recomendado) */
-.main-game-area::-webkit-scrollbar { width: 8px; }
-.main-game-area::-webkit-scrollbar-track { background: rgba(94, 42, 132, 0.05); border-radius: 10px; }
-.main-game-area::-webkit-scrollbar-thumb { background: var(--color-purple-main); border-radius: 10px; }
-
+/* ✅ Scrollbar forzado para pantallas táctiles Dahua */
+.main-game-area::-webkit-scrollbar { 
+    width: 12px !important; /* Más gruesa para el dedo */
+    display: block !important; /* 🚨 ESTO EVITA QUE DAHUA LA ESCONDA */
+    -webkit-appearance: none;
+}
+.main-game-area::-webkit-scrollbar-track { 
+    background: rgba(94, 42, 132, 0.1) !important; 
+    border-radius: 10px; 
+}
+.main-game-area::-webkit-scrollbar-thumb { 
+    background-color: var(--color-purple-main) !important; 
+    border-radius: 10px; 
+    border: 2px solid var(--color-bg-light); /* Borde para que resalte más */
+}
 /* =========================================
    LA REGLA MÁGICA: HIJOS DEL MAIN (Las Pantallas)
    ========================================= */
@@ -249,9 +260,9 @@ body {
 
     .main-game-area {
         flex: 1; /* Obliga al área de juego a estirarse */
-        width: 100vw;
+        width: 100%;
         height: auto; /* Permite que el flex-grow maneje el alto */
-        overflow-y: auto; /* Activa el scroll interno si el contenido es largo */
+       
     }
 
     
