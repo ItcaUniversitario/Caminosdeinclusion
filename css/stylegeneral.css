@@ -53,6 +53,7 @@
     margin: 0;
     padding: 0;
 }
+
 body {
     font-family: var(--font-body);
     color: var(--color-purple-dark);
@@ -251,6 +252,7 @@ body {
 
     
 }
+
 @media (max-width: 768px) {
     .pantalla-inicio, .pantalla-caminos, .pantalla-personajes, 
     .pantalla-quiz, .pantalla-mapa {
@@ -283,31 +285,29 @@ body {
    ALINEACIÓN GLOBAL DE PANTALLAS - CENTRADO PERFECTO (Flexbox)
    (Soluciona el problema de contenido "solo arriba")
    ========================================================================== */
-
-/* 🚨 Agrupamos todas las pantallas separadas por comas */
+/* ==========================================================================
+   ALINEACIÓN GLOBAL DE PANTALLAS - CENTRADO PERFECTO (Flexbox)
+   ========================================================================== */
 .pantalla-inicio, 
 .pantalla-caminos,
 .pantalla-personajes,
 .pantalla-quiz,
 .pantalla-mapa, 
 .pantalla-perfil, 
-.pantalla-ajustes /* <-- Añade aquí cualquier otra pantalla que tengas */ {
-    
-    position: relative; /* Mantiene el ancla para modales, ¡pero sin !important si no es necesario! */
+.pantalla-ajustes {
+    position: relative; 
     width: 100%;
-    height: 100%;
     
-    /* 🚨 LA MAGIA DE FLEXBOX PARA CENTRADO PERFECTO */
-    display: flex;           /* 🚨 Convierte la pantalla en un contenedor Flex */
-    flex-direction: column;  /* 🚨 Apila los elementos en columna (uno sobre otro) */
-    justify-content: center; /* 🚨 Centra verticalmente en el eje de la columna */
-    align-items: center;     /* 🚨 Centra horizontalmente en el eje transversal */
+    /* 🚨 CORRECCIÓN VITAL AQUÍ: Usamos min-height en vez de height */
+    min-height: 100%;
+    height: auto; /* Permite que el contenedor crezca hacia abajo si es gigante */
     
-    /* Un margen mínimo general para respirar, no para empujar asimétricamente */
+    display: flex;          
+    flex-direction: column;  
+    justify-content: center; 
+    align-items: center;     
+    
     padding: 25px;           
-    box-sizing: border-box;  /* Asegura que el padding no rompa el diseño */
-    
-    /* Nota: Flexbox con justify-content: center y align-items: center 
-       distribuirá el espacio sobrante equitativamente arriba, abajo, izquierda y derecha. */
+    box-sizing: border-box;  
 }
 
