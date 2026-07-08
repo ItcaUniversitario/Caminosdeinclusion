@@ -9,6 +9,10 @@
 @import url(cartas.css);
 @import url(pantalla_resultados.css);
 
+html {
+    height: 100%;
+    width: 100%;
+}
 /* =========================================
    EL SECRETO DE LAS PANTALLAS CONSECUTIVAS
    ========================================= */
@@ -18,23 +22,23 @@
 }
 
 /* Modifica esta parte en tu CSS global */
+/* Modifica esta parte en tu CSS global */
 .main-game-area > *.activa {
     display: flex !important;
-    height: max-content !important;
     flex-direction: column;
     min-height: 100%; 
-    height: auto; 
+    height: auto !important; /* 🚨 Usar auto en lugar de max-content */
     width: 100%;
     
-    /* 🚨 LA SOLUCIÓN AL CENTRADO: */
-    justify-content: center; /* Centra verticalmente (arriba/abajo) */
-    align-items: center;     /* Centra horizontalmente (izquierda/derecha) */
+    /* 🚨 LA SOLUCIÓN AL TECLADO: Empezar desde arriba, NO centrado */
+    justify-content: flex-start; 
+    align-items: center;     
     
-    padding-bottom: 80px; /* Espacio extra para que no choque con el menú inferior */
+    padding-top: 40px; /* Respiro arriba */
+    padding-bottom: 120px; /* Espacio extra para que no choque con el menú inferior */
     
-    /* 💡 Tip pro: Si el contenido es más alto que la pantalla, esto permite 
-       hacer scroll sin que se corte la parte de arriba */
-    overflow-y: auto; 
+    /* 🚨 VITAL: No usar auto aquí para evitar doble scroll en Dahua */
+    overflow: visible !important; 
 }
 /* 1. VARIABLES MAESTRAS */
 :root {
@@ -58,12 +62,15 @@
 body {
     font-family: var(--font-body);
     color: var(--color-purple-dark);
-    height: 100dvh; 
+    height: 100%; 
+    width: 100%;
     display: flex;
     flex-direction: column; 
     overflow: hidden; 
     position: relative;
     z-index: 0;
+    margin: 0;
+    padding: 0;
 
     /* El gradiente ahora usa rgba() para ser una capa púrpura semitransparente sobre la imagen */
     background: linear-gradient(
@@ -300,13 +307,8 @@ body {
     display: flex !important; 
 }
 
-
 /* ==========================================================================
-   ALINEACIÓN GLOBAL DE PANTALLAS - CENTRADO PERFECTO (Flexbox)
-   (Soluciona el problema de contenido "solo arriba")
-   ========================================================================== */
-/* ==========================================================================
-   ALINEACIÓN GLOBAL DE PANTALLAS - CENTRADO PERFECTO (Flexbox)
+   ALINEACIÓN GLOBAL DE PANTALLAS - CENTRADO PERFECTO SIN ROMPER EL SCROLL
    ========================================================================== */
 .pantalla-inicio, 
 .pantalla-caminos,
@@ -318,13 +320,14 @@ body {
     position: relative; 
     width: 100%;
     
-    /* 🚨 CORRECCIÓN VITAL AQUÍ: Usamos min-height en vez de height */
     min-height: 100%;
-    height: auto; /* Permite que el contenedor crezca hacia abajo si es gigante */
+    height: auto; 
     
     display: flex;          
     flex-direction: column;  
-    justify-content: center; 
+    
+    /* 🚨 OBLIGATORIO PARA DAHUA: flex-start, NO center */
+    justify-content: flex-start; 
     align-items: center;     
     
     padding: 25px;           
