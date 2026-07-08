@@ -164,41 +164,46 @@ body {
    5. EL CONTENEDOR PRINCIPAL DEL JUEGO
    ========================================= */
 .main-game-area {
-    flex: 1; /* Toma todo el espacio disponible al lado del slider/menú */
-    
-    /* ✅ TRUCO VITAL 2: Evita desbordamientos horizontales en Flexbox */
+    /* Tus reglas anteriores se mantienen... */
+    flex: 1; 
     min-width: 0; 
-    
     position: relative;
-    
-   -webkit-overflow-scrolling: touch; 
-    touch-action: pan-y; /* Le dice a la pantalla táctil: "Aquí se vale deslizar el dedo arriba/abajo" */
-    
-    /* Cambiamos 'auto' por 'scroll' para forzar a que el carril de la barra siempre exista */
-    overflow-y: scroll !important; 
+    height: 100%; 
+    max-height: 100%;
+    overflow-y: auto !important; 
     overflow-x: hidden;
     width: 100%;
-    height: 100%; /* Asegura que baje hasta el final */
     
+    /* 🚨 NUEVO: Sombra interna en la parte inferior para indicar que hay más contenido */
+    box-shadow: inset 0px -40px 30px -30px rgba(94, 42, 132, 0.3);
+}
+/* =========================================================
+   🚨 MODO DAHUA: BARRAS DE SCROLL VISIBLES FORZADAS
+   ========================================================= */
+/* Al quitar .main-game-area, obligamos al navegador Android 
+   a usar nuestra barra en lugar de la suya invisible */
 
-   
-   
+::-webkit-scrollbar { 
+    width: 14px !important; /* Un poco más ancha para dedos grandes */
+    background-color: rgba(94, 42, 132, 0.05) !important; 
+    -webkit-appearance: none !important;
+    display: block !important; 
 }
-/* Scrollbar Personalizado (Opcional pero recomendado) */
-/* ✅ Scrollbar forzado para pantallas táctiles Dahua */
-.main-game-area::-webkit-scrollbar { 
-    width: 12px !important; /* Más gruesa para el dedo */
-    display: block !important; /* 🚨 ESTO EVITA QUE DAHUA LA ESCONDA */
-    -webkit-appearance: none;
-}
-.main-game-area::-webkit-scrollbar-track { 
+
+::-webkit-scrollbar-track { 
     background: rgba(94, 42, 132, 0.1) !important; 
     border-radius: 10px; 
 }
-.main-game-area::-webkit-scrollbar-thumb { 
+
+::-webkit-scrollbar-thumb { 
     background-color: var(--color-purple-main) !important; 
     border-radius: 10px; 
-    border: 2px solid var(--color-bg-light); /* Borde para que resalte más */
+    border: 3px solid var(--color-bg-light) !important; /* Hace que el morado resalte más */
+}
+
+/* 🎯 El toque final para que el thumb no desaparezca */
+::-webkit-scrollbar-thumb:window-inactive {
+    background-color: var(--color-purple-main) !important; 
 }
 /* =========================================
    LA REGLA MÁGICA: HIJOS DEL MAIN (Las Pantallas)
