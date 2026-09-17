@@ -1,0 +1,628 @@
+/* =========================================================
+   MODAL VIDEO INTRODUCTORIO (ESTILO EQUILIBRADO Y LIMPIO)
+   ========================================================= */
+/* 1. El contenedor padre debe ser relativo */
+#paso-2 {
+    position: relative; /* Base de posicionamiento para el modal */
+}
+
+/* 2. Modal con anclaje total de bordes */
+.modal-intro-overlay {
+    display: none;             
+    position: absolute;        
+    /* 🔥 Anclamos los 4 bordes para que obligatoriamente cubra el 100% del contenido */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    min-height: 100%;          /* 🔥 Se estira si el formulario crece en móviles */
+    
+    background-color: rgba(0, 0, 0, 0.65); 
+    backdrop-filter: blur(4px);            
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 999;              
+    justify-content: center;
+    align-items: center;
+    animation: fadeInOverlay 0.3s ease-out;
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-intro-card {
+    position: relative;
+    background: linear-gradient(145deg, #2b183d 0%, #160a21 100%); 
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 20px;
+    width: 90%;
+    max-width: 750px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); 
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: slideUpCard 0.4s ease-out;
+}
+
+@keyframes slideUpCard {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Etiqueta superior (Discreta) */
+.badge-intro {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Botón "X" en la esquina (Clásico y limpio) */
+.btn-cerrar-intro {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 36px;
+    height: 36px;
+    background: var(--color-pink-accent, #e74c3c); /* Respetamos tu variable o cae en rojo */
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease, background 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.btn-cerrar-intro:hover {
+    filter: brightness(0.85);
+    transform: scale(1.05);
+}
+
+/* Reproductor 16:9 */
+.video-container {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Botón inferior */
+.intro-footer {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 5px;
+}
+
+/* Botón Ir al Registro */
+.btn-omitir-intro {
+    background: var(--color-yellow-btn, #f3a601);
+    color: var(--color-purple-dark, #1e092b);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-omitir-intro:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
+
+/* ---------------------------------------------------------
+   1. CONTENEDOR PRINCIPAL (100% ALTO Y ANCHO)
+   --------------------------------------------------------- */
+#paso-2.activa {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    padding: 15px 20px; 
+    width: 100%;
+    height: 100%; 
+    box-sizing: border-box;
+    animation: aparecerSuave 0.5s ease;
+}
+
+@keyframes aparecerSuave {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 1. Tarjeta Maestra con Efecto Cristal */
+.tarjeta-registro-maestra {
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-left: 1px solid rgba(255, 255, 255, 0.25); 
+    box-shadow: inset 2px 0 10px rgba(255, 255, 255, 0.05);
+    width: 100%;
+    max-width: 100%;
+    height: 100%; 
+    display: flex;
+    border-radius: 20px; 
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ---------------------------------------------------------
+   2. CABECERA: BARRA DE NAVEGACIÓN ESTILO APP
+   --------------------------------------------------------- */
+.cabecera-registro {
+    padding: 15px 25px;
+    border-bottom: 2px dashed rgba(94, 42, 132, 0.15);
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
+}
+
+.centro-cabecera {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1; 
+    width: 100%; 
+}
+
+.centro-cabecera h2 {
+    color: var(--color-purple-dark);
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* 🌟 BOTONES SUPERIORES (VOLVER Y JUGAR) 🌟 */
+.btn-volver-top, .btn-continuar-top {
+    background: var(--color-yellow-btn);
+    color: var(--color-purple-dark);
+    border: none;
+    height: 50px; 
+    border-radius: 15px;
+    font-size: 1.1rem; 
+    font-family: var(--font-body);
+    font-weight: 800; 
+    cursor: pointer; 
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(243, 166, 1, 0.3);
+}
+
+.btn-volver-top {
+    padding: 0 20px; 
+    gap: 8px;
+}
+
+.btn-continuar-top {
+    padding: 0 25px; 
+}
+
+.btn-volver-top:hover {
+    transform: scale(1.05) translateX(-3px); 
+    box-shadow: 0 6px 15px rgba(243, 166, 1, 0.5);
+}
+
+.btn-continuar-top:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(243, 166, 1, 0.5);
+}
+
+/* 🌟 SELECTOR DE JUGADORES (RESPONSIVE GRID) 🌟 */
+.selector-jugadores-horizontal {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 10px;
+    width: 100%;
+    max-width: 550px; 
+}
+
+.btn-jugador {
+    background: #ffffff;
+    border: 3px solid rgba(94, 42, 132, 0.1); 
+    border-radius: 18px; 
+    cursor: pointer;
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    justify-content: center;
+    gap: 8px; 
+    padding: 8px 12px; 
+    height: 60px; 
+    width: 100%;
+    min-width: 0; 
+    box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.numero-jugador { 
+    font-size: 1.4rem; 
+    font-weight: 900; 
+    color: var(--color-purple-main); 
+    transition: all 0.3s ease;
+}
+
+.btn-jugador img { 
+    width: 30px; 
+    height: 30px; 
+    object-fit: contain;
+    filter: grayscale(80%) opacity(0.5); 
+    transition: all 0.3s ease;
+}
+
+.btn-jugador:hover, .btn-jugador.seleccionado {
+    border-color: var(--color-yellow-btn);
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 15px rgba(243, 166, 1, 0.25);
+}
+.btn-jugador:hover img, .btn-jugador.seleccionado img { 
+    filter: grayscale(0%) opacity(1); 
+    transform: scale(1.1); 
+}
+.btn-jugador.seleccionado .numero-jugador { 
+    color: var(--color-yellow-btn); 
+    text-shadow: 1px 1px 0px rgba(94, 42, 132, 0.8);
+}
+
+/* ---------------------------------------------------------
+   3. CUERPO Y CARRUSEL DE FORMULARIOS
+   --------------------------------------------------------- */
+.cuerpo-registro {
+    padding: 20px 30px 40px 30px; 
+    background-color: transparent;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    /* 🔥 CAMBIO: min-height: 0 estaba aplastando el contenedor. Ponlo en auto o quítalo */
+    min-height: auto; 
+    
+    /* 🔥 CAMBIO: Si la tarjeta es más grande que la pantalla, permite scroll vertical aquí */
+    overflow-y: auto; 
+}
+
+.carrusel-wrapper {
+    display: flex;
+    align-items: center; /* En Desktop centra la tarjeta */
+    gap: 15px;
+    width: 100%;
+    position: relative;
+    flex: 1; 
+    
+    /* 🔥 CAMBIO: Permite que el contenedor crezca */
+    min-height: min-content; 
+    height: auto;
+}
+
+#contenedor-formularios {
+    display: flex;
+    flex-direction: row; 
+    width: 100%;
+    /* 🔥 CAMBIO: Quitar height: 100% y dejar que crezca según el contenido */
+    height: auto; 
+    /* 🔥 CAMBIO: Añadir un min-height para asegurar que quepa en pantallas grandes */
+    min-height: min-content; 
+    gap: 30px; 
+    overflow-x: auto; 
+    
+    /* 🔥 CAMBIO: El scroll vertical en móviles lo debe manejar el padre, o este contenedor pero sin cortarlo */
+    overflow-y: visible; 
+    
+    scroll-snap-type: x mandatory; 
+    scroll-behavior: smooth;
+    
+    /* 🔥 CAMBIO: Aumentar el padding-bottom para asegurar que se vea el botón de inicio */
+    padding: 15px 5px 40px 5px; 
+}
+/* 🔥 Oculta las barras en Chrome, Safari, Opera y Celulares */
+#contenedor-formularios::-webkit-scrollbar { 
+    display: none; 
+}
+
+/* 🔥 Oculta las barras en Firefox y Edge */
+#contenedor-formularios {
+    -ms-overflow-style: none;  /* IE y Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.bloque-jugador {
+    flex: 0 0 100%; 
+    scroll-snap-align: center; 
+    background-color: #fcf9ff; 
+    border: 2px solid rgba(94, 42, 132, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    position: relative; 
+    transition: all 0.4s ease;
+}
+
+.check-listo {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 35px;
+    height: 35px;
+    background-color: var(--color-yellow-btn);
+    color: var(--color-purple-dark);
+    border: 3px solid #ffffff; 
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(243, 166, 1, 0.4);
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+    z-index: 10;
+}
+
+.bloque-jugador.completado {
+    border-color: var(--color-purple-main);
+    box-shadow: 0 5px 15px rgba(94, 42, 132, 0.15);
+}
+.bloque-jugador.completado .check-listo {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.btn-flecha {
+    background: var(--color-purple-main);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(94, 42, 132, 0.2);
+}
+.btn-flecha:hover { background: var(--color-pink-accent); transform: scale(1.1); }
+.btn-flecha:active { transform: scale(0.9); }
+
+/* ---------------------------------------------------------
+   4. ELEMENTOS DEL FORMULARIO
+   --------------------------------------------------------- */
+.input-busqueda-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+.select-doc { flex: 0 0 140px; }
+.input-doc { flex: 1; }
+
+.btn-buscar-compacto {
+    background: transparent !important;
+    border: 2px solid var(--color-purple-main) !important; 
+    border-radius: 8px;                                 
+    cursor: pointer;
+    padding: 6px 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-buscar-compacto:hover {
+    background-color: rgba(94, 42, 132, 0.1) !important; 
+    transform: scale(1.05);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.input-form {
+    width: 100%;
+    padding: 14px 18px; 
+    border: 2px solid rgba(94, 42, 132, 0.15);
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 1rem; 
+    color: var(--color-purple-dark);
+    outline: none;
+}
+.input-form:focus { border-color: var(--color-pink-accent); }
+
+.checkbox-grupo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 0;             
+    height: 100%;              
+    min-height: 48px;          
+    padding: 0 14px;
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2px solid rgba(94, 42, 132, 0.15);
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+.checkbox-grupo input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    flex-shrink: 0;           
+    margin: 0;
+    cursor: pointer;
+    accent-color: var(--color-pink-accent);
+}
+
+.checkbox-grupo label {
+    font-size: 0.88rem;       
+    line-height: 1.25;
+    color: var(--color-purple-dark);
+    cursor: pointer;
+    margin: 0;
+    user-select: none;
+}
+
+.enlace-terminos {
+    color: var(--color-pink-accent);
+    font-weight: 800;
+    text-decoration: underline;
+}
+
+/* =========================================
+   ANIMACIÓN DEL BOTÓN DE INICIO
+   ========================================= */
+.animar-aparicion {
+    animation: aparecerDesdeAbajo 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes aparecerDesdeAbajo {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+#contenedor-boton-iniciar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    
+    /* 🔥 CAMBIO: Quitamos los márgenes verticales para que no se vea más abajo que el botón de Volver */
+    margin: 0; 
+}
+
+#contenedor-boton-iniciar button {
+    background: linear-gradient(135deg, var(--color-purple-main), #8b3cba);
+    color: #ffffff;
+    font-size: 1rem; 
+    font-weight: 700; 
+    text-transform: uppercase;
+    padding: 10px 25px; 
+    border: none;
+    border-radius: 25px; 
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(94, 42, 132, 0.3); 
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px; 
+    max-width: 90%; 
+}
+
+#contenedor-boton-iniciar button:hover {
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 15px rgba(94, 42, 132, 0.5);
+    background: linear-gradient(135deg, #71339e, #a045d6);
+}
+
+#contenedor-boton-iniciar button:active {
+    transform: translateY(1px); 
+    box-shadow: 0 2px 5px rgba(94, 42, 132, 0.4);
+}
+
+#contenedor-boton-iniciar.animar-aparicion button {
+    background: linear-gradient(135deg, #71339e, #71339e); 
+    box-shadow: 0 0 15px rgba(40, 167, 69, 0.5);
+    animation: palpitarListo 1.5s infinite; 
+}
+
+@keyframes palpitarListo {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); } 
+    100% { transform: scale(1); }
+}
+
+/* ---------------------------------------------------------
+   5. RESPONSIVIDAD (MÓVILES Y TABLETS) - ORDENADO
+   --------------------------------------------------------- */
+/* =========================================
+   RESPONSIVE: BOTONES Y CABECERA EN MÓVILES
+   ========================================= */
+@media screen and (max-width: 900px) {
+    .cabecera-registro {
+        flex-direction: column; /* Apila todos los elementos verticalmente */
+        align-items: center;
+        text-align: center;
+        gap: 15px;
+        padding: 15px 10px;
+    }
+
+    /* 1. El título y los avatares se quedan arriba en el centro */
+    .centro-cabecera {
+        order: 1;
+        width: 100%;
+    }
+
+    /* 2. El botón de VOLVER va primero abajo del selector */
+    .btn-volver-top {
+        order: 2;
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+
+    /* 3. El contenedor y botón de INICIAR va justo debajo de Volver */
+    #contenedor-boton-iniciar {
+        order: 3;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    #contenedor-boton-iniciar .btn-continuar-top {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .modal-intro-card { 
+        padding: 16px; 
+        width: 95%;
+    }
+    .btn-omitir-intro { 
+        width: 100%; 
+        text-align: center; 
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .centro-cabecera h2 { font-size: 1.1rem; }
+    .btn-jugador { height: 48px; }
+    .numero-jugador { font-size: 1rem; }
+    .btn-jugador img { width: 20px; height: 20px; }
+}

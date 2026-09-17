@@ -1,0 +1,248 @@
+/* =========================================================
+   ESTILOS DEL MODAL EDUCATIVO
+========================================================= */
+/* 1. EL CONTENEDOR OSCURO (Fondo) */
+#modal-contenido-casilla {
+    position: absolute !important; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+    background-color: rgba(0, 0, 0, 0.65); 
+    backdrop-filter: blur(8px); 
+    -webkit-backdrop-filter: blur(8px); 
+    z-index: 150; 
+    
+    display: flex;
+    /* 🔥 EL CAMBIO CLAVE 1: En vez de center, usamos flex-start para que empiece desde arriba y nunca se corte el título */
+    align-items: flex-start; 
+    justify-content: center;
+    
+    /* Scroll general único */
+    overflow-y: auto; 
+    padding: 30px 10px; /* Le damos espacio arriba y abajo */
+}
+#modal-contenido-casilla.hidden {
+    display: none !important;
+}
+
+
+#modal-educativo-titulo {
+    color: #ffffff; 
+    font-size: 1.5rem;
+    
+    /* 🔥 EL FONDO: Degradado morado semitransparente elegante */
+    background: linear-gradient(135deg, rgba(156, 39, 176, 0.7), rgba(106, 27, 154, 0.8));
+    
+    /* 🔥 LA FORMA: Bordes redondeados estilo "píldora" */
+    border-radius: 30px;
+    padding: 10px 35px; /* Espacio alrededor del texto */
+   
+    /* Borde fino para mantener el estilo cristalizado */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    
+    /* Sombra del texto y sombra de la caja para que flote */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    
+    /* Hace que el fondo abrace al texto y no ocupe todo el ancho de la pantalla */
+    display: inline-block; 
+}
+/* 2. LA CAJA TRANSPARENTE (Contenido) */
+.modal-educativo-contenido {
+    /* 🔥 EFECTO CRISTALIZADO BLANCO */
+    background: rgba(255, 255, 255, 0.75); /* Blanco al 75% de opacidad */
+    backdrop-filter: blur(12px); /* El desenfoque que crea el efecto cristal */
+    -webkit-backdrop-filter: blur(12px); /* Soporte para navegadores Safari */
+    
+    /* Detalles para darle volumen al cristal */
+    border: 1px solid rgba(255, 255, 255, 0.9); /* Un borde blanco sutil */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Sombra suave para despegarlo del fondo */
+
+    border-radius: 20px;
+    padding: 20px; /* Aumenté un poco el padding para que respire mejor el texto */
+    max-width: 650px; 
+    width: 100%;
+    text-align: center;
+    
+    /* 🔥 EL CAMBIO CLAVE 2: Esto centra la caja verticalmente si sobra espacio, 
+       pero si falta espacio, simplemente te deja hacer scroll normalmente. */
+    margin: auto; 
+    
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* 3. EL CUERPO (Donde va el texto y la imagen) */
+#modal-educativo-cuerpo {
+    font-size: 1.05rem;
+    color: #000000; /* 🔥 Letras totalmente negras */
+    font-weight: 500; /* Un poquito de grosor extra para que se lea perfecto sobre el cristal */
+    
+    /* 🔥 EL CAMBIO CLAVE 3: Quitamos el max-height y overflow-y. 
+       ¡Adiós a la doble barra de scroll fea! Ahora todo el modal fluye natural. */
+    padding: 0;
+}
+#modal-educativo-cuerpo video {
+    width: 100%;
+    border-radius: 12px;
+    background: #000;
+    
+    /* 🔥 EL MARCO: Un borde blanco fino y elegante */
+    border: 2px solid rgba(255, 255, 255, 0.8); 
+    
+    /* 🔥 EL RESALTE: Sombra más profunda para separarlo del fondo y un ligero brillo alrededor */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 255, 255, 0.15); 
+}
+
+#btn-cerrar-educativo {
+    /* 🔥 Fondo con degradado morado, coherente con el resto del juego */
+    background: linear-gradient(135deg, #9C27B0, #6A1B9A); 
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 30px;
+    cursor: pointer;
+    
+    /* Sombra 3D inferior en morado oscuro */
+    box-shadow: 0 5px 0 #4A148C; 
+    
+    transition: transform 0.1s, box-shadow 0.1s;
+    align-self: center;
+}
+
+#btn-cerrar-educativo:active {
+    transform: translateY(5px);
+    /* La sombra desaparece al presionar (efecto de botón hundido) */
+    box-shadow: 0 0px 0 #4A148C; 
+}
+
+
+
+/* Contenedor principal de la carta RESPONSIVE */
+.modal-carta-container {
+    perspective: 1000px;
+    width: 100%; /* Ocupa el 100% del espacio disponible */
+    max-width: 320px; /* Pero nunca será más ancha que 320px */
+    height: 480px;
+    margin: 0 auto;
+}
+
+/* El elemento que rota */
+.carta-flipper {
+    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* Clase que se añade con JS para ejecutar el giro */
+.carta-flipper.girada {
+    transform: rotateY(180deg);
+}
+
+/* Caras de la carta (Frente y Reverso) */
+.carta-cara {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 25px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* El reverso ya empieza rotado 180 grados */
+.carta-reverso {
+    transform: rotateY(180deg);
+}
+
+/* Estilos internos de la carta */
+.carta-frente h2 { 
+    color: #ffffff; /* Texto en blanco */
+    margin-bottom: 10px; 
+    font-size: 1.5rem; 
+    text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra oscura para resaltar el texto */
+    font-weight: 900; /* Lo hacemos un poco más gordito para que destaque */
+}
+.carta-frente img { 
+    width: 100px; /* Lo hice un poquitito más grande para que se aprecie mejor el rostro */
+    height: 100px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    
+    /* 🔥 LA MAGIA ESTÁ AQUÍ: Enfoca la imagen desde la parte superior (la cabeza) */
+    object-position: top center; 
+    
+    margin-bottom: 15px; 
+    border: 3px solid #fff; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra extra para que se vea más 3D */
+}
+.carta-frente p { 
+    color: #070707; 
+    font-size: 1rem; 
+    line-height: 1.2; 
+    flex-grow: 1; 
+    
+    /* 🔥 EL CAMBIO: Quitamos el 600 y ponemos 'normal' para quitar la negrita */
+    font-weight: normal; 
+    
+    text-align: justify; 
+    margin: 0; 
+}
+.opcion-btn { width: 100%; margin: 5px 0; padding: 10px; border-radius: 8px; border: none; cursor: pointer; background: #f0f0f0; transition: 0.2s; font-size: 0.9rem;}
+.opcion-btn:hover { background: #e0e0e0; transform: scale(1.02); }
+
+
+
+/* =========================================================
+   ADAPTACIÓN PARA CELULARES (RESPONSIVE)
+========================================================= */
+@media (max-width: 480px) {
+    /* Reducimos los márgenes internos en celulares para dar más espacio al contenido */
+    .modal-educativo-contenido {
+        padding: 15px 15px; 
+        width: 95%; /* Aprovecha casi toda la pantalla */
+    }
+
+    /* Achicamos un poquito el título para que no ocupe tanto espacio */
+    #modal-educativo-titulo {
+        font-size: 1.2rem;
+        padding: 8px 25px;
+    }
+
+    /* Reducimos ligeramente la altura de la carta en pantallas muy pequeñas */
+    .modal-carta-container {
+        height: 420px; 
+    }
+
+    /* Achicamos la imagen del personaje en celulares para dar más espacio al texto */
+    .carta-frente img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 10px;
+    }
+
+    /* Hacemos los botones un poquito más pequeños */
+    #btn-cerrar-educativo {
+        font-size: 1.1rem;
+        padding: 10px 25px;
+    }
+}

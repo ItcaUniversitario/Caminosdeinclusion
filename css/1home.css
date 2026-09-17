@@ -1,0 +1,382 @@
+/* =========================================================
+   TEXTOS DE INSTRUCCIÓN (Lado Derecho)
+   ========================================================= */
+.encabezado-accion {
+    margin-bottom: clamp(20px, 3.5vh, 30px);
+    width: 100%;
+    padding: 0 10px;
+}
+
+.encabezado-accion h2 {
+    color: var(--color-purple-main, #5e2a84);
+    background: linear-gradient(135deg, #5e2a84, #8b44c0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+    font-weight: 900;
+    margin-bottom: 10px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.encabezado-accion p {
+    color: #4a4a4a;
+    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+    line-height: 1.5;
+    
+    /* 🔥 Modificamos los márgenes: 0 arriba/lados, y un espacio dinámico abajo */
+    margin: 0 0 clamp(15px, 2.5vh, 25px) 0;
+    
+    font-weight: 500;
+}
+/* =========================================================
+   COLUMNA IZQUIERDA (Info y Rossy)
+   ========================================================= */
+.seleccion-columna-info {
+    flex: 0.9;
+    
+    /* Solo la imagen de fondo limpia */
+    background-image: url('/assets/imagenes/generales/fondo_home.jpeg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    color: #0a0a0a;
+    padding: clamp(20px, 4vw, 40px);
+    display: flex;
+    flex-direction: column;
+justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.titulo-concientizacion {
+    color: var(--color-yellow-btn);
+    font-size: clamp(1.4rem, 2.5vw, 2.2rem); 
+    font-weight: 800;
+    margin-bottom: clamp(10px, 2vh, 20px);
+    line-height: 1.2;
+}
+
+.mensaje-concientizacion {
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+    line-height: 1.5;
+    
+    /* 🔥 Agregamos espacio superior y mantenemos el inferior */
+    margin-top: clamp(10px, 2vh, 20px);
+    margin-bottom: clamp(15px, 3vh, 30px);
+    
+    opacity: 0.9;
+    text-align: justify;
+}
+
+/* --- IMAGEN DE ROSSY --- */
+.imagen-rossy-visible {
+    width: auto;
+    max-width: 100%; 
+    max-height: clamp(200px, 45vh, 380px); 
+    object-fit: contain;
+    flex-shrink: 0; 
+    filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.4));
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.imagen-rossy-visible:hover {
+    transform: scale(1.04) translateY(-3px);
+}
+.slogan-contenedor-simple {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    
+    /* Margen superior para anclarlo arriba */
+    margin-top: clamp(15px, 3vh, 30px);
+    
+    /* 🔥 Espacio inferior aumentado para darle más respiro a lo que sigue (Rossy) */
+    margin-bottom: clamp(25px, 4vh, 45px);
+    
+    background: none;
+    border: none;
+    box-shadow: none;
+    width: 100%;
+}
+
+/* Línea de arriba (mayúsculas, bold, sin sombras) */
+.slogan-sub {
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    font-weight: 800;
+    color: #3a1c4f; 
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-shadow: none; 
+    margin-bottom: 3px;
+}
+
+/* Línea de abajo (mayúsculas, máximo bold, sin sombras) */
+.slogan-principal {
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: 900;
+    color: #3a1c4f; 
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+    text-transform: uppercase;
+    text-shadow: none; 
+}
+/* =========================================================
+   COLUMNA DERECHA (Caminos y Botón)
+   ========================================================= */
+.seleccion-columna-accion {
+    flex: 1.3;
+    padding: clamp(20px, 4vw, 40px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    text-align: center;
+   
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-left: 1px solid rgba(255, 255, 255, 0.4); 
+    box-shadow: inset 2px 0 10px rgba(255, 255, 255, 0.1);
+
+    /* 🔥 ELIMINADO EL SCROLL INTERNO: Ahora esta columna simplemente empujará la tarjeta hacia abajo si necesita más espacio */
+}
+
+/* =========================================================
+   TARJETAS DE CAMINOS (Grid principal)
+   ========================================================= */
+.grid-caminos {
+    display: flex;
+    gap: clamp(15px, 2vw, 25px);
+    width: 100%;
+    max-width: 750px;
+    margin-bottom: clamp(20px, 4vh, 40px);
+    justify-content: center;
+}
+
+.opcion-card {
+    flex: 1;
+    position: relative;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 1), rgba(253, 242, 233, 0.6));
+    border: 3px dashed rgba(94, 42, 132, 0.25);
+    border-radius: 20px;
+    padding: clamp(25px, 4vh, 35px) 15px 15px 15px; 
+    display: flex;
+    flex-direction: column;
+    
+    /* --- LÍNEAS AGREGADAS PARA LA ALTURA --- */
+    min-height: 320px; /* Cambia este número (ej. 350px, 400px) hasta que veas la altura perfecta */
+    justify-content: center; /* Centra el contenido verticalmente en el nuevo espacio */
+    /* --------------------------------------- */
+
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.opcion-card * { pointer-events: none; }
+
+.opcion-card::before {
+   content: "CAMINO 1";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--color-purple-main);
+    color: #ffffff;
+    font-size: clamp(0.7rem, 1vw, 0.85rem);
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 4px 14px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 0 4px 10px rgba(94, 42, 132, 0.3);
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+.opcion-card:nth-child(2)::before { 
+    content: "CAMINO 2"; /* 🔥 Esta es la línea mágica que faltaba */
+    background-color: #0288d1; 
+}
+.icono-camino {
+    width: auto;
+    
+    /* --- MODIFICADO PARA UN ICONO MÁS GRANDE --- */
+    max-height: clamp(80px, 18vh, 120px); /* Aumentados los valores min, current y max */
+    object-fit: contain;
+    flex-shrink: 0;
+    margin-bottom: clamp(15px, 3vh, 20px); /* Ligeramente aumentado el margen inferior */
+    /* --------------------------------------------- */
+    
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12));
+}
+
+.opcion-card h3 {
+    color: var(--color-purple-dark);
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    font-weight: 800;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.opcion-card p {
+    color: #555555;
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
+    line-height: 1.3;
+    
+    /* 🔥 Modificamos los márgenes: 10px arriba, 0 a los lados y abajo */
+    margin-top: 10px;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    
+    text-align: justify;
+}
+
+.opcion-card:hover:not(.seleccionado) {
+    transform: translateY(-4px) scale(1.02);
+    border-style: solid;
+   border-color: #5e2a84;; 
+    box-shadow: 0 10px 25px rgba(2, 136, 209, 0.25);
+    background: #ffffff;
+}
+.opcion-card:hover:not(.seleccionado) .icono-camino { transform: scale(1.1) rotate(3deg); }
+
+@keyframes resplandorSeleccion {
+    0% { box-shadow: 0 0 15px rgba(243, 166, 1, 0.4); transform: translateY(-4px) scale(1.02); }
+    50% { box-shadow: 0 0 30px rgba(243, 166, 1, 0.6); transform: translateY(-4px) scale(1.03); }
+    100% { box-shadow: 0 0 15px rgba(243, 166, 1, 0.4); transform: translateY(-4px) scale(1.02); }
+}
+
+@keyframes saltito {
+    0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.opcion-card.seleccionado {
+    border: 3px solid var(--color-yellow-btn);
+    background: linear-gradient(145deg, #ffffff, #fffdf2);
+    animation: resplandorSeleccion 2s infinite ease-in-out;
+    z-index: 5;
+}
+.opcion-card.seleccionado .icono-camino { transform: scale(1.1); filter: drop-shadow(0 8px 15px rgba(243, 166, 1, 0.4)); }
+.opcion-card.seleccionado::before { background-color: var(--color-yellow-btn); color: var(--color-purple-dark); }
+.opcion-card.seleccionado::after {
+    content: "⭐";
+    position: absolute;
+    top: -12px; right: -10px;
+    background: radial-gradient(circle, #ffe066 30%, var(--color-yellow-btn) 100%);
+    color: var(--color-purple-dark);
+    width: 35px; height: 35px;
+    border-radius: 50%; border: 2px solid #ffffff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(243, 166, 1, 0.5);
+    animation: saltito 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 3;
+}
+/* =========================================================
+   RESPONSIVIDAD: TABLETS (Hasta 960px)
+   ========================================================= */
+@media (max-width: 960px) {
+    #paso-1 .tarjeta-general {
+        flex-direction: column; 
+       
+    }
+    
+    .seleccion-columna-info, 
+    .seleccion-columna-accion {
+        /* 🔥 VITAL: Le dice a las columnas "Tomen toda la altura que necesiten para el contenido" */
+        flex: none;
+        height: auto;
+    }
+
+    .seleccion-columna-info { 
+        order: 1; 
+        padding: 30px 25px 20px 25px; 
+        border-radius: 20px 20px 0 0; 
+    }
+    
+    .seleccion-columna-accion { 
+        order: 2; 
+        padding: 20px 25px 40px 25px; 
+        border-radius: 0 0 20px 20px;
+    }
+    
+    .imagen-rossy-visible { max-height: 250px; } 
+}
+
+/* =========================================================
+   RESPONSIVIDAD: MÓVILES (Hasta 600px)
+   ========================================================= */
+@media (max-width: 600px) {
+    .seleccion-columna-info, .seleccion-columna-accion { padding: 20px 15px; }
+
+    .grid-caminos {
+        flex-direction: column; 
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .opcion-card {
+        display: grid; 
+        grid-template-columns: auto 1fr; 
+        grid-template-rows: auto auto; 
+        column-gap: 15px; 
+        align-items: center;
+        text-align: left;
+        padding: 35px 15px 15px 15px; 
+        min-height: 110px;
+    }
+
+    .opcion-card::before { font-size: 0.7rem; padding: 3px 12px; }
+
+    .icono-camino {
+        grid-column: 1 / 2; 
+        grid-row: 1 / 3; 
+        width: 65px;
+        height: 65px;
+        max-height: 65px; 
+        margin-bottom: 0;
+        flex-shrink: 0; 
+    }
+    
+    .opcion-card h3 { 
+        grid-column: 2 / 3; 
+        grid-row: 1 / 2;
+        font-size: 1.1rem; 
+        margin-bottom: 2px; 
+        align-self: end; 
+    }
+    
+    .opcion-card p { 
+        grid-column: 2 / 3; 
+        grid-row: 2 / 3;
+        font-size: 0.85rem; 
+        line-height: 1.2; 
+        align-self: start;
+    }
+}
+
+/* Etiqueta flotante tipo Badge Gamer */
+.badge-gamificado {
+    display: inline-block;
+    background: var(--color-yellow-btn, #f3a601);
+    color: #1e092b;
+    font-size: 0.75rem;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+

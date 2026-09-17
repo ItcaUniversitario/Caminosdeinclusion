@@ -1,0 +1,877 @@
+/* =========================================================
+   ÁREA DE MAPA Y TABLERO (PASO 6)
+   Estilo unificado con el Dashboard Global
+   ========================================================= */
+
+/* --- 1. CONTENEDOR PRINCIPAL A DOS COLUMNAS --- */
+#paso-5 {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch; /* Obliga a la columna del mapa a tocar el fondo */
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    height: 100%; /* Asegura que tome el alto disponible */
+    flex: 1;
+    overflow: hidden; /* Ocultamos el scroll general */
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   2. BARRA LATERAL IZQUIERDA (Panel de Jugadores y Ruleta)
+   ========================================================= */
+.panel-juego-superior {
+    display: flex;
+    flex-direction: column;
+    width: 290px;
+    flex-shrink: 0;
+    gap: 20px;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* --- Panel de Jugadores --- */
+.panel-jugadores h3 {
+    margin: 0 0 12px 0;
+    color: var(--color-purple-dark, #4a148c);
+    font-size: 1.15rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    border-bottom: 2px dashed rgba(94, 42, 132, 0.3);
+    padding-bottom: 10px;
+}
+
+.lista-jugadores {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tarjeta-jugador {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #ffffff;
+    padding: 10px 14px;
+    border-radius: 16px;
+    border: 2px solid #e2e8f0;
+    border-bottom: 4px solid #cbd5e1;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.turno-activo {
+    border-color: var(--color-yellow-btn, #f59e0b) !important;
+    border-bottom: 4px solid #d97706 !important;
+    background: #fffcf0 !important;
+    transform: scale(1.03);
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+}
+
+.avatar-miniatura {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--color-purple-main, #7e22ce);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    flex-shrink: 0;
+    background: #ffffff;
+}
+
+.avatar-miniatura img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
+
+.info-jugador {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.nombre-jugador {
+    font-weight: 800;
+    color: var(--color-purple-dark, #4a148c);
+    font-size: 0.95rem;
+    text-transform: capitalize;
+}
+
+.puntos-jugador {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-purple-main, #7e22ce);
+}
+
+
+/* =========================================================
+   PANEL DE RULETA LATERAL Y DISCO
+   ========================================================= */
+.panel-ruleta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-top: 15px;
+    border-top: 2px dashed rgba(94, 42, 132, 0.3);
+    
+    /* 🔥 SOLUCIÓN 1: Evita que el panel se estire infinitamente a los lados */
+    width: 100%;
+    max-width: 260px; /* Mantiene todo compacto y ordenado */
+    margin: 0 auto;   /* Centra el panel si sobra espacio */
+}
+
+/* Contenedor principal de la ruleta */
+.ruleta-box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px; 
+    height: 200px;
+    margin: 10px 0;
+    
+    /* 🔥 SOLUCIÓN 2: Magia para que el círculo JAMÁS se vuelva un óvalo */
+    flex-shrink: 0; 
+}
+/* Contenedor principal del Switch */
+.contenedor-switch-ra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f3e5f5; /* Un fondo morado muy clarito para resaltarlo */
+    padding: 10px 15px;
+    border-radius: 12px;
+    width: 100%; /* Para que ocupe todo el ancho disponible en el panel */
+    box-sizing: border-box;
+    border: 1px solid #ce93d8;
+}
+
+/* Agrupa el icono y los textos */
+.info-app-ra {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Separación entre el icono y el texto */
+}
+
+/* Estilo para tu icono personalizado (Más grandecito) */
+.icono-app-ra {
+    width: 42px; /* Puedes subirlo a 50px si lo quieres aún más grande */
+    height: 42px;
+    object-fit: cover;
+    border-radius: 10px; /* Bordes redondeados tipo app de celular */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    background: white; /* Por si tu icono tiene transparencias */
+}
+
+/* Columna para los textos */
+.textos-ra {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Texto principal ("Modo RA") */
+.label-ra {
+    font-size: 1rem;
+    font-weight: 900;
+    color: #4a148c; /* Morado oscuro */
+    line-height: 1.2;
+}
+
+/* Texto secundario ("Requiere App X") */
+.sub-label-ra {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748b; /* Gris pizarra para contrastar */
+    line-height: 1.2;
+}
+
+/* =========================================================
+   NUEVO BOTÓN CENTRAL (GIRAR)
+   ========================================================= */
+.btn-girar-centro {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10; /* Se asegura de estar sobre los números del disco */
+    
+    /* Forma y colores */
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #3a1c4f);
+    color: #faf9fc; /* Morado oscuro para contrastar */
+    font-weight: 900;
+    font-size: 1rem;
+    border: 4px solid #ffffff;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.4), inset 0 -4px 6px rgba(0,0,0,0.2);
+    cursor: pointer;
+    
+    /* Centrado del texto interno */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease, background 0.3s ease;
+}
+
+/* Efecto al pasar el cursor */
+.btn-girar-centro:hover:not(:disabled) {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5), inset 0 -4px 6px rgba(0,0,0,0.2);
+}
+
+/* Efecto al hacer clic */
+.btn-girar-centro:active:not(:disabled) {
+    transform: translate(-50%, -50%) scale(0.95);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5), inset 0 4px 6px rgba(0,0,0,0.3);
+}
+
+/* Estado bloqueado (mientras la ruleta gira) */
+.btn-girar-centro:disabled {
+    background: #e0e0e0;
+    color: #9e9e9e;
+    border-color: #bdbdbd;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* =========================================================
+   ELEMENTOS DEL DISCO (FLECHA Y COLORES)
+   ========================================================= */
+
+.flecha-indicadora {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    /* Quitamos el transform de aquí porque lo manejará la animación */
+    font-size: 26px;
+    color: #ffd700; 
+    z-index: 20;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+    user-select: none;
+    
+    /* 🔥 NUEVO: Animación de flotar continuo */
+    animation: flotarFlecha 1.2s ease-in-out infinite alternate;
+}
+
+.ruleta-disco {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 5px solid #3a1c4f; 
+    
+    background: 
+        /* 1. Línea vertical blanca (4px de grosor) */
+        linear-gradient(90deg, transparent calc(50% - 1px), #ffffff calc(50% - 1px), #ffffff calc(50% + 1px), transparent calc(50% + 1px)),
+        /* 2. Línea diagonal blanca (4px de grosor) */
+        linear-gradient(150deg, transparent calc(50% - 1px), #ffffff calc(50% - 1px), #ffffff calc(50% + 1px), transparent calc(50% + 1px)),
+        /* 3. Línea diagonal blanca (4px de grosor) */
+        linear-gradient(210deg, transparent calc(50% - 1px), #ffffff calc(50% - 1px), #ffffff calc(50% + 1px), transparent calc(50% + 1px)),
+        
+        /* 4. Base de colores sólidos */
+        conic-gradient(
+            #f3a601 0deg 60deg,    /* 1: Amarillo */
+            #3a1c4f 60deg 120deg,  /* 2: Morado Oscuro */
+            #a6a9d4 120deg 180deg, /* 3: Morado Suave */
+            #f3a601 180deg 240deg, /* 4: Amarillo */
+            #3a1c4f 240deg 300deg, /* 5: Morado Oscuro */
+            #a6a9d4 300deg 360deg  /* 6: Morado Suave */
+        );
+    
+    transition: transform 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow: hidden;
+    
+    /* 🔥 NUEVO: Animación de pulso de luz en la sombra */
+    animation: pulsoRuleta 2s ease-in-out infinite alternate;
+}
+
+/* 🔥 NUEVO: KEYFRAMES PARA LAS ANIMACIONES SUTILES */
+
+@keyframes flotarFlecha {
+    0% { transform: translateX(-50%) translateY(0px); }
+    100% { transform: translateX(-50%) translateY(-5px); }
+}
+
+@keyframes pulsoRuleta {
+    0% { box-shadow: inset 0 0 15px rgba(0,0,0,0.2), 0 6px 15px rgba(0,0,0,0.3); }
+    100% { box-shadow: inset 0 0 15px rgba(0,0,0,0.2), 0 6px 25px rgba(243, 166, 1, 0.4); } /* Brillo dorado */
+}
+
+
+/* =========================================================
+   NÚMEROS DE LA RULETA (SE MANTIENE IGUAL)
+   ========================================================= */
+
+.ruleta-disco .num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 32px;
+    height: 32px;
+    margin-top: -16px;
+    margin-left: -16px;
+    font-weight: 900;
+    font-size: 1.35rem;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 6px #2e1065;
+    user-select: none;
+    z-index: 5;
+}
+
+.ruleta-disco .num-1 { transform: rotate(30deg) translate(0, -65px); }
+.ruleta-disco .num-2 { transform: rotate(90deg) translate(0, -65px); }
+.ruleta-disco .num-3 { transform: rotate(150deg) translate(0, -65px); }
+.ruleta-disco .num-4 { transform: rotate(210deg) translate(0, -65px); }
+.ruleta-disco .num-5 { transform: rotate(270deg) translate(0, -65px); }
+.ruleta-disco .num-6 { transform: rotate(330deg) translate(0, -65px); }
+/* =========================================================
+   ETIQUETA DEL CAMINO (ENCIMA DE LA RULETA)
+   ========================================================= */
+.badge-camino {
+    text-align: center;
+    background: rgba(147, 51, 234, 0.1); /* Fondo morado súper suave */
+    border: 2px dashed rgba(147, 51, 234, 0.4);
+    border-radius: 14px;
+    padding: 10px 15px;
+    margin-bottom: 10px; /* Separación con la ruleta */
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.subtitulo-camino {
+    font-size: 0.75rem;
+    color: #9333ea;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+}
+
+.badge-camino h3 {
+    margin: 0;
+    color: var(--color-purple-dark, #3b0764);
+    font-size: 1.15rem;
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+/* =========================================================
+   MENSAJE INFORMATIVO DE LA APP (GLOBO DE TEXTO)
+   ========================================================= */
+/* =========================================================
+   MENSAJE INFORMATIVO DE LA APP (GLOBO DE TEXTO)
+   ========================================================= */
+.mensaje-info-app {
+    background: #fdf2e9; 
+    border: 2px solid #f3a601; 
+    border-radius: 12px;
+    padding: 10px 14px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+    margin-bottom: -4px; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    
+    /* 🔥 NUEVO: Oculto por defecto y con animación preparada */
+    display: none; 
+    animation: aparecerMensaje 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Animación de entrada fluida (Efecto rebote) */
+@keyframes aparecerMensaje {
+    0% { opacity: 0; transform: translateY(15px) scale(0.9); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+
+/* El triangulito que apunta hacia abajo (hacia el switch) */
+.mensaje-info-app::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; /* Ajusta la posición del triángulo */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px 8px 0;
+    border-style: solid;
+    /* El mismo color del borde amarillo */
+    border-color: #f3a601 transparent transparent transparent; 
+}
+
+/* Para ocultar la base del triángulo y que parezca que sale de la caja */
+.mensaje-info-app::before {
+    content: '';
+    position: absolute;
+    bottom: -5px; 
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 7px 7px 0;
+    border-style: solid;
+    border-color: #fdf2e9 transparent transparent transparent; /* Mismo color del fondo crema */
+    z-index: 2;
+}
+
+.mensaje-info-app .texto-info {
+    font-size: 0.75rem;
+    color: #4a148c; /* Morado oscuro para buena lectura */
+    line-height: 1.4;
+}
+
+.mensaje-info-app strong {
+    color: #9333ea; /* Resaltar "Modo RA" */
+    font-weight: 900;
+}
+
+.mensaje-info-app b {
+    color: #3a1c4f; /* Resaltar "ITCA Academy 2.0" */
+    font-weight: 900;
+}
+/* =================================================================================================================================================================
+   PANEL DE JUGADORES FLOTANTE SOBRE EL MAPA
+   ============================================================================================================================================================================= */
+
+/* Estilos de la tabla flotante */
+.panel-jugadores.flotante {
+    position: absolute;
+    top: 20px;
+    right: 20px; /* Alineado a la esquina superior derecha */
+    z-index: 1000; /* Lo mantiene por encima del mapa y las fichas */
+    width: 260px;
+    
+    /* Efecto cristal elegante (Glassmorphism) */
+    background: rgba(255, 255, 255, 0.90);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    padding: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    
+    /* Permite hacer scroll interno si hay muchos jugadores, sin que el panel crezca hasta el infinito */
+    max-height: calc(100% - 40px);
+    overflow-y: auto;
+}
+
+
+/* Adaptación para móviles: en pantallas pequeñas lo volvemos a poner arriba del mapa normal */
+@media (max-width: 960px) {
+    .panel-jugadores.flotante {
+        position: relative;
+        top: 0;
+        right: 0;
+        width: 100%;
+        max-height: auto;
+        margin-bottom: 15px;
+    }
+
+}
+
+
+/* =========================================================
+   3. ÁREA DEL MAPA (BASE)
+   ========================================================= */
+.tablero-viewport {
+    width: 100%;
+    flex: 1;
+    
+    /* 🔥 LA LÍNEA MÁGICA: Evita que el hijo gigante rompa el contenedor hacia la derecha */
+    min-width: 0; 
+    
+    border-radius: 32px; 
+    border: 5px solid #ffffff;
+    box-shadow: 0 0 0 5px var(--color-purple-main), 0 15px 35px rgba(30, 15, 50, 0.35);
+    background-color: transparent; 
+    transform: translateZ(0); 
+}
+/* Scrollbar Webkit */
+.tablero-viewport::-webkit-scrollbar { width: 16px; height: 16px; }
+.tablero-viewport::-webkit-scrollbar-track { background: transparent; margin: 20px; }
+.tablero-viewport::-webkit-scrollbar-thumb {
+    background-color: var(--color-yellow-btn); 
+    border-radius: 20px; 
+    border: 4px solid transparent; 
+    background-clip: padding-box;
+}
+.tablero-viewport::-webkit-scrollbar-thumb:hover {
+    background-color: #ffb822; 
+    border-width: 3px;
+}
+.tablero-viewport::-webkit-scrollbar-button { display: none; }
+
+#tableroMapa, .tablero-mapa {
+    position: relative;
+    margin: 0 auto; 
+    background-color: var(--color-bg-light);
+    border-radius: 0px; 
+    overflow: hidden; 
+}
+
+.casilla {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 42px; 
+    height: 42px;
+    z-index: 10;
+    background: transparent;
+    pointer-events: none; 
+}
+
+/* =========================================================
+   CLASES DINÁMICAS (INYECTADAS POR JS)
+   ========================================================= */
+.contenedor-vertical {
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+    max-height: none;
+}
+
+.tablero-vertical {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    
+    /* 🔥 LA PROPORCIÓN GIGANTE ORIGINAL DEL CAMINO 1 */
+    aspect-ratio: 1122 / 4173; 
+    
+    /* Seguro para que flexbox no lo aplaste */
+    min-height: max-content; 
+    flex-shrink: 0;
+    
+    background-size: 100% 100%; /* 100% 100% es más seguro que 100% auto */
+    background-position: top center;
+    background-repeat: no-repeat;
+}
+/* =========================================
+   MODO CAMINO 2: HORIZONTAL CON SCROLL
+========================================= */
+.contenedor-horizontal {
+    display: flex; /* Súper importante para que el mapa hijo no desaparezca */
+    overflow-x: auto; /* Activa la barra de scroll horizontal */
+    overflow-y: hidden;
+    height: 100%; 
+    width: 100%;
+}
+
+.tablero-horizontal {
+    /* 🔥 EL CAMBIO: 100% obliga al mapa a estirarse hasta tocar el techo y el piso del contenedor */
+    height: 100%; 
+    min-height: 500px; 
+    
+    /* Tu proporción exacta */
+    aspect-ratio: 7062 / 1409; 
+    
+    width: auto; 
+    max-width: none; 
+    flex-shrink: 0; 
+    
+    background-size: 100% 100%; 
+    background-position: left center;
+    background-repeat: no-repeat;
+}
+
+/* Opcional: Dale estilo bonito a la barrita de scroll horizontal */
+.contenedor-horizontal::-webkit-scrollbar { height: 14px; }
+.contenedor-horizontal::-webkit-scrollbar-track { background: transparent; }
+.contenedor-horizontal::-webkit-scrollbar-thumb {
+    background-color: var(--color-yellow-btn, #f59e0b); 
+    border-radius: 10px; 
+    border: 3px solid #fff; /* Margen blanco para que se vea elegante */
+}
+/* =========================================================
+   4. FICHAS Y PERSONAJES (TAMAÑO EXTRA GRANDE)
+   ========================================================= */
+.ficha-jugador {
+    position: absolute !important;
+    z-index: 50;
+    transition: left 0.4s ease-in-out, top 0.4s ease-in-out; 
+    
+    /* Tamaños gigantes */
+    width: clamp(160px, 22vw, 210px);
+    height: clamp(260px, 34vw, 340px);
+    
+    transform: translate(-50%, -95%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    pointer-events: none;
+}
+
+.ficha-jugador img {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+    object-position: bottom center; 
+}
+
+.ficha-jugador .base-3d {
+    position: absolute;
+    bottom: -5px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110%; 
+    height: 40px; /* Base de sombra más alta para el nuevo tamaño */
+    background: radial-gradient(ellipse at center, rgba(94, 42, 132, 0.8) 0%, rgba(94, 42, 132, 0) 70%);
+    z-index: 1;
+}
+
+.ficha-jugador .etiqueta-nombre {
+    position: absolute;
+    /* Subimos la etiqueta bastante más para evitar que tape la cabeza del personaje */
+    top: -55px; 
+    left: 50%;
+    transform: translateX(-50%); 
+    background: #ffffff;
+    color: var(--color-purple-dark);
+    border: 3px solid var(--color-purple-dark);
+    font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+    font-weight: 900;
+    padding: 7px 18px;
+    border-radius: 12px;
+    white-space: nowrap;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    text-transform: capitalize; 
+}
+
+/* =========================================================
+   Ajustes específicos para la variante Camino 1
+   ========================================================= */
+.ficha-jugador.ficha-camino1 {
+    /* Tamaños gigantes para el camino vertical */
+    width: clamp(140px, 20vw, 180px);
+    height: clamp(235px, 30vw, 300px);
+}
+
+.ficha-jugador.ficha-camino1 .etiqueta-nombre {
+    /* Ajuste de altura para Camino 1 */
+    top: -50px; 
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    padding: 6px 16px;
+    border-width: 2px;
+}
+/* =========================================================
+   Ajustes específicos para la variante Camino 2 (Horizontal)
+   ========================================================= */
+.tablero-horizontal .ficha-jugador {
+    /* Reducimos el tamaño a casi la mitad para que encajen en la ruta */
+    width: clamp(80px, 12vw, 120px) !important;
+    height: clamp(130px, 18vw, 200px) !important;
+}
+
+.tablero-horizontal .ficha-jugador .etiqueta-nombre {
+    /* Acercamos la etiqueta a la cabeza del personaje al ser más pequeño */
+    top: -35px !important; 
+    font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+    padding: 4px 12px;
+    border-width: 2px;
+}
+
+.tablero-horizontal .ficha-jugador .base-3d {
+    /* Hacemos la sombra de la base más sutil para el nuevo tamaño */
+    height: 25px !important;
+    bottom: -2px !important;
+}
+/* =========================================================
+   6. ADAPTABILIDAD MÓVIL Y TABLET (MEDIA QUERIES CORREGIDAS)
+   ========================================================= */
+
+/* Para pantallas medianas (Tablets) */
+@media (max-width: 960px) {
+    #paso-5 {
+        flex-direction: column; /* Apila el panel arriba y el mapa abajo */
+        padding: 10px;
+        overflow-y: auto; /* Permite scroll vertical en toda la vista */
+    }
+    
+    .panel-juego-superior {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+    }
+    
+    .panel-jugadores { flex: 1; min-width: 250px; }
+    
+    .lista-jugadores {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .panel-ruleta {
+        border-top: none;
+        border-left: 2px dashed rgba(94, 42, 132, 0.3);
+        padding-top: 0;
+        padding-left: 15px;
+    }
+
+    .tablero-viewport {
+        min-height: 60vh; /* Asegura que el mapa tenga buena altura en tablet */
+        flex: none;
+    }
+.contenedor-horizontal {
+        /* Al estar debajo del panel, le damos una altura segura relativa a la pantalla */
+        height: 60vh !important; 
+        min-height: 400px;
+    }
+
+    .tablero-horizontal {
+        height: 100% !important;
+        min-height: 100% !important;
+        /* El aspect-ratio (7062 / 1409) calculará el ancho automáticamente */
+    }
+
+}
+/* Para pantallas pequeñas (Móviles) */
+@media (max-width: 650px) {
+    .panel-juego-superior {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .panel-ruleta {
+        border-left: none;
+        border-top: 2px dashed rgba(94, 42, 132, 0.3);
+        padding-left: 0;
+        padding-top: 15px;
+        width: 100%;
+    }
+    
+    .tablero-viewport {
+        display: block; /* Cambiado a block para un scroll fluido en móviles */
+    }
+    
+    /* CORRECCIÓN EN MÓVIL: Mantiene la proporción vertical y activa scrolls */
+   /* CORRECCIÓN EN MÓVIL: Aplica solo al camino vertical */
+    #tableroMapa.tablero-vertical, 
+    .tablero-mapa.tablero-vertical {
+        height: 900px !important; 
+        width: auto !important;
+        min-width: unset !important;
+    }
+    /* Reducción de fichas y etiquetas */
+    .ficha-jugador {
+        width: 45px !important;
+        height: 75px !important;
+    }
+    
+    .ficha-jugador .etiqueta-nombre {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+        top: -15px;
+        border-width: 2px;
+    }
+
+    .contenedor-horizontal {
+        /* Ajustamos la altura para dejarle espacio a la ruleta y jugadores arriba */
+        height: 50vh !important; 
+        min-height: 350px;
+    }
+
+    .tablero-horizontal {
+        height: 100% !important;
+        min-height: 100% !important;
+    }
+    
+    /* Reducimos las fichas solo en el Camino 2 para que no abarquen todo el alto */
+    #tableroMapa.tablero-horizontal .ficha-jugador {
+        width: 50px !important;
+        height: 85px !important;
+    }
+    
+    #tableroMapa.tablero-horizontal .ficha-jugador .etiqueta-nombre {
+        font-size: 0.65rem;
+        padding: 3px 8px;
+        top: -25px; /* Evita que el nombre tape al personaje encogido */
+    }
+}
+/* =========================================================
+   SWITCH DE REALIDAD AUMENTADA (RA)
+   ========================================================= */
+.contenedor-switch-ra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  
+   
+    width: 100%;
+
+    box-sizing: border-box;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.label-ra {
+    font-weight: 900;
+    color: var(--color-purple-dark, #3b0764);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* El botón deslizable */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 26px;
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #cbd5e1; /* Gris cuando está apagado */
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Cuando se activa el Switch */
+input:checked + .slider {
+    background-color: #9333ea; /* Tu morado brillante */
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+
+

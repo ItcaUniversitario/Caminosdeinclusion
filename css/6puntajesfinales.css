@@ -1,0 +1,194 @@
+/* =========================================
+   PANTALLA 6: RESULTADOS (DISEÑO 2 COLUMNAS)
+========================================= */
+
+@keyframes slideInRight {
+    0% { transform: translateX(50px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+ 
+#paso-6 .tarjeta-general {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 20px;
+   
+}
+
+.layout-victoria-columnas {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    align-items: center;
+    width: 100%;
+}
+
+/* --- COLUMNA IZQUIERDA (PORTADA) --- */
+.columna-portada {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imagen-victoria {
+    width: 100%;
+    max-height: 550px;
+    object-fit: contain; /* 🔥 El cambio clave para que no se recorte */
+    border-radius: 16px;
+   }
+
+.imagen-victoria:hover {
+    transform: rotate(0deg) scale(1.02);
+}
+
+/* --- COLUMNA DERECHA (RANKING) --- */
+.columna-ranking {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+}
+
+.titulo-trofeo {
+    font-size: 3rem;
+    color: var(--color-purple-dark);
+   
+    margin-bottom: 5px;
+    line-height: 1.1;
+}
+
+.subtitulo-resultados {
+    font-size: 1.2rem;
+    color: #444;
+    margin-bottom: 25px;
+}
+.subtitulo-resultados strong {
+    color: var(--color-purple-main);
+    font-size: 1.4rem;
+}
+
+/* --- TARJETAS DE JUGADORES (ESTILO LEADERBOARD) --- */
+.lista-jugadores-final {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.jugador-card-horizontal {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    padding: 12px 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    opacity: 0;
+    animation: slideInRight 0.5s forwards;
+    transition: transform 0.2s ease;
+}
+
+.jugador-card-horizontal:hover {
+    transform: translateX(10px);
+}
+
+.medalla-lateral {
+    font-size: 2.2rem;
+    width: 50px;
+    text-align: center;
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.numero-posicion {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #999;
+}
+
+.avatar-resultado-mini {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top center;
+    border: 2px solid var(--color-purple-main);
+    margin: 0 15px;
+}
+
+.info-jugador-victoria {
+    flex-grow: 1;
+}
+
+.nombre-resultado {
+    margin: 0 0 4px 0;
+    font-size: 1.2rem;
+    color: var(--color-purple-dark);
+    font-weight: 900;
+}
+
+.personaje-resultado {
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: capitalize;
+}
+
+.puntaje-resultado-box {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #fff;
+    background: linear-gradient(135deg, #FF9800, #F3A601);
+    padding: 8px 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(255, 152, 0, 0.4);
+}
+
+/* 👑 COLORES ESPECIALES PARA EL TOP 3 */
+.podio-oro { border: 2px solid #FFD700; background: linear-gradient(to right, #fff, #fffdf0); transform: scale(1.02); }
+.podio-plata { border: 2px solid #C0C0C0; }
+.podio-bronce { border: 2px solid #CD7F32; }
+
+/* --- BOTÓN ARCADE --- */
+.btn-reiniciar {
+    background: linear-gradient(to bottom, var(--color-yellow-btn), #d39000);
+    color: #4a148c;
+    font-size: 1.3rem;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-weight: 900;
+    text-transform: uppercase;
+    border: none;
+    box-shadow: 0 6px 0 #b37a00, 0 10px 15px rgba(0,0,0,0.3);
+    cursor: pointer;
+    align-self: flex-start; /* Alinea el botón a la izquierda debajo de la lista */
+    transition: all 0.1s ease;
+}
+
+.btn-reiniciar:active {
+    transform: translateY(6px);
+    box-shadow: 0 0 0 #b37a00, 0 5px 10px rgba(0,0,0,0.3);
+}
+
+/* --- RESPONSIVE PARA CELULARES --- */
+@media (max-width: 850px) {
+    .layout-victoria-columnas {
+        flex-direction: column;
+    }
+    .imagen-victoria {
+        max-height: 300px;
+        transform: rotate(0);
+    }
+    .columna-ranking {
+        align-items: center;
+        text-align: center;
+    }
+    .btn-reiniciar {
+        align-self: center;
+    }
+}

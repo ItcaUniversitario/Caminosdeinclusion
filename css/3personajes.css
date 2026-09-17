@@ -1,0 +1,670 @@
+/* =========================================================
+   3PERSONAJES.CSS - SELECCIÓN DE PERSONAJES
+   ========================================================= */
+
+/* Animación de entrada */
+#paso-3.activa {
+    animation: aparecerSuave 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    will-change: opacity, transform; 
+}
+
+.tarjeta-general.contenedor-vista-dual {
+    flex-direction: column;
+    padding: 30px 40px;
+    overflow-y: auto;
+}
+/* Contenedor del encabezado (Botón + Título) */
+.encabezado-paso-3 {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centra el contenido (el h2) */
+    position: relative;      /* Permite posicionar el botón de forma absoluta */
+    width: 100%;
+    margin-bottom: 30px;     /* Espacio entre el título y los personajes */
+}
+
+/* Mantiene el botón pegado a la izquierda */
+.encabezado-paso-3 .acciones-paso {
+    position: absolute;
+    left: 0;
+}
+
+/* Asegura que el título no tenga márgenes raros que lo desfasen */
+.encabezado-paso-3 h2 {
+    margin: 0;
+    text-align: center;
+}
+
+/* Opcional: Ajuste para pantallas muy pequeñas (celulares) */
+@media (max-width: 600px) {
+    .encabezado-paso-3 {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .encabezado-paso-3 .acciones-paso {
+        position: relative; /* Quita la posición absoluta en móviles para que no se encime */
+        align-self: flex-start;
+    }
+}
+/* =========================================================
+   PANEL SUPERIOR DIVIDIDO (Izquierda: Título / Derecha: Héroes)
+   ========================================================= */
+.seccion-superior-personajes {
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    justify-content: space-between;
+  
+    margin-bottom: 10px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+}
+
+/* ⬅️ LADO IZQUIERDO: Botón, Título y Turnos */
+.cabecera-paso-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alineado a la izquierda */
+    justify-content: center;
+    gap: 15px;
+    width: auto; 
+    text-align: left; 
+}
+
+
+
+.cabecera-paso-3 h2 {
+    color: var(--color-purple-dark);
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+}
+
+.indicador-turno {
+    background: var(--color-purple-dark);
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border: 2px solid var(--color-yellow-btn);
+    display: flex; 
+    width: fit-content;
+    margin: 0 auto; 
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+
+    /* ➔ ESPACIO AGREGADO ABAJO DE LA CAJITA: */
+    margin-bottom: 15px; /* Modifica este valor para más o menos espacio */
+}
+#nombre-jugador-actual {
+    /* 👇 Le agregamos un color amarillo (#ffc107) por defecto si la variable falla */
+    color: var(--color-yellow-btn, #ffc107); 
+    font-size: 1.2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+/* =========================================================
+   ANIMACIÓN DE FLOTACIÓN PARA EL INDICADOR DE TURNO
+   ========================================================= */
+@keyframes flotarHaciaAdelante {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-6px) scale(1.03); /* Sube un poco y se acerca sutilmente */
+    }
+}
+
+.indicador-turno {
+    /* Aquí se mantiene tu diseño actual, solo le añadimos la animación */
+    animation: flotarHaciaAdelante 3s ease-in-out infinite;
+}
+/* ➡️ LADO DERECHO: Héroes */
+.escenario-protagonistas {
+    display: flex;
+    flex-direction: row;        /* Coloca las tarjetas una al lado de la otra */
+    justify-content: center;    /* 🎯 CENTRA las tarjetas horizontalmente (1 o varias) */
+    align-items: center;        /* Centra verticalmente */
+    gap: 20px;                  /* Espacio entre las tarjetas si hay 2 */
+    flex-wrap: wrap;            /* Permite que se acomoden bien en pantallas pequeñas */
+    width: 100%;                /* Ocupa todo el ancho disponible para poder centrarse */
+}
+
+.tarjeta-heroe {
+    /* ✨ EFECTO CRISTALIZADO BLANCO SUTIL */
+    background: rgba(255, 255, 255, 0.5); /* Blanco al 50% de opacidad */
+    backdrop-filter: blur(10px); /* Crea el efecto de cristal desenfocando el fondo */
+    -webkit-backdrop-filter: blur(10px); /* Soporte para Safari */
+
+    border: 2px solid rgba(94, 42, 132, 0.25); 
+    border-radius: 20px;
+    
+    /* Ajusté un poco el padding derecho e izquierdo a 20px para que respire mejor */
+    padding: 15px 20px; 
+    
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    gap: 20px; 
+    
+    /* 📏 AJUSTE DE TAMAÑO (Solo ocupa lo necesario) */
+    width: fit-content; 
+    max-width: 100%; /* Evita que se desborde en móviles */
+    
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: pointer;
+}
+.tarjeta-heroe:hover {
+    transform: translateY(-5px);
+    /* 👇 Borde y resplandor completamente BLANCOS */
+    border-color: #ffffff;
+    box-shadow: 0 12px 28px rgba(255, 255, 255, 0.5); 
+}
+
+.tarjeta-heroe:active { transform: scale(0.98); }
+
+.badge-heroe {
+    position: absolute;
+    top: -12px;
+    left: 25px;
+    background: var(--color-purple-main);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 900;
+    padding: 5px 14px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(94, 42, 132, 0.3);
+}
+
+.heroe-imagen-wrapper {
+    width: 110px;  
+    height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.heroe-imagen-wrapper img {
+    width: 100%; 
+    height: 100%;
+    object-fit: cover; 
+    object-position: top center; 
+    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.15)); 
+    transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.tarjeta-heroe:hover .heroe-imagen-wrapper img {
+    transform: scale(1.5); 
+    /* 👇 Sombra de la imagen en blanco */
+    filter: drop-shadow(0 12px 20px rgba(255, 255, 255, 0.6));
+}
+
+.heroe-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    justify-content: center;
+    gap: 8px; 
+    flex-grow: 1;
+}
+
+.heroe-info h3 {
+    margin: 0;
+    color: var(--color-purple-dark);
+    font-size: 1.3rem;
+    font-weight: 900;
+}
+
+.heroe-cta {
+    font-size: 0.75rem;
+    color: var(--color-purple-main);
+    background: rgba(94, 42, 132, 0.08); 
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: inline-flex;
+    transition: all 0.3s ease;
+}
+
+.tarjeta-heroe:hover .heroe-cta {
+    /* 👇 El botón se vuelve blanco y la letra oscura para que se pueda leer */
+    background: #ffffff;
+    color: var(--color-purple-dark);
+}
+/* =========================================================
+   SECCIÓN INFERIOR Y BLOQUES DE CAMINO
+   ========================================================= */
+.seccion-seleccion-inferior {
+   
+    padding: 25px;
+   
+}
+
+.bloque-camino {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.5);
+    width: 100%;
+}
+
+.bloque-camino:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.subtitulo-camino {
+    margin: 0 0 20px 0;
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--color-purple-dark);
+    background: rgba(255, 255, 255, 0.85);
+    padding: 8px 20px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.fila-caritas {
+    
+    display: flex;
+    gap: 40px;
+    justify-content: center; 
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* =========================================================
+   🧍‍♂️ PERSONAJES LIBRES (CARITAS)
+   ========================================================= */
+.cara-item {
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.cara-item img {
+    width: 100px;
+    height: 100px; 
+       /* ✨ EFECTO CRISTALIZADO BLANCO SUTIL */
+    background: rgba(255, 255, 255, 0.5); /* Blanco al 50% de opacidad */
+    backdrop-filter: blur(10px); /* Crea el efecto de cristal desenfocando el fondo */
+    -webkit-backdrop-filter: blur(10px); /* Soporte para Safari */
+    /* 👇 Asegura que rellene el cuadro enfocando la cabeza */
+    object-fit: cover; 
+    object-position: top center; 
+    
+    border-radius: 15px; 
+    border: 2px solid rgba(94, 42, 132, 0.3); 
+    box-shadow: 0 6px 10px rgba(0,0,0,0.12);
+    transition: all 0.3s ease;
+    margin-bottom: 12px;
+}
+
+.cara-item span {
+    font-weight: 800;
+    color: var(--color-purple-dark);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    text-align: center;
+    transition: color 0.3s ease;
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.9);
+}
+
+.cara-item:hover:not(.bloqueado) { transform: translateY(-6px); }
+
+.cara-item:hover:not(.bloqueado) img {
+    /* Al pasar el mouse levanta la imagen, ya no le hace escala para no romper el marco */
+    transform: translateY(-5px); 
+    border-color: var(--color-purple-main); 
+    box-shadow: 0 10px 15px rgba(94, 42, 132, 0.4);
+}
+
+/* =========================================================
+   ESTADO ACTIVO (PERSONAJE SELECCIONADO)
+   ========================================================= */
+.cara-item.activo img {
+    /* Mantenemos el pequeño zoom para que destaque */
+    transform: scale(1.12); 
+    
+    /* 👇 Cambiamos el borde amarillo por tu morado principal */
+    border: 3px solid var(--color-purple-main);
+    
+    /* 👇 Cambiamos el resplandor amarillo por un resplandor morado/rosado elegante */
+    box-shadow: 0 0 18px rgba(94, 42, 132, 0.5); 
+}
+
+.cara-item.activo span { 
+    /* 👇 Cambiamos el texto del nombre seleccionado a morado en lugar de amarillo */
+    color: var(--color-purple-main); 
+}
+
+.cara-item.bloqueado {
+    opacity: 0.5;
+    filter: grayscale(100%);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* =========================================================
+   BOTÓN CALL TO ACTION (SELECCIONAR FINAL)
+   ========================================================= */
+.acciones-confirmacion {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-seleccionar-final {
+    background-color: var(--color-yellow-btn);
+    color: var(--color-purple-dark);
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    font-weight: 900;
+    padding: 16px 45px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: var(--hud-glow);
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 350px;
+}
+
+.btn-seleccionar-final:hover:not(:disabled) { 
+    transform: translateY(-3px); 
+    background-color: #ffb822; 
+    box-shadow: 0 0 25px rgba(243, 166, 1, 0.6);
+}
+
+.btn-seleccionar-final:disabled {
+    background-color: #cccccc;
+    color: #888888;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+}
+/* =========================================================
+   🪟 MODAL DE HISTORIA (DISEÑO DUAL A 2 COLUMNAS)
+   ========================================================= */
+.modal-oculto {
+    display: none; 
+    position: fixed; 
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); 
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 100000; 
+    justify-content: center; 
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-contenido.modal-layout-dual {
+    position: relative; 
+    background: var(--color-bg-light, #ffffff); 
+    border-radius: 25px; 
+    padding: 40px; 
+    width: 90%; 
+    max-width: 850px; /* Ancho ampliado para las 2 columnas */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4); 
+    border: 3px solid var(--color-purple-main);
+    max-height: 90vh;
+    overflow-y: auto;
+    
+    /* Layout a 2 columnas */
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+}
+
+/* ⬅️ COLUMNA IZQUIERDA (Info + Botón) */
+.modal-columna-info {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.modal-columna-info h3 {
+    color: var(--color-purple-dark); 
+    font-size: 1.8rem; 
+    margin: 0 0 15px 0; 
+    font-weight: 900; 
+    text-align: center; /* 🎯 Centra el nombre */
+    width: 100%;        /* Ocupa todo el ancho para centrarse correctamente */
+}
+
+.modal-cuerpo p { 
+    font-size: 0.95rem; 
+    color: var(--color-purple-dark); 
+    line-height: 1.6; 
+    margin-bottom: 25px;
+    text-align: justify; /* 🎯 Justifica el texto */
+}
+
+.modal-footer {
+    width: 100%;
+}
+
+.modal-footer .btn-seleccionar-final {
+    max-width: 100%;
+    font-size: 1rem;
+    padding: 12px 25px;
+}
+
+/* ➡️ COLUMNA DERECHA (Imagen Cuerpo Completo) */
+.modal-columna-imagen {
+    flex: 0.8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-columna-imagen .modal-img-wrapper {
+    width: 100%;
+    max-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-columna-imagen img {
+    max-width: 100%;
+    max-height: 380px;
+    object-fit: contain; /* Garantiza que se vea el cuerpo entero sin recortarse */
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+}
+
+.cerrar-modal { 
+    position: absolute; 
+    top: 15px; 
+    right: 15px; 
+    font-size: 26px; 
+    color: var(--color-purple-dark);
+    opacity: 0.6; 
+    cursor: pointer; 
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 2;
+}
+
+.cerrar-modal:hover { 
+    color: #ffffff; 
+    opacity: 1;
+    background-color: var(--color-pink-accent, #e91e63); 
+    transform: scale(1.1);
+}
+
+/* 📱 RESPONSIVIDAD PARA EL MODAL */
+@media (max-width: 768px) {
+    .modal-contenido.modal-layout-dual {
+        flex-direction: column-reverse; /* La imagen sube en móvil o queda arriba según diseño */
+        padding: 30px 20px 20px 20px;
+        gap: 20px;
+    }
+
+    .modal-columna-info {
+        align-items: center;
+        text-align: center;
+    }
+
+    .modal-cuerpo p {
+        text-align: justify; /* 🎯 Mantiene el texto justificado en móviles */
+    }
+
+    .modal-columna-imagen img {
+        max-height: 250px; /* Reducimos altura para pantallas pequeñas */
+    }
+}
+
+/* =========================================================
+   ANIMACIONES CLAVE (Destello del grupo de personajes)
+   ========================================================= */
+@keyframes aparecerSuave {
+    0% { opacity: 0; transform: translateY(15px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes resplandor-grupo {
+    0% { box-shadow: 0 0 0px transparent; background: transparent; transform: scale(1); }
+    /* 👇 El fondo se ilumina ligeramente en blanco durante la animación */
+    30% { box-shadow: 0 0 25px var(--color-resplandor); background: rgba(255, 255, 255, 0.3); transform: scale(1.01); }
+    100% { box-shadow: 0 0 0px transparent; background: transparent; transform: scale(1); }
+}
+
+/* 👇 Ambos caminos usan ahora BLANCO PURO (#ffffff) en lugar de rosa o amarillo */
+.resaltar-camino-1 { 
+    --color-resplandor: #ffffff; 
+    animation: resplandor-grupo 1s ease-out; 
+    border-radius: 20px; 
+}
+
+.resaltar-camino-2 { 
+    --color-resplandor: #ffffff; 
+    animation: resplandor-grupo 1s ease-out; 
+    border-radius: 20px; 
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* =========================================================
+   📱 RESPONSIVIDAD 100% WEB (Móviles y Tablets)
+   ========================================================= */
+/* =========================================================
+   📱 RESPONSIVIDAD 100% WEB (Móviles y Tablets)
+   ========================================================= */
+
+@media (max-width: 900px) {
+    .tarjeta-general.contenedor-vista-dual { 
+        padding: 20px 15px; 
+    }
+    
+    /* 1. Ajuste del nuevo encabezado (Botón + Título) */
+    .encabezado-paso-3 {
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    .encabezado-paso-3 .acciones-paso {
+        position: relative; /* Quita el absolute para que no se encime */
+        width: 100%;
+        justify-content: center; /* Centra el botón de volver en celular */
+    }
+    
+    /* 2. Aseguramos que el contenedor superior fluya hacia abajo */
+    .seccion-superior-personajes {
+        flex-direction: column; 
+        gap: 25px;
+        padding-bottom: 15px;
+    }
+    
+    .cabecera-paso-3 { 
+        align-items: center; 
+        text-align: center;
+        width: 100%;
+    }
+    
+    /* 3. Las tarjetas de héroes se apilan y se centran */
+    .escenario-protagonistas {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 20px;
+    }
+    .tarjeta-heroe {
+        flex-direction: column; /* La imagen sube, el texto va abajo */
+        text-align: center;
+        width: 100%; 
+        max-width: 320px; /* Evita que la tarjeta sea más ancha que el celular */
+        padding: 20px;
+    }
+    .heroe-info {
+        align-items: center;
+    }
+    .badge-heroe { 
+        top: -12px; 
+        left: 50%; 
+        transform: translateX(-50%); 
+    }
+    
+    /* 4. Arreglamos las caritas reduciendo el enorme gap de 40px */
+    .fila-caritas {
+        gap: 20px; /* Reducido para que quepan en pantalla */
+        flex-wrap: wrap; 
+        justify-content: center; 
+    }
+}
+
+@media (max-width: 480px) {
+    /* Ajustes extra para celulares muy pequeños (iPhone SE, etc.) */
+    .encabezado-paso-3 h2, .cabecera-paso-3 h2 { 
+        font-size: 1.4rem; 
+    }
+    .indicador-turno { 
+        font-size: 0.9rem; 
+        padding: 8px 18px; 
+    }
+    .seccion-seleccion-inferior { 
+        padding: 15px 5px; 
+    }
+    
+    /* Reducimos un poco el tamaño de las caras para que quepan bien 3 por fila */
+    .cara-item { width: 80px; }
+    .cara-item img { width: 80px; height: 80px; margin-bottom: 8px; }
+    .fila-caritas { gap: 15px; }
+
+    /* Modal responsivo */
+    .modal-contenido { padding: 30px 20px 20px 20px; width: 95%; }
+   
+}

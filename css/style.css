@@ -1,0 +1,503 @@
+/* =========================================================
+   IMPORTACIÓN DE ARCHIVOS MODULARES
+   ========================================================= */
+@import url("1home.css");
+@import url("2registro.css");
+@import url("3personajes.css");
+@import url("4quiz.css");
+@import url("5mapa.css");
+@import url("6puntajesfinales.css");
+@import url("contenidocasillas.css");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* =========================================================
+   1. VARIABLES GLOBALES Y CONFIGURACIÓN BASE
+   ========================================================= */
+:root {
+    --color-bg-light: #fdf2e9;    
+    --color-purple-dark: #3a1c4f; 
+    --color-purple-main: #5e2a84; 
+    --color-yellow-btn: #f3a601;  
+    --color-pink-accent: #f06292; 
+    --font-body: 'Roboto', sans-serif;
+    --hud-glow: 0 0 15px rgba(243, 166, 1, 0.4);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    font-family: var(--font-body);
+    background-color: var(--color-bg-light);
+    color: var(--color-purple-dark);
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Mantiene la página estática como una App */
+}
+
+main, #main-content {
+    position: relative; /* Establece el marco límite para el modal */
+    overflow: hidden;   /* Evita que el modal se desborde fuera del contenedor */
+}
+
+/* =========================================================
+   2. ESTRUCTURA GENERAL DEL DASHBOARD (APP SHELL)
+   ========================================================= */
+.dashboard-container {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh; 
+    display: flex;
+    flex-direction: column;
+    background-image: url('../assets/imagenes/generales/fondobody.jpeg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    overflow: hidden;
+}
+
+/* =========================================================
+   MARCO CONTENEDOR (Limita el área del modal)
+   ========================================================= */
+.dashboard-workspace {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    overflow: hidden;
+    position: relative; /* CLAVE: Establece el límite estricto para el modal */
+}
+
+.game-center-area {
+    flex: 1;
+    width: 100%;
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    justify-content: flex-start; 
+    overflow-y: auto; 
+    padding: 0;
+}
+
+/* =========================================================
+   3. BANNER SUPERIOR Y LOGOS (LIMPIOS SIN VELO)
+   ========================================================= */
+.dashboard-banner {
+    position: relative;
+    background-color: var(--color-purple-dark);
+    border-bottom: 3px solid var(--color-pink-accent);
+    color: #ffffff;
+    padding: 10px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    flex-shrink: 0;
+    flex-wrap: wrap; 
+    gap: 15px;
+}
+
+.banner-izq, .banner-der {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-juego {
+    height: 55px; 
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 15px rgba(212, 179, 243, 0.5));
+}
+
+.logos-institucionales {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: transparent; 
+}
+
+.logo-inst {
+    height: 34px; 
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25)); 
+}
+
+.logo-inst[src*="cacmu"],
+.logo-inst:last-child {
+    height: 45px; 
+}
+
+/* =========================================================
+   4. BOTÓN DEL BANNER (AYUDA / INFO)
+   ========================================================= */
+.btn-secondary {
+    font-family: var(--font-body);
+   /* 🔥 Fondo transparente y sin bordes */
+    background-color: transparent;
+    color: #ffffff;
+    border: none;
+    padding: 8px 18px; 
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #f47ea5;
+    box-shadow: 0 0 15px rgba(240, 98, 146, 0.4);
+    transform: translateY(-2px);
+}
+
+
+.btn-banner {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 15px 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+/* Controla el tamaño de tu icono local y lo vuelve blanco automáticamente */
+.btn-banner img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    filter: brightness(0) invert(1); /* Fuerza a que cualquier icono se vuelva blanco puro */
+    transition: transform 0.3s ease;
+}
+
+/* Efecto al pasar el cursor */
+.btn-banner:hover {
+    background-color: rgba(255, 255, 255, 0.15); /* Sutil destello transparente */
+}
+
+.btn-banner:hover img {
+    transform: scale(1.1); /* Pequeño zoom divertido al pasar el mouse */
+}
+/* =========================================================
+   5. SUBMENÚ DESPLEGABLE (CORREGIDO)
+   ========================================================= */
+.menu-desplegable-container {
+    position: relative;
+    display: inline-block; 
+}
+
+.menu-desplegable-container::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    width: 100%;
+    height: 15px;
+    background: transparent;
+}
+
+.submenu {
+    display: none; 
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+    min-width: 170px; 
+    overflow: hidden;
+    z-index: 99999; 
+    margin-top: 5px; 
+}
+
+.menu-desplegable-container:hover .submenu {
+    display: flex;
+    flex-direction: column;
+}
+
+.submenu a {
+    color: var(--color-purple-dark, #4a148c);
+    text-decoration: none;
+    padding: 12px 15px;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+    cursor: pointer; 
+}
+
+.submenu a:hover {
+    background-color: #f3e5f5; 
+}
+
+/* =========================================================
+   COMPONENTES GLOBALES (BOTONES Y TARJETAS)
+   ========================================================= */
+.btn {
+    font-family: var(--font-body);
+    background-color: var(--color-yellow-btn);
+    color: var(--color-purple-dark);
+    border: none;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--hud-glow);
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-2px); 
+    background-color: #ffb822;
+    box-shadow: 0 0 20px rgba(243, 166, 1, 0.6); 
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.btn-continuar {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 280px;
+    padding: 15px;
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tarjeta-general {
+    display: flex;
+    flex-direction: row; 
+    width: 95%; 
+    max-width: 95%; 
+    height: auto; 
+    margin: 0 auto; 
+    flex-shrink: 0; 
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    border-radius: 20px; 
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.0) 0%, rgba(248, 246, 246, 0.18) 100%);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.15),
+                0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden; 
+}
+
+/* =========================================================
+   CONTROL DE VISIBILIDAD DE PANTALLAS
+   ========================================================= */
+.paso-pantalla {
+    display: none; 
+    width: 100%;
+}
+
+.paso-pantalla.activa { 
+    display: flex; 
+    flex-direction: row; 
+    width: 100%;
+    flex: 1 1 auto; 
+    height: auto; 
+    padding: 15px; 
+    overflow: visible; 
+}
+
+/* =========================================================
+   SISTEMA GLOBAL DE NOTIFICACIONES FLOTANTES
+   ========================================================= */
+.toast-gamificado {
+    position: fixed;
+    bottom: 30px; 
+    right: 30px;  
+    top: auto;    
+    left: auto;   
+    transform: translateX(120%); 
+    padding: 16px 24px;
+    border-radius: 12px; 
+    font-family: var(--font-body, 'Fredoka', sans-serif);
+    font-size: 1.1rem; 
+    font-weight: 500;  
+    line-height: 1.4;  
+    letter-spacing: 0.3px; 
+    z-index: 999999; 
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    border: none; 
+}
+
+.toast-gamificado.mostrar {
+    transform: translateX(0); 
+    opacity: 1;
+}
+
+.toast-success { 
+    background-color: var(--color-yellow-btn); 
+    color: var(--color-purple-dark);
+    box-shadow: var(--hud-glow); 
+}
+
+.toast-error { 
+    background-color: var(--color-pink-accent); 
+    color: #ffffff;
+    text-shadow: 0px 1px 2px rgba(58, 22, 83, 0.4); 
+}
+
+.toast-info { 
+    background-color: var(--color-purple-main); 
+    color: #ffffff;
+    text-shadow: 0px 1px 2px rgba(0,0,0,0.2);
+}
+
+.toast-warning { 
+    background-color: var(--color-bg-light); 
+    color: var(--color-purple-dark);
+    border: 2px solid var(--color-yellow-btn);
+    box-shadow: 0 10px 25px rgba(58, 22, 83, 0.15);
+}
+
+/* MAYÚSCULA INICIAL */
+.etiqueta-nombre,
+.nombre-jugador,
+.nombre-personaje,
+.chip-jugador span,
+.indicador-turno span,
+#nombre-jugador-actual {
+    text-transform: capitalize !important;
+}
+
+/* =========================================================
+   🔥 RESPONSIVE DESIGN UNIFICADO 🔥
+   ========================================================= */
+
+/* Tablets Pequeñas (960px) */
+@media screen and (max-width: 960px) {
+    #paso-1 .tarjeta-general {
+        flex-direction: column; 
+    }
+    
+    .seleccion-columna-info, 
+    .seleccion-columna-accion {
+        flex: none;
+        height: auto;
+    }
+
+    .seleccion-columna-info { 
+        order: 1; 
+        padding: 30px 25px 20px 25px; 
+    }
+    
+    .seleccion-columna-accion { 
+        order: 2; 
+        padding: 20px 25px 40px 25px; 
+    }
+    
+    .dashboard-banner {
+        padding: 10px 15px;
+        gap: 10px;
+    }
+    
+    .logo-juego {
+        height: 45px; 
+    }
+
+    .btn-secondary {
+        padding: 6px 12px;
+        font-size: 0.9rem; 
+    }
+}
+
+/* Celulares Grandes / Tablets (768px) o Orientación Vertical */
+@media screen and (max-width: 768px), screen and (orientation: portrait) {
+    .tarjeta-general {
+        flex-direction: column; 
+        min-height: auto; 
+    }
+    
+    .paso-pantalla.activa {
+        padding: 10px; 
+        overflow-y: visible; 
+    }
+    
+    .dashboard-banner {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding: 15px 10px;
+    }
+
+    .banner-izq, .banner-der {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+/* Celulares Pequeños (650px y 600px) */
+@media screen and (max-width: 650px) {
+    .dashboard-banner {
+        align-items: center;
+        gap: 12px;
+    }
+
+    .banner-izq, 
+    .banner-centro, 
+    .banner-der {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .logo-inst { height: 28px; }
+    .logo-inst[src*="cacmu"],
+    .logo-inst:last-child { height: 38px; }
+    .logo-juego { height: 40px; }
+
+    .menu-desplegable-container {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .btn-secondary {
+        width: 100%; 
+        max-width: 250px; 
+        padding: 10px 15px;
+        font-size: 0.95rem;
+    }
+    
+    .submenu {
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .toast-gamificado {
+        bottom: 20px;
+        right: 50%; 
+        width: 90%;
+        max-width: 400px;
+        justify-content: center;
+        text-align: left; 
+        transform: translateX(50%) translateY(150px); 
+    }
+
+    .toast-gamificado.mostrar {
+        transform: translateX(50%) translateY(0); 
+    }
+}
