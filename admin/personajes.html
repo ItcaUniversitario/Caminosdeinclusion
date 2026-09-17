@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Personajes - Caminos de Inclusión</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f7f6f9;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .navbar {
+            background-color: #3a1653;
+        }
+
+        .navbar-brand {
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+
+        .btn-back {
+            color: #5e2a84;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-back:hover {
+            color: #3a1653;
+        }
+
+        .nav-pills .nav-link {
+            color: #716a7a;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 0.8rem 1.5rem;
+            margin-right: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-pills .nav-link:hover {
+            background-color: #f0eaf5;
+            color: #5e2a84;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: #5e2a84;
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(94, 42, 132, 0.3);
+        }
+
+        .card-personaje {
+            background: #ffffff;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(58, 22, 83, 0.05);
+            transition: all 0.3s ease;
+            text-align: center;
+            padding: 1.5rem;
+            height: 100%;
+        }
+
+        .card-personaje:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(58, 22, 83, 0.12);
+        }
+
+        .img-personaje-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1rem auto;
+            background-color: #f8f9fa;
+            border-radius: 50%;
+            padding: 10px;
+            border: 2px dashed #dcdcdc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .card-personaje:hover .img-personaje-container {
+            border-color: #5e2a84;
+            background-color: #f0eaf5;
+        }
+
+        .img-personaje-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .badge-contador {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #5e2a84;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+        }
+
+        .nombre-personaje {
+            font-weight: 700;
+            color: #3a1653;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-personalizar {
+            background-color: transparent;
+            color: #5e2a84;
+            border: 2px solid #5e2a84;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .btn-personalizar:hover {
+            background-color: #5e2a84;
+            color: #ffffff;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar px-4 py-3 shadow-sm mb-4">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1"><i class="bi bi-person-vcard-fill me-2"></i>Módulo de Personajes</span>
+        </div>
+    </nav>
+
+    <div class="container mb-5">
+        <a href="dashboard.html" class="btn-back"><i class="bi bi-arrow-left me-2"></i>Volver al Dashboard</a>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 style="color: #3a1653; font-weight: 700;">Catálogo de Personajes</h2>
+        </div>
+
+        <ul class="nav nav-pills mb-4" id="caminos-tab" role="tablist">
+            <li class="nav-item" role="presentation"><button class="nav-link active" id="camino1-tab"
+                    data-bs-toggle="pill" data-bs-target="#camino1" type="button" role="tab">Camino 1</button></li>
+            <li class="nav-item" role="presentation"><button class="nav-link" id="camino2-tab" data-bs-toggle="pill"
+                    data-bs-target="#camino2" type="button" role="tab">Camino 2</button></li>
+        </ul>
+
+        <div class="tab-content" id="caminos-tabContent">
+
+            <!-- CAMINO 1: Cartas de Empatía (Se mantiene por personaje) -->
+            <div class="tab-pane fade show active" id="camino1" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card-personaje">
+                            <div class="img-personaje-container"><span class="badge-contador" id="count-paula_c1">0</span><img src="../assets/imagenes/personajes/camino1/paula.png" alt="Paula"></div>
+                            <h3 class="nombre-personaje">Paula</h3><button class="btn btn-personalizar" data-personaje="paula_c1"><i class="bi bi-pencil-square me-2"></i>Personalizar</button>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card-personaje">
+                            <div class="img-personaje-container"><span class="badge-contador" id="count-nina_c1">0</span><img src="../assets/imagenes/personajes/camino1/nina.png" alt="Nina"></div>
+                            <h3 class="nombre-personaje">Nina</h3><button class="btn btn-personalizar" data-personaje="nina_c1"><i class="bi bi-pencil-square me-2"></i>Personalizar</button>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card-personaje">
+                            <div class="img-personaje-container"><span class="badge-contador" id="count-josefa_c1">0</span><img src="../assets/imagenes/personajes/camino1/josefa.png" alt="Josefa"></div>
+                            <h3 class="nombre-personaje">Josefa</h3><button class="btn btn-personalizar" data-personaje="josefa_c1"><i class="bi bi-pencil-square me-2"></i>Personalizar</button>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card-personaje">
+                            <div class="img-personaje-container"><span class="badge-contador" id="count-martina_c1">0</span><img src="../assets/imagenes/personajes/camino1/martina.png" alt="Martina"></div>
+                            <h3 class="nombre-personaje">Martina</h3><button class="btn btn-personalizar" data-personaje="martina_c1"><i class="bi bi-pencil-square me-2"></i>Personalizar</button>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card-personaje">
+                            <div class="img-personaje-container"><span class="badge-contador" id="count-paty_c1">0</span><img src="../assets/imagenes/personajes/camino1/paty.png" alt="Paty"></div>
+                            <h3 class="nombre-personaje">Paty</h3><button class="btn btn-personalizar" data-personaje="paty_c1"><i class="bi bi-pencil-square me-2"></i>Personalizar</button>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card-personaje">
+                            <div class="img-personaje-container"><span class="badge-contador" id="count-yuleisy_c1">0</span><img src="../assets/imagenes/personajes/camino1/yuleisy.png" alt="Yuleisy"></div>
+                            <h3 class="nombre-personaje">Yuleisy</h3><button class="btn btn-personalizar" data-personaje="yuleisy_c1"><i class="bi bi-pencil-square me-2"></i>Personalizar</button>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card-personaje">
+                            <div class="img-personaje-container"><span class="badge-contador" id="count-mia_c1">0</span><img src="../assets/imagenes/personajes/camino1/mia.png" alt="Mía"></div>
+                            <h3 class="nombre-personaje">Mía</h3><button class="btn btn-personalizar" data-personaje="mia_c1"><i class="bi bi-pencil-square me-2"></i>Personalizar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAMINO 2: Adivinanzas (Unificado y en Nueva Colección) -->
+            <div class="tab-pane fade" id="camino2" role="tabpanel">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6 mt-4">
+                        <div class="card-personaje" style="padding: 3rem 2rem;">
+                            <div class="img-personaje-container" style="width: 120px; height: 120px; background-color: #f0eaf5; border-color: #5e2a84;">
+                                <span class="badge-contador" id="count-camino2_general">0</span>
+                                <i class="bi bi-collection-play-fill" style="font-size: 3.5rem; color: #5e2a84;"></i>
+                            </div>
+                            <h3 class="nombre-personaje fs-4">Banco de Adivinanzas</h3>
+                            <p class="text-muted mb-4">Gestiona el conjunto de adivinanzas (trampas y sesgos). Estas preguntas se guardan en la colección <strong>"adivinanzas"</strong> y aparecerán para todos los personajes de este camino.</p>
+                            <button class="btn btn-personalizar" data-personaje="camino2_general">
+                                <i class="bi bi-pencil-square me-2"></i>Administrar Adivinanzas
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL LISTADO DE CARTAS -->
+    <div class="modal fade" id="modalListadoCartas" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #3a1653; color: white;">
+                    <h5 class="modal-title fw-bold" id="tituloModalListado">Tarjetas</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-light">
+                    <div class="d-flex justify-content-end mb-3">
+                        <button class="btn btn-primary" id="btnAbrirFormulario"
+                            style="background-color: #5e2a84; border: none;">
+                            <i class="bi bi-plus-circle me-2"></i>Agregar Nueva Tarjeta
+                        </button>
+                    </div>
+                    <div id="loadingCartas" class="text-center py-4">
+                        <div class="spinner-border text-primary" style="color: #5e2a84 !important;"></div>
+                        <p class="mt-2">Cargando...</p>
+                    </div>
+                    <div class="accordion" id="acordeonCartas" style="display: none;"></div>
+                    <div id="sinCartas" class="text-center py-4 text-muted" style="display: none;"><i
+                            class="bi bi-folder-x fs-1"></i>
+                        <p class="mt-2">Sin tarjetas asignadas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FORMULARIO MULTIUSO (C1 Y C2) -->
+    <div class="modal fade" id="modalFormulario" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #5e2a84; color: white;">
+                    <h5 class="modal-title fw-bold" id="tituloModalFormulario">Crear Nueva Tarjeta</h5>
+                    <button type="button" class="btn-close btn-close-white" id="btnCerrarFormulario"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="alertaValidacion" class="alert alert-danger" style="display: none;"><i
+                            class="bi bi-exclamation-triangle-fill me-2"></i>Todos los campos marcados con (*) son
+                        obligatorios.</div>
+
+                    <!-- FORMULARIO CAMINO 1: CARTAS DE EMPATÍA -->
+                    <form id="formCamino1" style="display: none;">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark required-field">Situación / Descripción</label>
+                            <textarea id="inpC1Descripcion" class="form-control" rows="3"
+                                placeholder="Ej: Paty, al participar en actividades..." required></textarea>
+                        </div>
+                        <div class="card mb-3 border-success">
+                            <div class="card-header bg-success text-white fw-bold">1. Decisión Empática</div>
+                            <div class="card-body">
+                                <label class="form-label text-muted small required-field">Opción que ve el
+                                    jugador:</label>
+                                <textarea id="inpC1OpEmpatica" class="form-control mb-2" rows="2" required></textarea>
+                                <label class="form-label text-muted small required-field">Retroalimentación
+                                    (Consecuencia):</label>
+                                <textarea id="inpC1RetroEmpatica" class="form-control" rows="2" required></textarea>
+                            </div>
+                        </div>
+                        <div class="card mb-3 border-warning">
+                            <div class="card-header bg-warning text-dark fw-bold">2. Decisión Poco Empática</div>
+                            <div class="card-body">
+                                <label class="form-label text-muted small required-field">Opción que ve el
+                                    jugador:</label>
+                                <textarea id="inpC1OpPocoEmpatica" class="form-control mb-2" rows="2"
+                                    required></textarea>
+                                <label class="form-label text-muted small required-field">Retroalimentación
+                                    (Consecuencia):</label>
+                                <textarea id="inpC1RetroPocoEmpatica" class="form-control" rows="2" required></textarea>
+                            </div>
+                        </div>
+                        <div class="card mb-3 border-danger">
+                            <div class="card-header bg-danger text-white fw-bold">3. Decisión Nada Empática</div>
+                            <div class="card-body">
+                                <label class="form-label text-muted small required-field">Opción que ve el
+                                    jugador:</label>
+                                <textarea id="inpC1OpNadaEmpatica" class="form-control mb-2" rows="2"
+                                    required></textarea>
+                                <label class="form-label text-muted small required-field">Retroalimentación
+                                    (Consecuencia):</label>
+                                <textarea id="inpC1RetroNadaEmpatica" class="form-control" rows="2" required></textarea>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- FORMULARIO CAMINO 2: ADIVINANZAS DE ESTEREOTIPOS -->
+                    <form id="formCamino2" style="display: none;">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark required-field">Escenario (La Trampa)</label>
+                            <textarea id="inpC2Escenario" class="form-control" rows="3"
+                                placeholder="Ej: Una familia llega de vacaciones..." required></textarea>
+                        </div>
+                        <div class="card mb-3 border-info">
+                            <div class="card-header bg-info text-white fw-bold">Fase de Anclaje (Lo que imaginó)</div>
+                            <div class="card-body">
+                                <label class="form-label text-muted small required-field">Pregunta Puente:</label>
+                                <input type="text" id="inpC2PregAnclaje" class="form-control mb-3"
+                                    value="¿Con cuál coincide lo que imaginaste?" required>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6 border-end">
+                                        <h6 class="text-primary fw-bold">Opción A</h6>
+                                        <label class="form-label text-muted small required-field">Texto Botón:</label>
+                                        <input type="text" id="inpC2OpAnclajeA" class="form-control mb-2"
+                                            placeholder="Ej: Imaginé una mujer" required>
+                                        <label class="form-label text-muted small required-field">Reveal (Explicación
+                                            del Sesgo):</label>
+                                        <textarea id="inpC2RevAnclajeA" class="form-control" rows="3"
+                                            required></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6 class="text-primary fw-bold">Opción B</h6>
+                                        <label class="form-label text-muted small required-field">Texto Botón:</label>
+                                        <input type="text" id="inpC2OpAnclajeB" class="form-control mb-2"
+                                            placeholder="Ej: Imaginé un hombre" required>
+                                        <label class="form-label text-muted small required-field">Reveal (Explicación
+                                            del Sesgo):</label>
+                                        <textarea id="inpC2RevAnclajeB" class="form-control" rows="3"
+                                            required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark required-field">Retroalimentación Final (La
+                                Moraleja)</label>
+                            <textarea id="inpC2Retro" class="form-control" rows="2"
+                                placeholder="Ej: Cocinar no tiene género pero nuestro cerebro lo asigna..."
+                                required></textarea>
+                        </div>
+                        <div class="card mb-3 border-secondary">
+                            <div class="card-header bg-secondary text-white fw-bold">Fase de Reflexión (Respuesta Final)
+                            </div>
+                            <div class="card-body">
+                                <label class="form-label text-muted small required-field">Pregunta Final:</label>
+                                <input type="text" id="inpC2PregReflexion" class="form-control mb-3"
+                                    value="¿Qué piensas ahora?" required>
+
+                                <label class="form-label text-muted small text-success fw-bold required-field">Respuesta
+                                    Alta Apertura (✅ 2 pts):</label>
+                                <input type="text" id="inpC2ReflexionBuena" class="form-control mb-2"
+                                    placeholder="Me sorprendió, no me había dado cuenta..." required>
+
+                                <label class="form-label text-muted small text-warning fw-bold required-field">Respuesta
+                                    Conciencia Media (⚡ 1 pt):</label>
+                                <input type="text" id="inpC2ReflexionMedia" class="form-control mb-2"
+                                    placeholder="Ya lo sabía pero igual lo pensé..." required>
+
+                                <label class="form-label text-muted small text-danger fw-bold required-field">Respuesta
+                                    Negación/Resistencia (❌ 0 pts):</label>
+                                <input type="text" id="inpC2ReflexionMala" class="form-control"
+                                    placeholder="No creo que sea un estereotipo..." required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btnCancelarFormulario">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarCarta"
+                        style="background-color: #5e2a84; border: none;">Guardar Tarjeta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyATWYM-R92ngZhZKdzs_DqgvrmXDXUNaFE",
+            authDomain: "caminos-de-empatia.firebaseapp.com",
+            projectId: "caminos-de-empatia",
+            storageBucket: "caminos-de-empatia.firebasestorage.app",
+            messagingSenderId: "464927455216",
+            appId: "1:464927455216:web:41107ad19784e7fbb20f35",
+            measurementId: "G-QEZM1BHT58"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Nombres de las colecciones (Tablas en Firebase)
+        const COLECCION_CAMINO_1 = "cartas_personajes";
+        const COLECCION_CAMINO_2 = "adivinanzas";
+
+        let personajeActualId = "";
+        let personajeActualNombre = "";
+        let tipoCaminoActual = 1; // 1 = Cartas Empatía, 2 = Adivinanzas
+        let editMode = false;
+        let cartaIdParaEditar = "";
+        let cartasDataLocal = [];
+
+        const modalListado = new bootstrap.Modal(document.getElementById('modalListadoCartas'));
+        const modalFormulario = new bootstrap.Modal(document.getElementById('modalFormulario'));
+
+        // ==========================================
+        // ACTUALIZAR CONTADORES DE TARJETAS
+        // ==========================================
+        async function actualizarContadores() {
+            try {
+                // 1. Contar Camino 1 (Por Personaje)
+                const queryC1 = await getDocs(collection(db, COLECCION_CAMINO_1));
+                const conteoC1 = {};
+                queryC1.forEach((doc) => {
+                    const data = doc.data();
+                    if (data.personajeId) {
+                        conteoC1[data.personajeId] = (conteoC1[data.personajeId] || 0) + 1;
+                    }
+                });
+
+                // 2. Contar Camino 2 (Adivinanzas Generales)
+                const queryC2 = await getDocs(collection(db, COLECCION_CAMINO_2));
+                const totalAdivinanzas = queryC2.size; 
+
+                // Resetear insignias
+                document.querySelectorAll('.badge-contador').forEach(badge => badge.innerText = '0');
+
+                // Aplicar conteo Camino 1
+                for (const [personaje, cantidad] of Object.entries(conteoC1)) {
+                    const badge = document.getElementById(`count-${personaje}`);
+                    if (badge) badge.innerText = cantidad;
+                }
+
+                // Aplicar conteo Camino 2
+                const badgeC2 = document.getElementById('count-camino2_general');
+                if (badgeC2) badgeC2.innerText = totalAdivinanzas;
+
+            } catch (e) {
+                console.error("Error al cargar contadores", e);
+            }
+        }
+        actualizarContadores();
+
+        // ==========================================
+        // ABRIR MODAL LISTADO Y DETECTAR CAMINO
+        // ==========================================
+        document.querySelectorAll('.btn-personalizar').forEach(boton => {
+            boton.addEventListener('click', (e) => {
+                personajeActualId = e.currentTarget.getAttribute('data-personaje');
+
+                // Si incluye 'camino2', es el Camino 2. Si no, Camino 1.
+                tipoCaminoActual = personajeActualId.includes('camino2') ? 2 : 1;
+
+                if (tipoCaminoActual === 2) {
+                    document.getElementById('tituloModalListado').innerText = `Banco General de Adivinanzas (Camino 2)`;
+                } else {
+                    const h3 = e.currentTarget.parentElement.querySelector('.nombre-personaje');
+                    personajeActualNombre = h3 ? h3.innerText : personajeActualId.split('_')[0];
+                    document.getElementById('tituloModalListado').innerText = `Tarjetas de ${personajeActualNombre} (Camino 1)`;
+                }
+                
+                modalListado.show();
+                cargarCartasDePersonaje(personajeActualId);
+            });
+        });
+
+        // ==========================================
+        // CARGAR CARTAS EN EL ACORDEÓN SEGÚN EL CAMINO
+        // ==========================================
+        async function cargarCartasDePersonaje(personajeId) {
+            const acordeon = document.getElementById('acordeonCartas');
+            const loading = document.getElementById('loadingCartas');
+            const sinCartas = document.getElementById('sinCartas');
+
+            acordeon.style.display = 'none'; sinCartas.style.display = 'none'; loading.style.display = 'block'; acordeon.innerHTML = '';
+            cartasDataLocal = [];
+
+            try {
+                const coleccionDestino = tipoCaminoActual === 1 ? COLECCION_CAMINO_1 : COLECCION_CAMINO_2;
+                
+                // Camino 1 filtra por personaje. Camino 2 trae toda la colección de adivinanzas.
+                const q = tipoCaminoActual === 1 
+                    ? query(collection(db, coleccionDestino), where("personajeId", "==", personajeId))
+                    : query(collection(db, coleccionDestino));
+
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    loading.style.display = 'none'; sinCartas.style.display = 'block'; return;
+                }
+
+                let html = ''; let index = 0;
+                querySnapshot.forEach((doc) => {
+                    const carta = doc.data();
+                    cartasDataLocal.push({ id: doc.id, ...carta });
+                    index++;
+
+                    let contenidoCartaHTML = "";
+
+                    if (tipoCaminoActual === 1) {
+                        contenidoCartaHTML = `
+                            <p><strong>Descripción:</strong> ${carta.descripcion}</p><hr>
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-4"><div class="p-2 border border-success rounded bg-success bg-opacity-10 h-100"><span class="badge bg-success mb-1">Empática</span><br><small><strong>O:</strong> ${carta.opcion_empatica}</small><br><small class="text-success"><strong>R:</strong> ${carta.retro_empatica}</small></div></div>
+                                <div class="col-md-4"><div class="p-2 border border-warning rounded bg-warning bg-opacity-10 h-100"><span class="badge bg-warning text-dark mb-1">Poco Empática</span><br><small><strong>O:</strong> ${carta.opcion_poco_empatica}</small><br><small class="text-warning"><strong>R:</strong> ${carta.retro_poco_empatica}</small></div></div>
+                                <div class="col-md-4"><div class="p-2 border border-danger rounded bg-danger bg-opacity-10 h-100"><span class="badge bg-danger mb-1">Nada Empática</span><br><small><strong>O:</strong> ${carta.opcion_nada_empatica}</small><br><small class="text-danger"><strong>R:</strong> ${carta.retro_nada_empatica}</small></div></div>
+                            </div>
+                        `;
+                    } else {
+                        contenidoCartaHTML = `
+                            <p><strong>Escenario:</strong> ${carta.escenario}</p><hr>
+                            <p><strong>Anclaje:</strong> ${carta.preguntaAnclaje}</p>
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-6"><div class="p-2 border border-info rounded bg-info bg-opacity-10 h-100"><span class="badge bg-info text-dark mb-1">Opción A</span><br><small><strong>O:</strong> ${carta.opcionesAnclaje.A.texto}</small><br><small class="text-info-emphasis"><strong>R:</strong> ${carta.opcionesAnclaje.A.reveal}</small></div></div>
+                                <div class="col-md-6"><div class="p-2 border border-info rounded bg-info bg-opacity-10 h-100"><span class="badge bg-info text-dark mb-1">Opción B</span><br><small><strong>O:</strong> ${carta.opcionesAnclaje.B.texto}</small><br><small class="text-info-emphasis"><strong>R:</strong> ${carta.opcionesAnclaje.B.reveal}</small></div></div>
+                            </div>
+                            <p><strong>Retroalimentación:</strong> ${carta.retroalimentacionFinal}</p>
+                            <p><strong>Reflexión Final:</strong> ${carta.preguntaReflexion}</p>
+                            <ul class="small text-muted">
+                                <li>✅ ${carta.opcionesReflexion[0].texto}</li>
+                                <li>⚡ ${carta.opcionesReflexion[1].texto}</li>
+                                <li>❌ ${carta.opcionesReflexion[2].texto}</li>
+                            </ul>
+                        `;
+                    }
+
+                    html += `
+                        <div class="accordion-item mb-2 border-0 shadow-sm rounded">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed rounded fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#carta-${doc.id}">
+                                    Tarjeta #${index}: ${(tipoCaminoActual === 1 ? carta.descripcion : carta.escenario).substring(0, 45)}...
+                                </button>
+                            </h2>
+                            <div id="carta-${doc.id}" class="accordion-collapse collapse" data-bs-parent="#acordeonCartas">
+                                <div class="accordion-body">
+                                    ${contenidoCartaHTML}
+                                    <div class="d-flex justify-content-end gap-2 border-top pt-2 mt-2">
+                                        <button class="btn btn-sm btn-outline-primary btn-editar" data-id="${doc.id}"><i class="bi bi-pencil"></i> Editar</button>
+                                        <button class="btn btn-sm btn-outline-danger btn-eliminar" data-id="${doc.id}"><i class="bi bi-trash"></i> Eliminar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                acordeon.innerHTML = html; loading.style.display = 'none'; acordeon.style.display = 'block';
+            } catch (error) {
+                loading.innerHTML = '<p class="text-danger">Error al cargar datos.</p>';
+            }
+        }
+
+        // ==========================================
+        // DELEGAR EVENTOS (EDITAR / ELIMINAR)
+        // ==========================================
+        document.getElementById('acordeonCartas').addEventListener('click', async (e) => {
+            // ELIMINAR
+            if (e.target.closest('.btn-eliminar')) {
+                const id = e.target.closest('.btn-eliminar').dataset.id;
+                if (confirm("¿Estás seguro de eliminar esta tarjeta permanentemente?")) {
+                    try {
+                        const coleccionDestino = tipoCaminoActual === 1 ? COLECCION_CAMINO_1 : COLECCION_CAMINO_2;
+                        await deleteDoc(doc(db, coleccionDestino, id));
+                        cargarCartasDePersonaje(personajeActualId);
+                        actualizarContadores();
+                    } catch (error) { alert("Error al eliminar."); }
+                }
+            }
+            // EDITAR
+            if (e.target.closest('.btn-editar')) {
+                const id = e.target.closest('.btn-editar').dataset.id;
+                const carta = cartasDataLocal.find(c => c.id === id);
+                if (!carta) return;
+
+                editMode = true; cartaIdParaEditar = id;
+                document.getElementById('tituloModalFormulario').innerText = "Editar Tarjeta";
+                document.getElementById('alertaValidacion').style.display = 'none';
+
+                // Mostrar el formulario correcto
+                document.getElementById('formCamino1').style.display = tipoCaminoActual === 1 ? 'block' : 'none';
+                document.getElementById('formCamino2').style.display = tipoCaminoActual === 2 ? 'block' : 'none';
+
+                // Llenar inputs dependiendo del camino
+                if (tipoCaminoActual === 1) {
+                    document.getElementById('inpC1Descripcion').value = carta.descripcion;
+                    document.getElementById('inpC1OpEmpatica').value = carta.opcion_empatica;
+                    document.getElementById('inpC1RetroEmpatica').value = carta.retro_empatica;
+                    document.getElementById('inpC1OpPocoEmpatica').value = carta.opcion_poco_empatica;
+                    document.getElementById('inpC1RetroPocoEmpatica').value = carta.retro_poco_empatica;
+                    document.getElementById('inpC1OpNadaEmpatica').value = carta.opcion_nada_empatica;
+                    document.getElementById('inpC1RetroNadaEmpatica').value = carta.retro_nada_empatica;
+                } else {
+                    document.getElementById('inpC2Escenario').value = carta.escenario;
+                    document.getElementById('inpC2PregAnclaje').value = carta.preguntaAnclaje;
+                    document.getElementById('inpC2OpAnclajeA').value = carta.opcionesAnclaje.A.texto;
+                    document.getElementById('inpC2RevAnclajeA').value = carta.opcionesAnclaje.A.reveal;
+                    document.getElementById('inpC2OpAnclajeB').value = carta.opcionesAnclaje.B.texto;
+                    document.getElementById('inpC2RevAnclajeB').value = carta.opcionesAnclaje.B.reveal;
+                    document.getElementById('inpC2Retro').value = carta.retroalimentacionFinal;
+                    document.getElementById('inpC2PregReflexion').value = carta.preguntaReflexion;
+                    document.getElementById('inpC2ReflexionBuena').value = carta.opcionesReflexion[0].texto;
+                    document.getElementById('inpC2ReflexionMedia').value = carta.opcionesReflexion[1].texto;
+                    document.getElementById('inpC2ReflexionMala').value = carta.opcionesReflexion[2].texto;
+                }
+
+                modalListado.hide(); modalFormulario.show();
+            }
+        });
+
+        // ==========================================
+        // ABRIR FORMULARIO (NUEVO)
+        // ==========================================
+        document.getElementById('btnAbrirFormulario').addEventListener('click', () => {
+            editMode = false;
+            document.getElementById('tituloModalFormulario').innerText = "Crear Nueva Tarjeta";
+            document.getElementById('formCamino1').reset();
+            document.getElementById('formCamino2').reset();
+            document.getElementById('alertaValidacion').style.display = 'none';
+
+            // Mostrar el formulario correcto
+            document.getElementById('formCamino1').style.display = tipoCaminoActual === 1 ? 'block' : 'none';
+            document.getElementById('formCamino2').style.display = tipoCaminoActual === 2 ? 'block' : 'none';
+
+            modalListado.hide(); modalFormulario.show();
+        });
+
+        // CERRAR FORMULARIO
+        const cerrarForm = () => { modalFormulario.hide(); modalListado.show(); };
+        document.getElementById('btnCerrarFormulario').addEventListener('click', cerrarForm);
+        document.getElementById('btnCancelarFormulario').addEventListener('click', cerrarForm);
+
+        // ==========================================
+        // GUARDAR (VALIDACIÓN ESTRICTA + CRUD)
+        // ==========================================
+        document.getElementById('btnGuardarCarta').addEventListener('click', async () => {
+
+            let data = {};
+            let isValid = true;
+            const fechaActual = new Date().toISOString();
+
+            if (tipoCaminoActual === 1) {
+                const desc = document.getElementById('inpC1Descripcion').value.trim();
+                const opE = document.getElementById('inpC1OpEmpatica').value.trim();
+                const retE = document.getElementById('inpC1RetroEmpatica').value.trim();
+                const opP = document.getElementById('inpC1OpPocoEmpatica').value.trim();
+                const retP = document.getElementById('inpC1RetroPocoEmpatica').value.trim();
+                const opN = document.getElementById('inpC1OpNadaEmpatica').value.trim();
+                const retN = document.getElementById('inpC1RetroNadaEmpatica').value.trim();
+
+                if (!desc || !opE || !retE || !opP || !retP || !opN || !retN) isValid = false;
+
+                data = {
+                    descripcion: desc,
+                    opcion_empatica: opE, retro_empatica: retE,
+                    opcion_poco_empatica: opP, retro_poco_empatica: retP,
+                    opcion_nada_empatica: opN, retro_nada_empatica: retN,
+                    fecha_actualizacion: fechaActual,
+                    personajeId: personajeActualId
+                };
+            } else {
+                const escenario = document.getElementById('inpC2Escenario').value.trim();
+                const pregAnclaje = document.getElementById('inpC2PregAnclaje').value.trim();
+                const opAA = document.getElementById('inpC2OpAnclajeA').value.trim();
+                const revAA = document.getElementById('inpC2RevAnclajeA').value.trim();
+                const opAB = document.getElementById('inpC2OpAnclajeB').value.trim();
+                const revAB = document.getElementById('inpC2RevAnclajeB').value.trim();
+                const retro = document.getElementById('inpC2Retro').value.trim();
+                const pregReflex = document.getElementById('inpC2PregReflexion').value.trim();
+                const refBuena = document.getElementById('inpC2ReflexionBuena').value.trim();
+                const refMedia = document.getElementById('inpC2ReflexionMedia').value.trim();
+                const refMala = document.getElementById('inpC2ReflexionMala').value.trim();
+
+                if (!escenario || !pregAnclaje || !opAA || !revAA || !opAB || !revAB || !retro || !pregReflex || !refBuena || !refMedia || !refMala) isValid = false;
+
+                data = {
+                    escenario: escenario,
+                    botonPausa: "Ya lo imaginé", // Textos automáticos
+                    preguntaAnclaje: pregAnclaje,
+                    opcionesAnclaje: {
+                        A: { texto: opAA, reveal: revAA },
+                        B: { texto: opAB, reveal: revAB }
+                    },
+                    retroalimentacionFinal: retro,
+                    preguntaReflexion: pregReflex,
+                    opcionesReflexion: [
+                        { texto: refBuena, icono: "✅", puntos: 2, bono: 2 },
+                        { texto: refMedia, icono: "⚡", puntos: 1, bono: 1 },
+                        { texto: refMala, icono: "❌", puntos: 0, bono: 0 }
+                    ],
+                    fecha_actualizacion: fechaActual
+                };
+            }
+
+            if (!isValid) {
+                document.getElementById('alertaValidacion').style.display = 'block';
+                document.querySelector('#modalFormulario .modal-body').scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            document.getElementById('alertaValidacion').style.display = 'none';
+            const btnGuardar = document.getElementById('btnGuardarCarta');
+            btnGuardar.disabled = true; btnGuardar.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Guardando...';
+
+            try {
+                const coleccionDestino = tipoCaminoActual === 1 ? COLECCION_CAMINO_1 : COLECCION_CAMINO_2;
+
+                if (editMode) {
+                    await updateDoc(doc(db, coleccionDestino, cartaIdParaEditar), data);
+                } else {
+                    data.fecha_creacion = fechaActual;
+                    await addDoc(collection(db, coleccionDestino), data);
+                }
+                cerrarForm();
+                cargarCartasDePersonaje(personajeActualId);
+                actualizarContadores();
+            } catch (error) {
+                alert("Error al procesar la solicitud en Firebase.");
+            } finally {
+                btnGuardar.disabled = false; btnGuardar.innerHTML = 'Guardar Tarjeta';
+            }
+        });
+    </script>
+</body>
+
+</html>
