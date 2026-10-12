@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Personajes - Caminos de Inclusión</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- LIBRERÍA PARA LEER Y CREAR EXCEL (SheetJS) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <style>
+        body { background-color: #f7f6f9; font-family: 'Inter', sans-serif; }
+        .navbar { background-color: #3a1653; }
+        .navbar-brand { color: #ffffff !important; font-weight: 600; }
+        .btn-back { color: #5e2a84; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 1.5rem; }
+        .btn-back:hover { color: #3a1653; }
+        .nav-pills .nav-link { color: #716a7a; font-weight: 600; border-radius: 10px; padding: 0.8rem 1.5rem; margin-right: 0.5rem; transition: all 0.3s ease; }
+        .nav-pills .nav-link:hover { background-color: #f0eaf5; color: #5e2a84; }
+        .nav-pills .nav-link.active { background-color: #5e2a84; color: #ffffff; box-shadow: 0 4px 10px rgba(94, 42, 132, 0.3); }
+        .card-personaje { background: #ffffff; border: none; border-radius: 16px; box-shadow: 0 5px 15px rgba(58, 22, 83, 0.05); transition: all 0.3s ease; text-align: center; padding: 1.5rem; height: 100%; }
+        .card-personaje:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(58, 22, 83, 0.12); }
+        .img-personaje-container { width: 100px; height: 100px; margin: 0 auto 1rem auto; background-color: #f8f9fa; border-radius: 50%; padding: 10px; border: 2px dashed #dcdcdc; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; position: relative; }
+        .card-personaje:hover .img-personaje-container { border-color: #5e2a84; background-color: #f0eaf5; }
+        .img-personaje-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .badge-contador { position: absolute; top: -5px; right: -5px; background-color: #5e2a84; color: #ffffff; border: 2px solid #ffffff; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); z-index: 2; }
+        .nombre-personaje { font-weight: 700; color: #3a1653; font-size: 1.2rem; margin-bottom: 1rem; }
+        .btn-personalizar { background-color: transparent; color: #5e2a84; border: 2px solid #5e2a84; border-radius: 8px; font-weight: 600; width: 100%; transition: all 0.3s; }
+        .btn-personalizar:hover { background-color: #5e2a84; color: #ffffff; }
+        .required-field::after { content: " *"; color: red; }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar px-4 py-3 shadow-sm mb-4">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1"><i class="bi bi-person-vcard-fill me-2"></i>Módulo de Personajes y Retos</span>
+        </div>
+    </nav>
+
+    <div class="container mb-5">
+        <a href="dashboard.html" class="btn-back"><i class="bi bi-arrow-left me-2"></i>Volver al Dashboard</a>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 style="color: #3a1653; font-weight: 700;">Catálogo de Contenido</h2>
+        </div>
+
+        <ul class="nav nav-pills mb-4" id="caminos-tab" role="tablist">
+            <li class="nav-item" role="presentation"><button class="nav-link active" id="camino1-tab"
+                    data-bs-toggle="pill" data-bs-target="#camino1" type="button" role="tab">Camino 1</button></li>
+            <li class="nav-item" role="presentation"><button class="nav-link" id="camino2-tab" data-bs-toggle="pill"
+                    data-bs-target="#camino2" type="button" role="tab">Camino 2</button></li>
+        </ul>
+
+        <div class="tab-content" id="caminos-tabContent">
+            <!-- CAMINO 1: Cartas de Empatía -->
+            <div class="tab-pane fade show active" id="camino1" role="tabpanel">
+                <div class="row g-4">
+                    <!-- PAULA -->
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card-personaje">
+                            <div class="img-personaje-container"><span class="badge-contador" id="count-paula_c1">0</span><img src="../assets/imagenes/personajes/camino1/paula.png" alt="Paula"></div>
+                            <h3 class="nombre-personaje">Paula</h3><button class="btn btn-personalizar" data-personaje="paula_c1"><i class="bi bi-pencil-square me-2"></i>Personalizar</button>
+                        </div>
+                    </div>
+                    <!-- NINA -->
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card-personaje">
+                            <div class="img-personaje-container"><span class="badge-contador" id="count-nina_c1">0</span><img src="../assets/imagenes/personajes/camino1/nina.png" alt="Nina"></div>
+                            <h3 class="nombre-personaje">Nina</h3><button class="btn btn-personalizar" data-personaje="nina_c1"><i class="bi bi-pencil-square me-2"></i>Personalizar</button>
+                        </div>
+                    </div>
+                    <!-- JOSEFA -->
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card-personaje">
+                            <div class="img-personaje-container"><span class="badge-contador" id="count-josefa_c1">0</span><img src="../assets/imagenes/personajes/camino1/josefa.png" alt="Josefa"></div>
+                            <h3 class="nombre-personaje">Josefa</h3><button class="btn btn-personalizar" data-personaje="josefa_c1"><i class="bi bi-pencil-square me-2"></i>Personalizar</button>
+                        </div>
+                    </div>
+                    <!-- MARTINA -->
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card-personaje">
+                            <div class="img-personaje-container"><span class="badge-contador" id="count-martina_c1">0</span><img src="../assets/imagenes/personajes/camino1/martina.png" alt="Martina"></div>
+                            <h3 class="nombre-personaje">Martina</h3><button class="btn btn-personalizar" data-personaje="martina_c1"><i class="bi bi-pencil-square me-2"></i>Personalizar</button>
+                        </div>
+                    </div>
+                    <!-- PATY -->
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card-personaje">
+                            <div class="img-personaje-container"><span class="badge-contador" id="count-paty_c1">0</span><img src="../assets/imagenes/personajes/camino1/paty.png" alt="Paty"></div>
+                            <h3 class="nombre-personaje">Paty</h3><button class="btn btn-personalizar" data-personaje="paty_c1"><i class="bi bi-pencil-square me-2"></i>Personalizar</button>
+                        </div>
+                    </div>
+                    <!-- YULEISY -->
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card-personaje">
+                            <div class="img-personaje-container"><span class="badge-contador" id="count-yuleisy_c1">0</span><img src="../assets/imagenes/personajes/camino1/yuleisy.png" alt="Yuleisy"></div>
+                            <h3 class="nombre-personaje">Yuleisy</h3><button class="btn btn-personalizar" data-personaje="yuleisy_c1"><i class="bi bi-pencil-square me-2"></i>Personalizar</button>
+                        </div>
+                    </div>
+                    <!-- MIA -->
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card-personaje">
+                            <div class="img-personaje-container"><span class="badge-contador" id="count-mia_c1">0</span><img src="../assets/imagenes/personajes/camino1/mia.png" alt="Mía"></div>
+                            <h3 class="nombre-personaje">Mía</h3><button class="btn btn-personalizar" data-personaje="mia_c1"><i class="bi bi-pencil-square me-2"></i>Personalizar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAMINO 2: Adivinanzas y Casos -->
+            <div class="tab-pane fade" id="camino2" role="tabpanel">
+                <div class="row justify-content-center g-4">
+                    
+                    <!-- Tarjeta: Banco de Adivinanzas -->
+                    <div class="col-12 col-md-6 col-lg-5 mt-4">
+                        <div class="card-personaje" style="padding: 2rem;">
+                            <div class="img-personaje-container" style="width: 100px; height: 100px; background-color: #f0eaf5; border-color: #5e2a84;">
+                                <span class="badge-contador" id="count-camino2_general">0</span>
+                                <i class="bi bi-puzzle-fill" style="font-size: 3rem; color: #5e2a84;"></i>
+                            </div>
+                            <h3 class="nombre-personaje fs-4">Adivinanzas</h3>
+                            <p class="text-muted mb-4 small">Preguntas de anclaje y sesgos. (Colección: adivinanzas)</p>
+                            <button class="btn btn-personalizar" data-personaje="camino2_general">
+                                <i class="bi bi-pencil-square me-2"></i>Administrar Adivinanzas
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta: Banco de Casos Prácticos -->
+                    <div class="col-12 col-md-6 col-lg-5 mt-4">
+                        <div class="card-personaje" style="padding: 2rem;">
+                            <div class="img-personaje-container" style="width: 100px; height: 100px; background-color: #fff3e0; border-color: #ff9800;">
+                                <span class="badge-contador" style="background-color: #ff9800;" id="count-camino2_casos">0</span>
+                                <i class="bi bi-card-checklist" style="font-size: 3rem; color: #ff9800;"></i>
+                            </div>
+                            <h3 class="nombre-personaje fs-4" style="color: #e65100;">Casos Prácticos</h3>
+                            <p class="text-muted mb-4 small">Escenarios de toma de decisiones. (Colección: casos_retos)</p>
+                            <button class="btn btn-personalizar" data-personaje="camino2_casos" style="color: #ff9800; border-color: #ff9800;">
+                                <i class="bi bi-pencil-square me-2"></i>Administrar Casos
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL LISTADO DE CARTAS -->
+    <div class="modal fade" id="modalListadoCartas" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #3a1653; color: white;" id="modalHeaderListado">
+                    <h5 class="modal-title fw-bold" id="tituloModalListado">Tarjetas</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-light">
+                    
+                    <!-- BOTONES DE EXCEL Y BORRAR TODO -->
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-success fw-bold" id="btnDescargarPlantilla">
+                                <i class="bi bi-file-earmark-excel me-1"></i> Descargar Plantilla
+                            </button>
+                            <button class="btn btn-outline-primary fw-bold" id="btnSubirExcel">
+                                <i class="bi bi-upload me-1"></i> Subir Excel
+                            </button>
+                            <!-- 🔥 BOTÓN BORRAR TODO 🔥 -->
+                            <button class="btn btn-outline-danger fw-bold" id="btnBorrarTodo">
+                                <i class="bi bi-trash3-fill me-1"></i> Borrar Todo
+                            </button>
+                            <input type="file" id="inputFileExcel" accept=".xlsx, .xls" style="display: none;">
+                        </div>
+                        
+                        <button class="btn fw-bold text-white" id="btnAbrirFormulario" style="background-color: #5e2a84; border: none;">
+                            <i class="bi bi-plus-circle me-1"></i> Agregar Manual
+                        </button>
+                    </div>
+
+                    <div id="loadingCartas" class="text-center py-4">
+                        <div class="spinner-border text-primary" style="color: #5e2a84 !important;"></div>
+                        <p class="mt-2" id="textoLoading">Cargando...</p>
+                    </div>
+                    <div class="accordion" id="acordeonCartas" style="display: none;"></div>
+                    <div id="sinCartas" class="text-center py-4 text-muted" style="display: none;">
+                        <i class="bi bi-folder-x fs-1"></i>
+                        <p class="mt-2">No hay registros asignados.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FORMULARIO MULTIUSO -->
+    <div class="modal fade" id="modalFormulario" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #5e2a84; color: white;" id="modalHeaderFormulario">
+                    <h5 class="modal-title fw-bold" id="tituloModalFormulario">Crear Nuevo Registro</h5>
+                    <button type="button" class="btn-close btn-close-white" id="btnCerrarFormulario" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="alertaValidacion" class="alert alert-danger" style="display: none;">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>Todos los campos marcados con (*) son obligatorios.
+                    </div>
+
+                    <!-- FORMULARIO CAMINO 1 (Personajes) -->
+                    <form id="formCamino1" style="display: none;">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark required-field">Situación / Descripción</label>
+                            <textarea id="inpC1Descripcion" class="form-control" rows="3" placeholder="Ej: Paty, al participar en actividades..." required></textarea>
+                        </div>
+                        <div class="card mb-3 border-success">
+                            <div class="card-header bg-success text-white fw-bold">1. Decisión Empática</div>
+                            <div class="card-body">
+                                <label class="form-label text-muted small required-field">Opción que ve el jugador:</label>
+                                <textarea id="inpC1OpEmpatica" class="form-control mb-2" rows="2" required></textarea>
+                                <label class="form-label text-muted small required-field">Retroalimentación (Consecuencia):</label>
+                                <textarea id="inpC1RetroEmpatica" class="form-control" rows="2" required></textarea>
+                            </div>
+                        </div>
+                        <div class="card mb-3 border-warning">
+                            <div class="card-header bg-warning text-dark fw-bold">2. Decisión Poco Empática</div>
+                            <div class="card-body">
+                                <label class="form-label text-muted small required-field">Opción que ve el jugador:</label>
+                                <textarea id="inpC1OpPocoEmpatica" class="form-control mb-2" rows="2" required></textarea>
+                                <label class="form-label text-muted small required-field">Retroalimentación (Consecuencia):</label>
+                                <textarea id="inpC1RetroPocoEmpatica" class="form-control" rows="2" required></textarea>
+                            </div>
+                        </div>
+                        <div class="card mb-3 border-danger">
+                            <div class="card-header bg-danger text-white fw-bold">3. Decisión Nada Empática</div>
+                            <div class="card-body">
+                                <label class="form-label text-muted small required-field">Opción que ve el jugador:</label>
+                                <textarea id="inpC1OpNadaEmpatica" class="form-control mb-2" rows="2" required></textarea>
+                                <label class="form-label text-muted small required-field">Retroalimentación (Consecuencia):</label>
+                                <textarea id="inpC1RetroNadaEmpatica" class="form-control" rows="2" required></textarea>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- FORMULARIO CAMINO 2 (Adivinanzas) -->
+                    <form id="formAdivinanzas" style="display: none;">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark required-field">Escenario (La Trampa)</label>
+                            <textarea id="inpAdvEscenario" class="form-control" rows="3" placeholder="Ej: Una familia llega de vacaciones..." required></textarea>
+                        </div>
+                        <div class="card mb-3 border-info">
+                            <div class="card-header bg-info text-white fw-bold">Fase de Anclaje (Lo que imaginó)</div>
+                            <div class="card-body">
+                                <label class="form-label text-muted small required-field">Pregunta Puente:</label>
+                                <input type="text" id="inpAdvPregAnclaje" class="form-control mb-3" value="¿Con cuál coincide lo que imaginaste?" required>
+                                <div class="row g-3">
+                                    <div class="col-md-6 border-end">
+                                        <h6 class="text-primary fw-bold">Opción A</h6>
+                                        <label class="form-label text-muted small required-field">Texto Botón:</label>
+                                        <input type="text" id="inpAdvOpAnclajeA" class="form-control mb-2" placeholder="Ej: Imaginé una mujer" required>
+                                        <label class="form-label text-muted small required-field">Reveal (Explicación del Sesgo):</label>
+                                        <textarea id="inpAdvRevAnclajeA" class="form-control" rows="3" required></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6 class="text-primary fw-bold">Opción B</h6>
+                                        <label class="form-label text-muted small required-field">Texto Botón:</label>
+                                        <input type="text" id="inpAdvOpAnclajeB" class="form-control mb-2" placeholder="Ej: Imaginé un hombre" required>
+                                        <label class="form-label text-muted small required-field">Reveal (Explicación del Sesgo):</label>
+                                        <textarea id="inpAdvRevAnclajeB" class="form-control" rows="3" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark required-field">Retroalimentación Final (La Moraleja)</label>
+                            <textarea id="inpAdvRetro" class="form-control" rows="2" placeholder="Ej: Cocinar no tiene género pero nuestro cerebro lo asigna..." required></textarea>
+                        </div>
+                        <div class="card mb-3 border-secondary">
+                            <div class="card-header bg-secondary text-white fw-bold">Fase de Reflexión (Respuesta Final)</div>
+                            <div class="card-body">
+                                <label class="form-label text-muted small required-field">Pregunta Final:</label>
+                                <input type="text" id="inpAdvPregReflexion" class="form-control mb-3" value="¿Qué piensas ahora?" required>
+                                <label class="form-label text-muted small text-success fw-bold required-field">Respuesta Alta Apertura (✅ 2 pts):</label>
+                                <input type="text" id="inpAdvReflexionBuena" class="form-control mb-2" placeholder="Me sorprendió, no me había dado cuenta..." required>
+                                <label class="form-label text-muted small text-warning fw-bold required-field">Respuesta Conciencia Media (⚡ 1 pt):</label>
+                                <input type="text" id="inpAdvReflexionMedia" class="form-control mb-2" placeholder="Ya lo sabía pero igual lo pensé..." required>
+                                <label class="form-label text-muted small text-danger fw-bold required-field">Respuesta Negación/Resistencia (❌ 0 pts):</label>
+                                <input type="text" id="inpAdvReflexionMala" class="form-control" placeholder="No creo que sea un estereotipo..." required>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- FORMULARIO CAMINO 2 (Casos Prácticos) -->
+                    <form id="formCasos" style="display: none;">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark required-field">Escenario del Caso</label>
+                            <textarea id="inpCasEscenario" class="form-control" rows="3" placeholder="Ej: Estás en una reunión familiar y tu tía le dice a tu prima..." required></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark required-field">Pregunta</label>
+                            <input type="text" id="inpCasPregunta" class="form-control" value="¿Qué harías?" required>
+                        </div>
+                        <div class="card mb-3 border-success">
+                            <div class="card-header bg-success text-white fw-bold">Opción A (Alta Apertura ✅ - 2 pts)</div>
+                            <div class="card-body">
+                                <label class="form-label text-muted small required-field">Texto de la Opción:</label>
+                                <textarea id="inpCasOpBuena" class="form-control mb-2" rows="2" required placeholder="Ej: Le digo a mi tía que eso no es justo..."></textarea>
+                                <label class="form-label text-muted small required-field">Retroalimentación:</label>
+                                <textarea id="inpCasRetroBuena" class="form-control" rows="2" required placeholder="Ej: Excelente respuesta. Alzar la voz ayuda a..."></textarea>
+                            </div>
+                        </div>
+                        <div class="card mb-3 border-warning">
+                            <div class="card-header bg-warning text-dark fw-bold">Opción B (Conciencia Media ⚡ - 1 pt)</div>
+                            <div class="card-body">
+                                <label class="form-label text-muted small required-field">Texto de la Opción:</label>
+                                <textarea id="inpCasOpMedia" class="form-control mb-2" rows="2" required placeholder="Ej: No digo nada en ese momento pero después hablo..."></textarea>
+                                <label class="form-label text-muted small required-field">Retroalimentación:</label>
+                                <textarea id="inpCasRetroMedia" class="form-control" rows="2" required placeholder="Ej: Apoyar en privado es un paso, pero el estereotipo sigue..."></textarea>
+                            </div>
+                        </div>
+                        <div class="card mb-3 border-danger">
+                            <div class="card-header bg-danger text-white fw-bold">Opción C (Negación ❌ - 0 pts)</div>
+                            <div class="card-body">
+                                <label class="form-label text-muted small required-field">Texto de la Opción:</label>
+                                <textarea id="inpCasOpMala" class="form-control mb-2" rows="2" required placeholder="Ej: No me meto es un asunto de familia..."></textarea>
+                                <label class="form-label text-muted small required-field">Retroalimentación:</label>
+                                <textarea id="inpCasRetroMala" class="form-control" rows="2" required placeholder="Ej: El silencio valida el estereotipo. No meterse..."></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btnCancelarFormulario">Cancelar</button>
+                    <button type="button" class="btn btn-primary fw-bold text-white" id="btnGuardarCarta" style="background-color: #5e2a84; border: none;">Guardar Registro</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs, addDoc, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyATWYM-R92ngZhZKdzs_DqgvrmXDXUNaFE",
+            authDomain: "caminos-de-empatia.firebaseapp.com",
+            projectId: "caminos-de-empatia",
+            storageBucket: "caminos-de-empatia.firebasestorage.app",
+            messagingSenderId: "464927455216",
+            appId: "1:464927455216:web:41107ad19784e7fbb20f35",
+            measurementId: "G-QEZM1BHT58"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Nombres de Colecciones
+        const COLECCION_CAMINO_1 = "cartas_personajes";
+        const COLECCION_ADIVINANZAS = "adivinanzas";
+        const COLECCION_CASOS = "casos_retos";
+
+        let personajeActualId = "";
+        let personajeActualNombre = "";
+        let tipoFormulario = 1; 
+        
+        let editMode = false;
+        let cartaIdParaEditar = "";
+        let cartasDataLocal = [];
+
+        const modalListado = new bootstrap.Modal(document.getElementById('modalListadoCartas'));
+        const modalFormulario = new bootstrap.Modal(document.getElementById('modalFormulario'));
+
+        async function actualizarContadores() {
+            try {
+                const queryC1 = await getDocs(collection(db, COLECCION_CAMINO_1));
+                const conteoC1 = {};
+                queryC1.forEach((doc) => {
+                    const data = doc.data();
+                    if (data.personajeId) { conteoC1[data.personajeId] = (conteoC1[data.personajeId] || 0) + 1; }
+                });
+
+                const queryAdv = await getDocs(collection(db, COLECCION_ADIVINANZAS));
+                const totalAdivinanzas = queryAdv.size; 
+
+                const queryCasos = await getDocs(collection(db, COLECCION_CASOS));
+                const totalCasos = queryCasos.size; 
+
+                document.querySelectorAll('.badge-contador').forEach(badge => badge.innerText = '0');
+
+                for (const [personaje, cantidad] of Object.entries(conteoC1)) {
+                    const badge = document.getElementById(`count-${personaje}`);
+                    if (badge) badge.innerText = cantidad;
+                }
+
+                if (document.getElementById('count-camino2_general')) document.getElementById('count-camino2_general').innerText = totalAdivinanzas;
+                if (document.getElementById('count-camino2_casos')) document.getElementById('count-camino2_casos').innerText = totalCasos;
+
+            } catch (e) { console.error("Error al cargar contadores", e); }
+        }
+        actualizarContadores();
+
+        document.querySelectorAll('.btn-personalizar').forEach(boton => {
+            boton.addEventListener('click', (e) => {
+                personajeActualId = e.currentTarget.getAttribute('data-personaje');
+                
+                if (personajeActualId === 'camino2_general') {
+                    tipoFormulario = 2; // Adivinanzas
+                    personajeActualNombre = "Adivinanzas";
+                    document.getElementById('tituloModalListado').innerText = `Banco de Adivinanzas`;
+                    document.getElementById('modalHeaderListado').style.backgroundColor = '#3a1653';
+                    document.getElementById('btnAbrirFormulario').style.backgroundColor = '#5e2a84';
+                    document.getElementById('modalHeaderFormulario').style.backgroundColor = '#5e2a84';
+                } else if (personajeActualId === 'camino2_casos') {
+                    tipoFormulario = 3; // Casos
+                    personajeActualNombre = "Casos Prácticos";
+                    document.getElementById('tituloModalListado').innerText = `Banco de Casos Prácticos`;
+                    document.getElementById('modalHeaderListado').style.backgroundColor = '#e65100'; 
+                    document.getElementById('btnAbrirFormulario').style.backgroundColor = '#ff9800';
+                    document.getElementById('modalHeaderFormulario').style.backgroundColor = '#e65100';
+                } else {
+                    tipoFormulario = 1; // Cartas Camino 1
+                    const h3 = e.currentTarget.parentElement.querySelector('.nombre-personaje');
+                    personajeActualNombre = h3 ? h3.innerText : personajeActualId.split('_')[0];
+                    document.getElementById('tituloModalListado').innerText = `Tarjetas de ${personajeActualNombre}`;
+                    document.getElementById('modalHeaderListado').style.backgroundColor = '#3a1653';
+                    document.getElementById('btnAbrirFormulario').style.backgroundColor = '#5e2a84';
+                    document.getElementById('modalHeaderFormulario').style.backgroundColor = '#5e2a84';
+                }
+                
+                modalListado.show();
+                cargarCartasDePersonaje(personajeActualId);
+            });
+        });
+
+        async function cargarCartasDePersonaje(personajeId) {
+            const acordeon = document.getElementById('acordeonCartas');
+            const loading = document.getElementById('loadingCartas');
+            const sinCartas = document.getElementById('sinCartas');
+
+            acordeon.style.display = 'none'; sinCartas.style.display = 'none'; loading.style.display = 'block'; 
+            document.getElementById('textoLoading').innerText = "Cargando...";
+            acordeon.innerHTML = ''; cartasDataLocal = [];
+
+            try {
+                let coleccionDestino;
+                let q;
+
+                if (tipoFormulario === 1) {
+                    coleccionDestino = COLECCION_CAMINO_1;
+                    q = query(collection(db, coleccionDestino), where("personajeId", "==", personajeId));
+                } else if (tipoFormulario === 2) {
+                    coleccionDestino = COLECCION_ADIVINANZAS;
+                    q = query(collection(db, coleccionDestino));
+                } else if (tipoFormulario === 3) {
+                    coleccionDestino = COLECCION_CASOS;
+                    q = query(collection(db, coleccionDestino));
+                }
+
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    loading.style.display = 'none'; sinCartas.style.display = 'block'; return;
+                }
+
+                let html = ''; let index = 0;
+                querySnapshot.forEach((doc) => {
+                    const carta = doc.data();
+                    cartasDataLocal.push({ id: doc.id, ...carta });
+                    index++;
+
+                    let contenidoCartaHTML = "";
+                    let tituloAcordeon = "";
+
+                    if (tipoFormulario === 1) {
+                        tituloAcordeon = carta.descripcion.substring(0, 45);
+                        contenidoCartaHTML = `
+                            <p><strong>Descripción:</strong> ${carta.descripcion}</p><hr>
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-4"><div class="p-2 border border-success rounded bg-success bg-opacity-10 h-100"><span class="badge bg-success mb-1">Empática</span><br><small><strong>O:</strong> ${carta.opcion_empatica}</small><br><small class="text-success"><strong>R:</strong> ${carta.retro_empatica}</small></div></div>
+                                <div class="col-md-4"><div class="p-2 border border-warning rounded bg-warning bg-opacity-10 h-100"><span class="badge bg-warning text-dark mb-1">Poco Empática</span><br><small><strong>O:</strong> ${carta.opcion_poco_empatica}</small><br><small class="text-warning"><strong>R:</strong> ${carta.retro_poco_empatica}</small></div></div>
+                                <div class="col-md-4"><div class="p-2 border border-danger rounded bg-danger bg-opacity-10 h-100"><span class="badge bg-danger mb-1">Nada Empática</span><br><small><strong>O:</strong> ${carta.opcion_nada_empatica}</small><br><small class="text-danger"><strong>R:</strong> ${carta.retro_nada_empatica}</small></div></div>
+                            </div>
+                        `;
+                    } else if (tipoFormulario === 2) {
+                        tituloAcordeon = carta.escenario.substring(0, 45);
+                        contenidoCartaHTML = `
+                            <p><strong>Escenario:</strong> ${carta.escenario}</p><hr>
+                            <p><strong>Anclaje:</strong> ${carta.preguntaAnclaje}</p>
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-6"><div class="p-2 border border-info rounded bg-info bg-opacity-10 h-100"><span class="badge bg-info text-dark mb-1">Opción A</span><br><small><strong>O:</strong> ${carta.opcionesAnclaje.A.texto}</small><br><small class="text-info-emphasis"><strong>R:</strong> ${carta.opcionesAnclaje.A.reveal}</small></div></div>
+                                <div class="col-md-6"><div class="p-2 border border-info rounded bg-info bg-opacity-10 h-100"><span class="badge bg-info text-dark mb-1">Opción B</span><br><small><strong>O:</strong> ${carta.opcionesAnclaje.B.texto}</small><br><small class="text-info-emphasis"><strong>R:</strong> ${carta.opcionesAnclaje.B.reveal}</small></div></div>
+                            </div>
+                            <p><strong>Retroalimentación:</strong> ${carta.retroalimentacionFinal}</p>
+                            <p><strong>Reflexión Final:</strong> ${carta.preguntaReflexion}</p>
+                            <ul class="small text-muted">
+                                <li>✅ ${carta.opcionesReflexion[0].texto}</li>
+                                <li>⚡ ${carta.opcionesReflexion[1].texto}</li>
+                                <li>❌ ${carta.opcionesReflexion[2].texto}</li>
+                            </ul>
+                        `;
+                    } else if (tipoFormulario === 3) {
+                        tituloAcordeon = carta.escenario.substring(0, 45);
+                        contenidoCartaHTML = `
+                            <p><strong>Escenario:</strong> ${carta.escenario}</p>
+                            <p><strong>Pregunta:</strong> ${carta.pregunta}</p><hr>
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-4"><div class="p-2 border border-success rounded bg-success bg-opacity-10 h-100"><span class="badge bg-success mb-1">✅ 2 pts</span><br><small><strong>O:</strong> ${carta.opcionBuena.texto}</small><br><small class="text-success"><strong>R:</strong> ${carta.opcionBuena.retro}</small></div></div>
+                                <div class="col-md-4"><div class="p-2 border border-warning rounded bg-warning bg-opacity-10 h-100"><span class="badge bg-warning text-dark mb-1">⚡ 1 pt</span><br><small><strong>O:</strong> ${carta.opcionMedia.texto}</small><br><small class="text-warning"><strong>R:</strong> ${carta.opcionMedia.retro}</small></div></div>
+                                <div class="col-md-4"><div class="p-2 border border-danger rounded bg-danger bg-opacity-10 h-100"><span class="badge bg-danger mb-1">❌ 0 pts</span><br><small><strong>O:</strong> ${carta.opcionMala.texto}</small><br><small class="text-danger"><strong>R:</strong> ${carta.opcionMala.retro}</small></div></div>
+                            </div>
+                        `;
+                    }
+
+                    html += `
+                        <div class="accordion-item mb-2 border-0 shadow-sm rounded">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed rounded fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#carta-${doc.id}">
+                                    Registro #${index}: ${tituloAcordeon}...
+                                </button>
+                            </h2>
+                            <div id="carta-${doc.id}" class="accordion-collapse collapse" data-bs-parent="#acordeonCartas">
+                                <div class="accordion-body">
+                                    ${contenidoCartaHTML}
+                                    <div class="d-flex justify-content-end gap-2 border-top pt-2 mt-2">
+                                        <button class="btn btn-sm btn-outline-primary btn-editar" data-id="${doc.id}"><i class="bi bi-pencil"></i> Editar</button>
+                                        <button class="btn btn-sm btn-outline-danger btn-eliminar" data-id="${doc.id}"><i class="bi bi-trash"></i> Eliminar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                acordeon.innerHTML = html; loading.style.display = 'none'; acordeon.style.display = 'block';
+            } catch (error) {
+                loading.innerHTML = '<p class="text-danger">Error al cargar datos.</p>';
+            }
+        }
+
+        // ==========================================
+        // EVENTO PARA BORRAR TODOS LOS REGISTROS
+        // ==========================================
+        document.getElementById('btnBorrarTodo').addEventListener('click', async () => {
+            if (cartasDataLocal.length === 0) {
+                alert("No hay registros guardados en esta categoría para borrar.");
+                return;
+            }
+
+            const confirmacion = confirm(`⚠️ ¡ATENCIÓN! ⚠️\n\n¿Estás completamente seguro de que deseas ELIMINAR TODOS los registros de ${personajeActualNombre}?\n\nEsta acción NO se puede deshacer y borrará los ${cartasDataLocal.length} elementos actuales.`);
+            
+            if (confirmacion) {
+                const btnBorrarTodo = document.getElementById('btnBorrarTodo');
+                const originalText = btnBorrarTodo.innerHTML;
+                btnBorrarTodo.disabled = true;
+                btnBorrarTodo.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Borrando...';
+
+                try {
+                    let coleccionDestino;
+                    let q;
+
+                    // Determinar qué estamos borrando según la vista actual
+                    if (tipoFormulario === 1) {
+                        coleccionDestino = COLECCION_CAMINO_1;
+                        q = query(collection(db, coleccionDestino), where("personajeId", "==", personajeActualId));
+                    } else if (tipoFormulario === 2) {
+                        coleccionDestino = COLECCION_ADIVINANZAS;
+                        q = query(collection(db, coleccionDestino));
+                    } else if (tipoFormulario === 3) {
+                        coleccionDestino = COLECCION_CASOS;
+                        q = query(collection(db, coleccionDestino));
+                    }
+
+                    const querySnapshot = await getDocs(q);
+                    
+                    // Eliminar cada documento encontrado
+                    const promesasBorrado = [];
+                    querySnapshot.forEach((documento) => {
+                        promesasBorrado.push(deleteDoc(doc(db, coleccionDestino, documento.id)));
+                    });
+
+                    // Esperamos a que terminen todos los borrados en paralelo
+                    await Promise.all(promesasBorrado);
+
+                    alert(`✅ Se han eliminado ${promesasBorrado.length} registros exitosamente.`);
+                    
+                    // Recargar la interfaz vacía
+                    cargarCartasDePersonaje(personajeActualId);
+                    actualizarContadores();
+
+                } catch (error) {
+                    console.error("Error al borrar todo:", error);
+                    alert("Ocurrió un error al intentar borrar los registros de la base de datos.");
+                } finally {
+                    btnBorrarTodo.disabled = false;
+                    btnBorrarTodo.innerHTML = originalText;
+                }
+            }
+        });
+
+        // DELEGAR EVENTOS (EDITAR / ELIMINAR INDIVIDUAL)
+        document.getElementById('acordeonCartas').addEventListener('click', async (e) => {
+            if (e.target.closest('.btn-eliminar')) {
+                const id = e.target.closest('.btn-eliminar').dataset.id;
+                if (confirm("¿Estás seguro de eliminar este registro permanentemente?")) {
+                    try {
+                        let colDestino = tipoFormulario === 1 ? COLECCION_CAMINO_1 : (tipoFormulario === 2 ? COLECCION_ADIVINANZAS : COLECCION_CASOS);
+                        await deleteDoc(doc(db, colDestino, id));
+                        cargarCartasDePersonaje(personajeActualId);
+                        actualizarContadores();
+                    } catch (error) { alert("Error al eliminar."); }
+                }
+            }
+            if (e.target.closest('.btn-editar')) {
+                const id = e.target.closest('.btn-editar').dataset.id;
+                const carta = cartasDataLocal.find(c => c.id === id);
+                if (!carta) return;
+                
+                editMode = true; cartaIdParaEditar = id;
+                document.getElementById('tituloModalFormulario').innerText = "Editar Registro";
+                document.getElementById('alertaValidacion').style.display = 'none';
+                
+                document.getElementById('formCamino1').style.display = tipoFormulario === 1 ? 'block' : 'none';
+                document.getElementById('formAdivinanzas').style.display = tipoFormulario === 2 ? 'block' : 'none';
+                document.getElementById('formCasos').style.display = tipoFormulario === 3 ? 'block' : 'none';
+
+                if (tipoFormulario === 1) {
+                    document.getElementById('inpC1Descripcion').value = carta.descripcion;
+                    document.getElementById('inpC1OpEmpatica').value = carta.opcion_empatica;
+                    document.getElementById('inpC1RetroEmpatica').value = carta.retro_empatica;
+                    document.getElementById('inpC1OpPocoEmpatica').value = carta.opcion_poco_empatica;
+                    document.getElementById('inpC1RetroPocoEmpatica').value = carta.retro_poco_empatica;
+                    document.getElementById('inpC1OpNadaEmpatica').value = carta.opcion_nada_empatica;
+                    document.getElementById('inpC1RetroNadaEmpatica').value = carta.retro_nada_empatica;
+                } else if (tipoFormulario === 2) {
+                    document.getElementById('inpAdvEscenario').value = carta.escenario;
+                    document.getElementById('inpAdvPregAnclaje').value = carta.preguntaAnclaje;
+                    document.getElementById('inpAdvOpAnclajeA').value = carta.opcionesAnclaje.A.texto;
+                    document.getElementById('inpAdvRevAnclajeA').value = carta.opcionesAnclaje.A.reveal;
+                    document.getElementById('inpAdvOpAnclajeB').value = carta.opcionesAnclaje.B.texto;
+                    document.getElementById('inpAdvRevAnclajeB').value = carta.opcionesAnclaje.B.reveal;
+                    document.getElementById('inpAdvRetro').value = carta.retroalimentacionFinal;
+                    document.getElementById('inpAdvPregReflexion').value = carta.preguntaReflexion;
+                    document.getElementById('inpAdvReflexionBuena').value = carta.opcionesReflexion[0].texto;
+                    document.getElementById('inpAdvReflexionMedia').value = carta.opcionesReflexion[1].texto;
+                    document.getElementById('inpAdvReflexionMala').value = carta.opcionesReflexion[2].texto;
+                } else if (tipoFormulario === 3) {
+                    document.getElementById('inpCasEscenario').value = carta.escenario;
+                    document.getElementById('inpCasPregunta').value = carta.pregunta;
+                    document.getElementById('inpCasOpBuena').value = carta.opcionBuena.texto;
+                    document.getElementById('inpCasRetroBuena').value = carta.opcionBuena.retro;
+                    document.getElementById('inpCasOpMedia').value = carta.opcionMedia.texto;
+                    document.getElementById('inpCasRetroMedia').value = carta.opcionMedia.retro;
+                    document.getElementById('inpCasOpMala').value = carta.opcionMala.texto;
+                    document.getElementById('inpCasRetroMala').value = carta.opcionMala.retro;
+                }
+                modalListado.hide(); modalFormulario.show();
+            }
+        });
+
+        document.getElementById('btnAbrirFormulario').addEventListener('click', () => {
+            editMode = false;
+            document.getElementById('tituloModalFormulario').innerText = "Crear Nuevo Registro";
+            document.getElementById('formCamino1').reset();
+            document.getElementById('formAdivinanzas').reset();
+            document.getElementById('formCasos').reset();
+            document.getElementById('alertaValidacion').style.display = 'none';
+            
+            document.getElementById('formCamino1').style.display = tipoFormulario === 1 ? 'block' : 'none';
+            document.getElementById('formAdivinanzas').style.display = tipoFormulario === 2 ? 'block' : 'none';
+            document.getElementById('formCasos').style.display = tipoFormulario === 3 ? 'block' : 'none';
+            
+            modalListado.hide(); modalFormulario.show();
+        });
+
+        const cerrarForm = () => { modalFormulario.hide(); modalListado.show(); };
+        document.getElementById('btnCerrarFormulario').addEventListener('click', cerrarForm);
+        document.getElementById('btnCancelarFormulario').addEventListener('click', cerrarForm);
+
+       document.getElementById('btnGuardarCarta').addEventListener('click', async () => {
+            let data = {};
+            let isValid = true;
+            const fechaActual = new Date().toISOString();
+
+            if (tipoFormulario === 1) {
+                const desc = document.getElementById('inpC1Descripcion').value.trim();
+                const opE = document.getElementById('inpC1OpEmpatica').value.trim();
+                const retE = document.getElementById('inpC1RetroEmpatica').value.trim();
+                const opP = document.getElementById('inpC1OpPocoEmpatica').value.trim();
+                const retP = document.getElementById('inpC1RetroPocoEmpatica').value.trim();
+                const opN = document.getElementById('inpC1OpNadaEmpatica').value.trim();
+                const retN = document.getElementById('inpC1RetroNadaEmpatica').value.trim();
+
+                if (!desc || !opE || !retE || !opP || !retP || !opN || !retN) isValid = false;
+
+                data = {
+                    descripcion: desc, opcion_empatica: opE, retro_empatica: retE,
+                    opcion_poco_empatica: opP, retro_poco_empatica: retP,
+                    opcion_nada_empatica: opN, retro_nada_empatica: retN,
+                    fecha_actualizacion: fechaActual, personajeId: personajeActualId
+                };
+            } else if (tipoFormulario === 2) {
+                const escenario = document.getElementById('inpAdvEscenario').value.trim();
+                const pregAnclaje = document.getElementById('inpAdvPregAnclaje').value.trim();
+                const opAA = document.getElementById('inpAdvOpAnclajeA').value.trim();
+                const revAA = document.getElementById('inpAdvRevAnclajeA').value.trim();
+                const opAB = document.getElementById('inpAdvOpAnclajeB').value.trim();
+                const revAB = document.getElementById('inpAdvRevAnclajeB').value.trim();
+                const retro = document.getElementById('inpAdvRetro').value.trim();
+                const pregReflex = document.getElementById('inpAdvPregReflexion').value.trim();
+                const refBuena = document.getElementById('inpAdvReflexionBuena').value.trim();
+                const refMedia = document.getElementById('inpAdvReflexionMedia').value.trim();
+                const refMala = document.getElementById('inpAdvReflexionMala').value.trim();
+
+                if (!escenario || !pregAnclaje || !opAA || !revAA || !opAB || !revAB || !retro || !pregReflex || !refBuena || !refMedia || !refMala) isValid = false;
+
+                data = {
+                    escenario: escenario, botonPausa: "Ya lo imaginé", preguntaAnclaje: pregAnclaje,
+                    opcionesAnclaje: { A: { texto: opAA, reveal: revAA }, B: { texto: opAB, reveal: revAB } },
+                    retroalimentacionFinal: retro, preguntaReflexion: pregReflex,
+                    opcionesReflexion: [
+                        { texto: refBuena, icono: "✅", puntos: 2, bono: 2 },
+                        { texto: refMedia, icono: "⚡", puntos: 1, bono: 1 },
+                        { texto: refMala, icono: "❌", puntos: 0, bono: 0 }
+                    ],
+                    fecha_actualizacion: fechaActual
+                };
+            } else if (tipoFormulario === 3) {
+                const escenario = document.getElementById('inpCasEscenario').value.trim();
+                const pregunta = document.getElementById('inpCasPregunta').value.trim();
+                const opB = document.getElementById('inpCasOpBuena').value.trim();
+                const retB = document.getElementById('inpCasRetroBuena').value.trim();
+                const opM = document.getElementById('inpCasOpMedia').value.trim();
+                const retM = document.getElementById('inpCasRetroMedia').value.trim();
+                const opMal = document.getElementById('inpCasOpMala').value.trim();
+                const retMal = document.getElementById('inpCasRetroMala').value.trim();
+
+                if (!escenario || !pregunta || !opB || !retB || !opM || !retM || !opMal || !retMal) isValid = false;
+
+                data = {
+                    escenario: escenario,
+                    pregunta: pregunta,
+                    opcionBuena: { texto: opB, retro: retB, puntos: 2, bono: 2, icono: "✅" },
+                    opcionMedia: { texto: opM, retro: retM, puntos: 1, bono: 1, icono: "⚡" },
+                    opcionMala: { texto: opMal, retro: retMal, puntos: 0, bono: 0, icono: "❌" },
+                    fecha_actualizacion: fechaActual
+                };
+            }
+
+            if (!isValid) {
+                document.getElementById('alertaValidacion').style.display = 'block';
+                document.querySelector('#modalFormulario .modal-body').scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            document.getElementById('alertaValidacion').style.display = 'none';
+            const btnGuardar = document.getElementById('btnGuardarCarta');
+            btnGuardar.disabled = true; btnGuardar.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Guardando...';
+
+            try {
+                const coleccionDestino = tipoFormulario === 1 ? COLECCION_CAMINO_1 : (tipoFormulario === 2 ? COLECCION_ADIVINANZAS : COLECCION_CASOS);
+
+                if (editMode) {
+                    await updateDoc(doc(db, coleccionDestino, cartaIdParaEditar), data);
+                } else {
+                    data.fecha_creacion = fechaActual;
+                    await addDoc(collection(db, coleccionDestino), data);
+                }
+                cerrarForm();
+                cargarCartasDePersonaje(personajeActualId);
+                actualizarContadores();
+            } catch (error) {
+                alert("Error al procesar la solicitud en Firebase.");
+            } finally {
+                btnGuardar.disabled = false; btnGuardar.innerHTML = 'Guardar Registro';
+            }
+        });
+
+        // ==========================================
+        // FUNCIONES DE EXCEL (PLANTILLA Y CARGA)
+        // ==========================================
+
+        document.getElementById('btnDescargarPlantilla').addEventListener('click', () => {
+            let ws_data = [];
+            let fileName = "";
+            
+            if (tipoFormulario === 1) {
+                ws_data = [
+                    ["Descripcion", "Opcion Empatica", "Retro Empatica", "Opcion Poco Empatica", "Retro Poco Empatica", "Opcion Nada Empatica", "Retro Nada Empatica"],
+                    ["Ej: Paty no puede subir las gradas...", "Ayudarla", "Muy bien.", "Ignorarla", "Se sintió excluida.", "Burlarse", "Pésimo."]
+                ];
+                fileName = `Plantilla_Cartas_${personajeActualNombre}.xlsx`;
+            } else if (tipoFormulario === 2) {
+                ws_data = [
+                    ["Escenario", "Pregunta Anclaje", "Opcion A", "Reveal A", "Opcion B", "Reveal B", "Retroalimentacion Final", "Pregunta Reflexion", "Respuesta Buena", "Respuesta Media", "Respuesta Mala"],
+                    ["Una persona maneja muy mal y choca...", "¿Con cuál coincide lo que imaginaste?", "Una mujer", "Asociaste un estereotipo.", "Un hombre", "Evitaste el estereotipo.", "Las habilidades al volante no dependen del género...", "¿Qué piensas ahora?", "Me di cuenta de mi sesgo.", "Ya lo sabía pero dudé.", "No creo que sea un sesgo."]
+                ];
+                fileName = `Plantilla_Adivinanzas.xlsx`;
+            } else if (tipoFormulario === 3) {
+                ws_data = [
+                    ["Escenario", "Pregunta", "Opcion Buena", "Retro Buena", "Opcion Media", "Retro Media", "Opcion Mala", "Retro Mala"],
+                    ["Estás en una reunión familiar y tu tía le dice a tu prima...", "¿Qué harías?", "Le digo a mi tía que eso no es justo...", "Excelente respuesta. Alzar la voz...", "No digo nada en ese momento pero después hablo...", "Apoyar en privado es un paso, pero el estereotipo sigue...", "No me meto es un asunto de familia...", "El silencio valida el estereotipo..."]
+                ];
+                fileName = `Plantilla_CasosPracticos.xlsx`;
+            }
+
+            const ws = XLSX.utils.aoa_to_sheet(ws_data);
+            const wscols = Array(ws_data[0].length).fill({wch: 30});
+            ws['!cols'] = wscols;
+
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Registros");
+            XLSX.writeFile(wb, fileName);
+        });
+
+        const inputFileExcel = document.getElementById('inputFileExcel');
+        document.getElementById('btnSubirExcel').addEventListener('click', () => { inputFileExcel.click(); });
+
+        inputFileExcel.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                try {
+                    const data = new Uint8Array(event.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const rows = XLSX.utils.sheet_to_json(worksheet);
+
+                    if(rows.length === 0) { alert("Archivo vacío."); inputFileExcel.value = ""; return; }
+
+                    document.getElementById('acordeonCartas').style.display = 'none';
+                    document.getElementById('sinCartas').style.display = 'none';
+                    document.getElementById('loadingCartas').style.display = 'block';
+                    document.getElementById('textoLoading').innerText = `Subiendo ${rows.length} registros a Firebase...`;
+
+                    let count = 0;
+                    const fechaActual = new Date().toISOString();
+                    const coleccionDestino = tipoFormulario === 1 ? COLECCION_CAMINO_1 : (tipoFormulario === 2 ? COLECCION_ADIVINANZAS : COLECCION_CASOS);
+
+                    for (const row of rows) {
+                        let docData = {};
+
+                        if (tipoFormulario === 1) {
+                            if (!row["Descripcion"] || !row["Opcion Empatica"]) continue;
+                            docData = {
+                                descripcion: row["Descripcion"] || "",
+                                opcion_empatica: row["Opcion Empatica"] || "", retro_empatica: row["Retro Empatica"] || "",
+                                opcion_poco_empatica: row["Opcion Poco Empatica"] || "", retro_poco_empatica: row["Retro Poco Empatica"] || "",
+                                opcion_nada_empatica: row["Opcion Nada Empatica"] || "", retro_nada_empatica: row["Retro Nada Empatica"] || "",
+                                personajeId: personajeActualId, fecha_creacion: fechaActual, fecha_actualizacion: fechaActual
+                            };
+                        } else if (tipoFormulario === 2) {
+                            if (!row["Escenario"]) continue;
+                            docData = {
+                                escenario: row["Escenario"] || "", botonPausa: "Ya lo imaginé",
+                                preguntaAnclaje: row["Pregunta Anclaje"] || "¿Con cuál coincide lo que imaginaste?",
+                                opcionesAnclaje: { A: { texto: row["Opcion A"] || "", reveal: row["Reveal A"] || "" }, B: { texto: row["Opcion B"] || "", reveal: row["Reveal B"] || "" } },
+                                retroalimentacionFinal: row["Retroalimentacion Final"] || "", preguntaReflexion: row["Pregunta Reflexion"] || "¿Qué piensas ahora?",
+                                opcionesReflexion: [
+                                    { texto: row["Respuesta Buena"] || "", icono: "✅", puntos: 2, bono: 2 },
+                                    { texto: row["Respuesta Media"] || "", icono: "⚡", puntos: 1, bono: 1 },
+                                    { texto: row["Respuesta Mala"] || "", icono: "❌", puntos: 0, bono: 0 }
+                                ],
+                                fecha_creacion: fechaActual, fecha_actualizacion: fechaActual
+                            };
+                        } else if (tipoFormulario === 3) {
+                            if (!row["Escenario"] || !row["Pregunta"]) continue;
+                            docData = {
+                                escenario: row["Escenario"] || "",
+                                pregunta: row["Pregunta"] || "¿Qué harías?",
+                                opcionBuena: { texto: row["Opcion Buena"] || "", retro: row["Retro Buena"] || "", puntos: 2, bono: 2, icono: "✅" },
+                                opcionMedia: { texto: row["Opcion Media"] || "", retro: row["Retro Media"] || "", puntos: 1, bono: 1, icono: "⚡" },
+                                opcionMala: { texto: row["Opcion Mala"] || "", retro: row["Retro Mala"] || "", puntos: 0, bono: 0, icono: "❌" },
+                                fecha_creacion: fechaActual, fecha_actualizacion: fechaActual
+                            };
+                        }
+                        
+                        await addDoc(collection(db, coleccionDestino), docData);
+                        count++;
+                    }
+                    alert(`¡Éxito! Se importaron ${count} registros correctamente.`);
+                } catch(error) {
+                    alert("Ocurrió un error leyendo el Excel. Asegúrate de usar la plantilla descargada.");
+                } finally {
+                    inputFileExcel.value = ""; 
+                    cargarCartasDePersonaje(personajeActualId);
+                    actualizarContadores();
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,567 @@
+/* =========================================================
+   IMPORTACIÓN DE ARCHIVOS MODULARES
+   ========================================================= */
+@import url("1home.css");
+@import url("2registro.css");
+@import url("3personajes.css");
+@import url("4quiz.css");
+@import url("5mapa.css");
+@import url("6puntajesfinales.css");
+@import url("contenidocasillas.css");
+@import url("créditosjuego.css");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* =========================================================
+   1. VARIABLES GLOBALES Y CONFIGURACIÓN BASE
+   ========================================================= */
+:root {
+    --color-bg-light: #fdf2e9;    
+    --color-purple-dark: #3a1c4f; 
+    --color-purple-main: #5e2a84; 
+    --color-yellow-btn: #f3a601;  
+    --color-pink-accent: #f06292; 
+    --font-body: 'Roboto', sans-serif;
+    --hud-glow: 0 0 15px rgba(243, 166, 1, 0.4);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    font-family: var(--font-body);
+    background-color: var(--color-bg-light);
+    color: var(--color-purple-dark);
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Mantiene la página estática como una App */
+}
+
+main, #main-content {
+    position: relative; /* Establece el marco límite para el modal */
+    overflow: hidden;   /* Evita que el modal se desborde fuera del contenedor */
+}
+
+/* =========================================================
+   2. ESTRUCTURA GENERAL DEL DASHBOARD (APP SHELL)
+   ========================================================= */
+.dashboard-container {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh; 
+    display: flex;
+    flex-direction: column;
+    background-image: url('../assets/imagenes/generales/fondobody.jpeg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   MARCO CONTENEDOR (Limita el área del modal)
+   ========================================================= */
+.dashboard-workspace {
+    display: flex;
+    flex: 1; /* Ocupa el espacio restante después del banner */
+    width: 100%;
+    /* 🔥 Asegura que el contenedor principal respete el alto disponible */
+    height: 100%; 
+    overflow: hidden;
+    position: relative; /* CLAVE: Establece el límite estricto para el modal */
+}
+
+.game-center-area {
+    display: flex; 
+    flex: 1;
+    width: 100%;
+    /* 🔥 Obliga al área del juego a tomar todo el alto del workspace */
+    height: 100%; 
+    flex-direction: column;
+    /* 🔥 Cambiamos a 'stretch' para que los elementos internos (como paso-pantalla) se estiren */
+    align-items: stretch; 
+    justify-content: stretch; 
+    overflow-y: auto; 
+    /* 🔥 Un poco de padding para que la tarjeta no choque contra los bordes de la pantalla */
+    padding: 15px; 
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   3. BANNER SUPERIOR Y LOGOS (ESTILO UI DE VIDEOJUEGO)
+   ========================================================= */
+.dashboard-banner {
+    position: relative;
+    overflow: visible;
+    
+    /* Gradiente sutil para darle profundidad al fondo del banner */
+   background: linear-gradient(180deg, var(--color-purple-dark) 0%, #30104A 100%);
+    
+    /* Borde inferior 3D brillante en tono morado claro */
+    border-bottom: 4px solid #d4b1f1; 
+    
+    /* Combinación de luces y sombras suavizada */
+    box-shadow: 
+        inset 0 -4px 0 rgba(0, 0, 0, 0.2),        /* Sombra interna para volumen físico */
+        0 4px 15px rgba(189, 92, 255, 0.4),       /* NEÓN SUAVIZADO: Menos expansivo y más transparente */
+        0 8px 15px rgba(0, 0, 0, 0.6);            /* Sombra oscura base para separar el banner del juego */
+    
+    color: #ffffff;
+    padding: 12px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    flex-shrink: 0;
+    flex-wrap: wrap; 
+    gap: 15px;
+}
+
+.banner-izq, .banner-der {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.logos-institucionales {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: rgba(0, 0, 0, 0.15); /* Fondo oscuro semitransparente como contenedor */
+    padding: 5px 15px;
+    border-radius: 20px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.logo-inst {
+    height: 34px; 
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5)); 
+}
+
+.logo-inst[src*="cacmu"],
+.logo-inst:last-child {
+    height: 45px; 
+}
+.logo-juego {
+    height: 60px; /* Un poco más grande para destacar */
+    width: auto;
+    object-fit: contain;
+    animation: flotarLogo 3.5s ease-in-out infinite; /* Aplica la animación */
+}
+
+
+/* =========================================================
+   BOTONES DEL BANNER (ESTILO 3D NEÓN)
+   ========================================================= */
+.btn-banner {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(212, 177, 241, 0.6); /* Borde lila suave base */
+    cursor: pointer;
+    padding: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px; 
+    
+    /* 🔥 Magia combinada: Relieve 3D físico abajo + Luz neón alrededor */
+    box-shadow: 
+        0 4px 0 rgba(0, 0, 0, 0.3),             /* El "grosor" plástico del botón */
+        0 0 15px rgba(189, 92, 255, 0.4);       /* Aura neón en reposo */
+        
+    transition: all 0.2s ease;
+}
+
+.btn-banner img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    
+    /* 🔥 Cambiamos la sombra negra por un resplandor blanco/fantasma para el ícono */
+    filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.5)); 
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Efecto al pasar el cursor (Se enciende el neón) */
+.btn-banner:hover {
+    background-color: rgba(255, 255, 255, 0.25); 
+    border-color: #ffffff; /* El borde se ilumina a blanco puro */
+    
+    /* 🔥 La luz neón estalla hacia afuera */
+    box-shadow: 
+        0 4px 0 rgba(0, 0, 0, 0.4), 
+        0 0 25px rgba(189, 92, 255, 0.9);
+}
+
+.btn-banner:hover img {
+    transform: scale(1.15) rotate(5deg); 
+    /* El ícono también brilla más fuerte al hacer hover */
+    filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(255, 255, 255, 0.9));
+}
+
+/* Efecto táctil al presionar el botón */
+.btn-banner:active {
+    transform: translateY(4px); /* El botón se hunde físicamente */
+    
+    /* 🔥 Desaparece el borde 3D inferior, aparece sombra interna de hundimiento, pero la luz neón se mantiene */
+    box-shadow: 
+        0 0 0 rgba(0, 0, 0, 0), 
+        inset 0 3px 6px rgba(0, 0, 0, 0.4),
+        0 0 15px rgba(189, 92, 255, 0.7);
+}
+/* =========================================================
+   5. SUBMENÚ DESPLEGABLE (CORREGIDO)
+   ========================================================= */
+.menu-desplegable-container {
+    position: relative;
+    display: inline-block; 
+}
+
+.menu-desplegable-container::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    width: 100%;
+    height: 15px;
+    background: transparent;
+}
+
+.submenu {
+    display: none; 
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+    min-width: 170px; 
+    overflow: hidden;
+    z-index: 99999; 
+    margin-top: 5px; 
+}
+
+.menu-desplegable-container:hover .submenu {
+    display: flex;
+    flex-direction: column;
+}
+
+.submenu a {
+    color: var(--color-purple-dark, #4a148c);
+    text-decoration: none;
+    padding: 12px 15px;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+    cursor: pointer; 
+}
+
+.submenu a:hover {
+    background-color: #f3e5f5; 
+}
+
+/* =========================================================
+   COMPONENTES GLOBALES (BOTONES Y TARJETAS)
+   ========================================================= */
+.btn {
+    font-family: var(--font-body);
+    background-color: var(--color-yellow-btn);
+    color: var(--color-purple-dark);
+    border: none;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--hud-glow);
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-2px); 
+    background-color: #ffb822;
+    box-shadow: 0 0 20px rgba(243, 166, 1, 0.6); 
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.btn-continuar {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 280px;
+    padding: 15px;
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* =========================================================
+   COMPONENTES GLOBALES (TARJETAS)
+   ========================================================= */
+.tarjeta-general {
+    /* Tu configuración de flexbox y tamaños... */
+    display: flex;
+    flex-direction: row; 
+    width: 100%; 
+    height: 100%; 
+    max-width: 100%; 
+    margin: 0; 
+    flex-shrink: 0; 
+    overflow: auto; 
+    
+    /* 🔥 EL EFECTO NEÓN Y CRISTAL */
+    border-radius: 40px; 
+    border: 2px solid rgba(225, 196, 255, 0.9); /* Borde lila brillante casi sólido */
+    
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.0) 0%, rgba(248, 246, 246, 0.15) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    box-shadow: 
+        inset 0 0 15px rgba(255, 255, 255, 0.3),  /* Luz interna del cristal */
+        0 0 35px rgba(189, 92, 255, 0.6),         /* 🔥 LUZ NEÓN MORADA RADIAL */
+        0 15px 35px rgba(0, 0, 0, 0.5);           /* Sombra base oscura */
+    
+    /* FIX para que la luz y el cristal no se salgan de las esquinas curvas */
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: radial-gradient(white, black);
+}
+
+
+/* =========================================================
+   CONTROL DE VISIBILIDAD DE PANTALLAS
+   ========================================================= */
+.paso-pantalla {
+    display: none; 
+    width: 100%;
+    /* 🔥 La pantalla inactiva igual debe tener el 100% preparado */
+    height: 100%;
+}
+
+.paso-pantalla.activa { 
+    display: flex; 
+    /* 🔥 Cambiamos a 'column' para que la tarjeta de adentro pueda estirarse verticalmente */
+    flex-direction: column; 
+    width: 100%;
+    /* 🔥 Ocupa todo el alto de game-center-area */
+    height: 100%; 
+    flex: 1; 
+    /* 🔥 Quitamos el padding aquí porque game-center-area ya lo tiene, evitando un doble margen */
+    padding: 0; 
+    overflow: hidden; 
+}
+/* =========================================================
+   SISTEMA GLOBAL DE NOTIFICACIONES FLOTANTES
+   ========================================================= */
+.toast-gamificado {
+    position: fixed;
+    bottom: 30px; 
+    right: 30px;  
+    top: auto;    
+    left: auto;   
+    transform: translateX(120%); 
+    padding: 16px 24px;
+    border-radius: 12px; 
+    font-family: var(--font-body, 'Fredoka', sans-serif);
+    font-size: 1.1rem; 
+    font-weight: 500;  
+    line-height: 1.4;  
+    letter-spacing: 0.3px; 
+    z-index: 999999; 
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    border: none; 
+}
+
+.toast-gamificado.mostrar {
+    transform: translateX(0); 
+    opacity: 1;
+}
+
+.toast-success { 
+    background-color: var(--color-yellow-btn); 
+    color: var(--color-purple-dark);
+    box-shadow: var(--hud-glow); 
+}
+
+.toast-error { 
+    background-color: var(--color-pink-accent); 
+    color: #ffffff;
+    text-shadow: 0px 1px 2px rgba(58, 22, 83, 0.4); 
+}
+
+.toast-info { 
+    background-color: var(--color-purple-main); 
+    color: #ffffff;
+    text-shadow: 0px 1px 2px rgba(0,0,0,0.2);
+}
+
+.toast-warning { 
+    background-color: var(--color-bg-light); 
+    color: var(--color-purple-dark);
+    border: 2px solid var(--color-yellow-btn);
+    box-shadow: 0 10px 25px rgba(58, 22, 83, 0.15);
+}
+
+/* MAYÚSCULA INICIAL */
+.etiqueta-nombre,
+.nombre-jugador,
+.nombre-personaje,
+.chip-jugador span,
+.indicador-turno span,
+#nombre-jugador-actual {
+    text-transform: capitalize !important;
+}
+
+/* =========================================================
+   🔥 RESPONSIVE DESIGN UNIFICADO 🔥
+   ========================================================= */
+
+/* Tablets Pequeñas (960px) */
+@media screen and (max-width: 960px) {
+    #paso-1 .tarjeta-general {
+        flex-direction: column; 
+    }
+    
+    .seleccion-columna-info, 
+    .seleccion-columna-accion {
+        flex: none;
+        height: auto;
+    }
+
+    .seleccion-columna-info { 
+        order: 1; 
+        padding: 30px 25px 20px 25px; 
+    }
+    
+    .seleccion-columna-accion { 
+        order: 2; 
+        padding: 20px 25px 40px 25px; 
+    }
+    
+    .dashboard-banner {
+        padding: 10px 15px;
+        gap: 10px;
+    }
+    
+    .logo-juego {
+        height: 45px; 
+    }
+
+    .btn-secondary {
+        padding: 6px 12px;
+        font-size: 0.9rem; 
+    }
+}
+
+/* Celulares Grandes / Tablets (768px) o Orientación Vertical */
+@media screen and (max-width: 768px), screen and (orientation: portrait) {
+    .tarjeta-general {
+        flex-direction: column; 
+        min-height: auto; 
+    }
+    
+   .paso-pantalla.activa {
+        padding: 10px; 
+        overflow-y: visible; 
+        height: auto; /* 🔥 AGREGAR: Permite que el contenedor crezca */
+        min-height: 100%; /* 🔥 AGREGAR: Asegura que cubra la pantalla al menos */
+    }
+    
+    .dashboard-banner {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding: 15px 10px;
+    }
+
+    .banner-izq, .banner-der {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+/* Celulares Pequeños (650px y 600px) */
+@media screen and (max-width: 650px) {
+    .dashboard-banner {
+        align-items: center;
+        gap: 12px;
+    }
+
+    .banner-izq, 
+    .banner-centro, 
+    .banner-der {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .logo-inst { height: 28px; }
+    .logo-inst[src*="cacmu"],
+    .logo-inst:last-child { height: 38px; }
+    .logo-juego { height: 40px; }
+
+    .menu-desplegable-container {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .btn-secondary {
+        width: 100%; 
+        max-width: 250px; 
+        padding: 10px 15px;
+        font-size: 0.95rem;
+    }
+    
+    .submenu {
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .toast-gamificado {
+        bottom: 20px;
+        right: 50%; 
+        width: 90%;
+        max-width: 400px;
+        justify-content: center;
+        text-align: left; 
+        transform: translateX(50%) translateY(150px); 
+    }
+
+    .toast-gamificado.mostrar {
+        transform: translateX(50%) translateY(0); 
+    }
+}
+
+.btn-volver-top .icono-boton,
+.acciones-paso .icono-boton {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    filter: brightness(0) saturate(100%) invert(13%) sepia(21%) saturate(3503%) hue-rotate(242deg) brightness(95%) contrast(92%);
+}
+#contenedor-boton-iniciar .icono-boton {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    filter: brightness(0) invert(1);
+}

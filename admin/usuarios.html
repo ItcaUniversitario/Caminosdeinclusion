@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - Caminos de Inclusión</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <style>
+        body { background-color: #f7f6f9; font-family: 'Inter', sans-serif; }
+        .navbar { background-color: #3a1653; }
+        .navbar-brand, .nav-link { color: #ffffff !important; }
+        
+        /* Contenedor principal de la tabla */
+        .table-container {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(58, 22, 83, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Estilos de la tabla */
+        .table thead th {
+            background-color: #f0eaf5;
+            color: #3a1653;
+            font-weight: 600;
+            border-bottom: none;
+        }
+        .table tbody tr { transition: all 0.2s ease; }
+        .table tbody tr:hover { background-color: #faf8fc; }
+        .table td { vertical-align: middle; color: #4a4a4a; }
+
+        /* Botones y controles */
+        .btn-excel {
+            background-color: #107c41; /* Color verde de Excel */
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .btn-excel:hover { background-color: #0c5e31; color: white; }
+        .btn-back { color: #5e2a84; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 1rem; }
+        .btn-back:hover { color: #3a1653; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar px-4 py-3 shadow-sm mb-4">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1"><i class="bi bi-people-fill me-2"></i>Módulo de Usuarios</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <a href="dashboard.html" class="btn-back"><i class="bi bi-arrow-left me-2"></i>Volver al Dashboard</a>
+
+        <div class="table-container">
+            <div class="row mb-4 align-items-center g-3">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                        <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="Buscar por cédula, nombre o apellido...">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select id="filterSexo" class="form-select">
+                        <option value="">Todos los géneros</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
+                    </select>
+                </div>
+                <div class="col-md-5 text-md-end">
+                    <button id="btnExportar" class="btn btn-excel"><i class="bi bi-file-earmark-excel-fill me-2"></i>Descargar Excel</button>
+                </div>
+            </div>
+
+            <div id="loadingIndicator" class="text-center py-5">
+                <div class="spinner-border text-primary" style="color: #5e2a84 !important;" role="status"></div>
+                <p class="mt-2 text-muted">Cargando usuarios desde Firebase...</p>
+            </div>
+
+            <div class="table-responsive" id="tableWrapper" style="display: none;">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Cédula</th>
+                            <th>Apellidos y Nombres</th>
+                            <th>Correo</th>
+                            <th>Celular</th>
+                            <th>Edad</th>
+                            <th>Sexo</th>
+                            <th>Fecha Registro</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaUsuariosBody">
+                        </tbody>
+                </table>
+            </div>
+            
+            <div id="noResults" class="text-center py-4 text-muted" style="display: none;">
+                <i class="bi bi-inbox-fill fs-1"></i>
+                <p class="mt-2">No se encontraron usuarios con esos filtros.</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Importamos Firebase Auth y Firestore
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Tu configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyATWYM-R92ngZhZKdzs_DqgvrmXDXUNaFE",
+            authDomain: "caminos-de-empatia.firebaseapp.com",
+            projectId: "caminos-de-empatia",
+            storageBucket: "caminos-de-empatia.firebasestorage.app",
+            messagingSenderId: "464927455216",
+            appId: "1:464927455216:web:41107ad19784e7fbb20f35",
+            measurementId: "G-QEZM1BHT58"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Variables globales para almacenar los datos
+        let usuariosGlobales = [];
+
+        // Referencias al DOM
+        const tablaBody = document.getElementById('tablaUsuariosBody');
+        const searchInput = document.getElementById('searchInput');
+        const filterSexo = document.getElementById('filterSexo');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const tableWrapper = document.getElementById('tableWrapper');
+        const noResults = document.getElementById('noResults');
+        const btnExportar = document.getElementById('btnExportar');
+
+        // Función principal para cargar datos
+        async function cargarUsuarios() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "usuarios"));
+                usuariosGlobales = []; // Limpiamos el arreglo
+                
+                querySnapshot.forEach((doc) => {
+                    usuariosGlobales.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Ocultar loading, mostrar tabla
+                loadingIndicator.style.display = 'none';
+                tableWrapper.style.display = 'block';
+                
+                renderizarTabla(usuariosGlobales);
+            } catch (error) {
+                console.error("Error obteniendo documentos: ", error);
+                loadingIndicator.innerHTML = '<p class="text-danger">Error al cargar los datos. Revisa los permisos de Firebase.</p>';
+            }
+        }
+
+        // Función para renderizar la tabla
+        function renderizarTabla(datos) {
+            tablaBody.innerHTML = ''; // Limpiar tabla actual
+
+            if (datos.length === 0) {
+                tableWrapper.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            tableWrapper.style.display = 'block';
+            noResults.style.display = 'none';
+
+            datos.forEach(user => {
+                // Formatear la fecha para que sea legible (opcional, dependiendo de cómo guardes la fecha)
+                let fechaFormateada = "N/A";
+                if(user.fechaRegistro) {
+                    const dateObj = new Date(user.fechaRegistro);
+                    fechaFormateada = dateObj.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
+                }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${user.cedula || 'N/A'}</strong></td>
+                    <td>${user.apellidos || ''} ${user.nombres || ''}</td>
+                    <td>${user.correo || 'N/A'}</td>
+                    <td>${user.celular || 'N/A'}</td>
+                    <td>${user.edad || 'N/A'}</td>
+                    <td><span class="badge ${user.sexo === 'Masculino' ? 'bg-primary' : (user.sexo === 'Femenino' ? 'bg-danger' : 'bg-secondary')}">${user.sexo || 'N/A'}</span></td>
+                    <td>${fechaFormateada}</td>
+                `;
+                tablaBody.appendChild(tr);
+            });
+        }
+
+        // Lógica de Filtros
+        function filtrarDatos() {
+            const textoBusqueda = searchInput.value.toLowerCase();
+            const sexoSeleccionado = filterSexo.value;
+
+            const datosFiltrados = usuariosGlobales.filter(user => {
+                const coincideTexto = (user.nombres?.toLowerCase().includes(textoBusqueda) || 
+                                       user.apellidos?.toLowerCase().includes(textoBusqueda) ||
+                                       user.cedula?.includes(textoBusqueda));
+                
+                const coincideSexo = sexoSeleccionado === "" || user.sexo === sexoSeleccionado;
+
+                return coincideTexto && coincideSexo;
+            });
+
+            renderizarTabla(datosFiltrados);
+            return datosFiltrados; // Retornamos para poder exportar solo lo filtrado
+        }
+
+        // Eventos para filtros en tiempo real
+        searchInput.addEventListener('input', filtrarDatos);
+        filterSexo.addEventListener('change', filtrarDatos);
+
+        // Lógica para exportar a Excel
+        btnExportar.addEventListener('click', () => {
+            // Obtenemos los datos que se están mostrando actualmente en la tabla
+            const datosParaExportar = filtrarDatos();
+
+            if(datosParaExportar.length === 0) {
+                alert("No hay datos para exportar.");
+                return;
+            }
+
+            // Preparamos los datos para Excel (Limpiamos y traducimos cabeceras)
+            const dataLimpiada = datosParaExportar.map(u => ({
+                "Cédula": u.cedula,
+                "Apellidos": u.apellidos,
+                "Nombres": u.nombres,
+                "Correo Electrónico": u.correo,
+                "Celular": u.celular,
+                "Edad": u.edad,
+                "Sexo": u.sexo,
+                "Fecha de Registro": u.fechaRegistro
+            }));
+
+            // Usamos SheetJS para crear el archivo
+            const worksheet = XLSX.utils.json_to_sheet(dataLimpiada);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Usuarios");
+
+            // Descargar el archivo
+            XLSX.writeFile(workbook, "Reporte_Usuarios_CaminosInclusion.xlsx");
+        });
+
+        // Iniciar la carga al abrir la página
+        cargarUsuarios();
+
+    </script>
+</body>
+</html>

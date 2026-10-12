@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login - Caminos de Inclusión</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           Diseño Minimalista y Profesional
+           ========================================= */
+        
+        body {
+            /* Un fondo gris muy claro y neutro, descansa la vista */
+            background-color: #f7f6f9; 
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+        }
+
+        /* Tarjeta de login */
+        .card-login {
+            background: #ffffff;
+            border: 1px solid #eaeaea; /* Borde muy sutil */
+            border-radius: 12px;
+            /* Sombra muy suave y difuminada */
+            box-shadow: 0 10px 25px rgba(58, 22, 83, 0.05); 
+            padding: 2.5rem !important;
+            /* Acento de color institucional en la parte superior */
+            border-top: 4px solid #5e2a84; 
+        }
+
+        /* Tipografía */
+        .card-login h2 {
+            /* Usamos el morado oscuro para dar jerarquía */
+            color: #3a1653; 
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .text-muted {
+            color: #716a7a !important;
+            font-size: 0.95rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #4a4a4a;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Cajas de texto */
+        .form-control {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #dcdcdc;
+            font-size: 0.95rem;
+            color: #333;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Al hacer clic en la caja de texto (Focus) */
+        .form-control:focus {
+            background-color: #ffffff;
+            /* Usamos el morado más claro como borde */
+            border-color: #5e2a84;
+            /* Resplandor muy transparente */
+            box-shadow: 0 0 0 3px rgba(94, 42, 132, 0.1); 
+            outline: none;
+        }
+
+        /* Botón de acceso */
+        .btn-primary {
+            /* Morado medio para la acción principal */
+            background-color: #5e2a84; 
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        /* Al pasar el ratón sobre el botón */
+        .btn-primary:hover, .btn-primary:focus {
+            /* Oscurece al morado profundo */
+            background-color: #3a1653; 
+            box-shadow: 0 4px 12px rgba(58, 22, 83, 0.2);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5 col-lg-4">
+                <div class="card card-login">
+                    <div class="text-center mb-4">
+                        <h2>Panel Admin Caminos de Inclusión</h2>
+                        <p class="text-muted">Ingresa tus credenciales</p>
+                    </div>
+                    <form id="form-login">
+                        <div class="mb-3">
+                            <label class="form-label">Correo Electrónico</label>
+                            <input type="email" id="admin-email" class="form-control" placeholder="Ej. admin@dominio.com" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" id="admin-password" class="form-control" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="js-admin/admin-auth.js"></script>
+</body>
+</html>

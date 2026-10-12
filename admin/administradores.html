@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Administradores - Caminos de Inclusión</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { background-color: #f7f6f9; font-family: 'Inter', sans-serif; }
+        .navbar { background-color: #3a1653; }
+        .navbar-brand { color: #ffffff !important; font-weight: 600; letter-spacing: 0.5px; }
+        .btn-back { border: 1px solid rgba(255,255,255,0.5); color: white; transition: all 0.3s ease; text-decoration: none; }
+        .btn-back:hover { background-color: #ffffff; color: #3a1653; }
+
+        .card-custom { background: #ffffff; border: none; border-radius: 16px; box-shadow: 0 8px 20px rgba(58, 22, 83, 0.04); }
+        
+        .btn-primary-custom { background-color: #5e2a84; color: #fff; border: none; transition: 0.3s; }
+        .btn-primary-custom:hover { background-color: #3a1653; color: #fff; }
+        
+        .btn-outline-custom { border: 1px solid #5e2a84; color: #5e2a84; transition: 0.3s; }
+        .btn-outline-custom:hover { background-color: #5e2a84; color: #fff; }
+
+        .table thead th { background-color: #f0eaf5; color: #3a1653; font-weight: 600; border-bottom: none; }
+        .table tbody tr { vertical-align: middle; }
+        
+        .modal-header { background-color: #3a1653; color: white; border-bottom: none; border-radius: 15px 15px 0 0; }
+        .modal-content { border-radius: 16px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .btn-close-white { filter: invert(1) grayscale(100%) brightness(200%); }
+    </style>
+</head>
+<body>
+
+    <!-- Navegación -->
+    <nav class="navbar px-4 py-3 shadow-sm">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1"><i class="bi bi-person-badge-fill me-2"></i>Administradores</span>
+            <a href="dashboard.html" class="btn btn-back btn-sm px-3 py-2 rounded-3"><i class="bi bi-arrow-left me-2"></i>Volver al Panel</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5 mb-5">
+        <!-- Encabezado -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 style="color: #3a1653; font-weight: 700;">Gestión de Administradores</h2>
+                <p class="text-muted mb-0">Administra las cuentas con acceso al panel de control</p>
+            </div>
+            <div>
+                <!-- Botón simulando la vista "afuera" (Login) para resetear clave -->
+                <button class="btn btn-outline-custom me-2" data-bs-toggle="modal" data-bs-target="#modalResetearClave">
+                    <i class="bi bi-key-fill me-1"></i> Simular Reset de Clave
+                </button>
+                <!-- Botón para agregar nuevo admin -->
+                <button class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#modalNuevoAdmin">
+                    <i class="bi bi-plus-lg me-1"></i> Nuevo Administrador
+                </button>
+            </div>
+        </div>
+
+        <!-- Tabla de administradores -->
+        <div class="card card-custom p-4">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nombres y Apellidos</th>
+                            <th>Cédula</th>
+                            <th>Institución</th>
+                            <th>Correo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-administradores">
+                        <!-- Ejemplo visual estático -->
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; color: #5e2a84;">
+                                        <i class="bi bi-person-fill"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark">Juan Pérez</div>
+                                        <div class="text-muted small">Masculino, 30 años</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>1002003004</td>
+                            <td><span class="badge bg-primary bg-opacity-10 text-primary">ITCA</span></td>
+                            <td>admin@itca.edu.ec</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></button>
+                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL: REGISTRAR NUEVO ADMINISTRADOR       -->
+    <!-- ========================================== -->
+    <div class="modal fade" id="modalNuevoAdmin" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar Nuevo Administrador</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="formNuevoAdmin">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Nombres</label>
+                                <input type="text" class="form-control" id="nombresAdmin" required placeholder="Ej. Ana María">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Apellidos</label>
+                                <input type="text" class="form-control" id="apellidosAdmin" required placeholder="Ej. López Silva">
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Cédula de Identidad</label>
+                                <input type="text" class="form-control" id="cedulaAdmin" required placeholder="10 dígitos">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Edad</label>
+                                <input type="number" class="form-control" id="edadAdmin" min="18" required placeholder="Años">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Sexo</label>
+                                <select class="form-select" id="sexoAdmin" required>
+                                    <option value="" selected disabled>Seleccionar...</option>
+                                    <option value="Femenino">Femenino</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label fw-semibold">Institución a la que pertenece</label>
+                                <div class="d-flex gap-4 mt-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="institucionAdmin" id="instITCA" value="ITCA" checked>
+                                        <label class="form-check-label" for="instITCA">Instituto Superior Universitario ITCA</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="institucionAdmin" id="instCACMU" value="Fundación CACMU">
+                                        <label class="form-check-label" for="instCACMU">Fundación CACMU</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-4 mb-2">
+                                <hr class="text-muted">
+                                <h6 class="fw-bold" style="color: #5e2a84;">Credenciales de Acceso</h6>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="correoAdmin" required placeholder="ejemplo@correo.com">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Contraseña</label>
+                                <input type="password" class="form-control" id="claveAdmin" required placeholder="Mínimo 6 caracteres">
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="button" class="btn btn-light me-2" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary-custom px-4">Guardar Administrador</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL: RECUPERAR CONTRASEÑA                -->
+    <!-- (Idealmente esto va en tu login.html)      -->
+    <!-- ========================================== -->
+    <div class="modal fade" id="modalResetearClave" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Recuperar Contraseña</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-muted small mb-4">Ingresa tu número de cédula y selecciona tu institución para verificar tu identidad y restablecer tu acceso.</p>
+                    
+                    <form id="formResetClave">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Cédula de Identidad</label>
+                            <input type="text" class="form-control" id="resetCedula" required placeholder="Ingresa tus 10 dígitos">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Institución</label>
+                            <select class="form-select" id="resetInstitucion" required>
+                                <option value="" selected disabled>Selecciona tu institución...</option>
+                                <option value="ITCA">Instituto Superior Universitario ITCA</option>
+                                <option value="Fundación CACMU">Fundación CACMU</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2">Verificar y Resetear Contraseña</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script de Firebase (Auth y Firestore) -->
+    <script type="module">
+        // Importaciones necesarias de Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, collection, query, where, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        // Configuración de tu proyecto
+        const firebaseConfig = {
+            apiKey: "AIzaSyATWYM-R92ngZhZKdzs_DqgvrmXDXUNaFE",
+            authDomain: "caminos-de-empatia.firebaseapp.com",
+            projectId: "caminos-de-empatia",
+            storageBucket: "caminos-de-empatia.firebasestorage.app",
+            messagingSenderId: "464927455216",
+            appId: "1:464927455216:web:41107ad19784e7fbb20f35",
+            measurementId: "G-QEZM1BHT58"
+        };
+
+        // 1. App Principal (Para base de datos y envío de correos)
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // 2. App Secundaria (Solo para registrar usuarios sin que cierre tu sesión actual)
+        const appSecundaria = initializeApp(firebaseConfig, "AppRegistro");
+        const authSecundaria = getAuth(appSecundaria);
+
+        // ==========================================
+        // LÓGICA: CREAR NUEVO ADMINISTRADOR
+        // ==========================================
+        document.getElementById('formNuevoAdmin').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const nombres = document.getElementById('nombresAdmin').value.trim();
+            const apellidos = document.getElementById('apellidosAdmin').value.trim();
+            const cedula = document.getElementById('cedulaAdmin').value.trim();
+            const edad = document.getElementById('edadAdmin').value;
+            const sexo = document.getElementById('sexoAdmin').value;
+            const correo = document.getElementById('correoAdmin').value.trim();
+            const clave = document.getElementById('claveAdmin').value;
+            const institucion = document.querySelector('input[name="institucionAdmin"]:checked').value;
+
+            const btnSubmit = document.querySelector('#formNuevoAdmin button[type="submit"]');
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Guardando...';
+
+            try {
+                // Creamos usuario en la App Secundaria
+                const userCredential = await createUserWithEmailAndPassword(authSecundaria, correo, clave);
+                const uid = userCredential.user.uid;
+
+                // Cerramos sesión INMEDIATAMENTE en la app secundaria
+                await signOut(authSecundaria);
+
+                // Guardamos los datos estructurados en Firestore (App Principal)
+                await setDoc(doc(db, "administradores", uid), {
+                    nombres: nombres,
+                    apellidos: apellidos,
+                    cedula: cedula,
+                    edad: parseInt(edad),
+                    sexo: sexo,
+                    institucion: institucion,
+                    correo: correo,
+                    fechaRegistro: new Date().toISOString(),
+                    rol: "Administrador"
+                });
+
+                alert("¡Administrador creado con éxito en la base de datos!");
+                
+                // Limpiar formulario y cerrar modal
+                document.getElementById('formNuevoAdmin').reset();
+                const modal = bootstrap.Modal.getInstance(document.getElementById('modalNuevoAdmin'));
+                modal.hide();
+
+            } catch (error) {
+                console.error("Error al registrar administrador:", error);
+                if (error.code === 'auth/email-already-in-use') {
+                    alert("Error: Ese correo electrónico ya está registrado en el sistema.");
+                } else if (error.code === 'auth/weak-password') {
+                    alert("Error: La contraseña debe tener al menos 6 caracteres.");
+                } else {
+                    alert("Ocurrió un error al registrar al administrador.");
+                }
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = 'Guardar Administrador';
+            }
+        });
+
+        // ==========================================
+        // LÓGICA: RECUPERAR CONTRASEÑA 
+        // ==========================================
+        document.getElementById('formResetClave').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const cedula = document.getElementById('resetCedula').value.trim();
+            const institucion = document.getElementById('resetInstitucion').value;
+            const btnSubmit = document.querySelector('#formResetClave button[type="submit"]');
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Verificando...';
+
+            try {
+                // Buscamos en Firestore si existe un documento con esa cédula e institución
+                const adminsRef = collection(db, "administradores");
+                const q = query(adminsRef, where("cedula", "==", cedula), where("institucion", "==", institucion));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    alert("Validación fallida: No se encontró ningún administrador con esa Cédula perteneciente a esa Institución.");
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = "Verificar y Resetear Contraseña";
+                    return;
+                }
+
+                // Extraemos el correo de los datos de Firestore
+                const adminData = querySnapshot.docs[0].data();
+                const correoRecuperacion = adminData.correo;
+
+                // Enviamos el correo de recuperación usando Firebase Auth (App Principal)
+                await sendPasswordResetEmail(auth, correoRecuperacion);
+                
+                alert(`¡Identidad verificada! Se ha enviado un enlace para restablecer la contraseña al correo: ${correoRecuperacion}`);
+                
+                // Limpiar formulario y cerrar modal
+                document.getElementById('formResetClave').reset();
+                const modal = bootstrap.Modal.getInstance(document.getElementById('modalResetearClave'));
+                modal.hide();
+
+            } catch (error) {
+                console.error("Error al recuperar clave:", error);
+                alert("Ocurrió un error al intentar enviar el correo de recuperación.");
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = "Verificar y Resetear Contraseña";
+            }
+        });
+        // Referencia a la tabla HTML
+        const tablaAdministradores = document.getElementById('tabla-administradores');
+
+        // ==========================================
+        // LÓGICA: CARGAR ADMINISTRADORES EN TIEMPO REAL
+        // ==========================================
+        function cargarAdministradores() {
+            const adminsRef = collection(db, "administradores");
+            
+            // onSnapshot "escucha" los cambios en la base de datos en tiempo real
+            onSnapshot(adminsRef, (snapshot) => {
+                tablaAdministradores.innerHTML = ''; // Limpiar la tabla (borra el ejemplo estático)
+
+                if (snapshot.empty) {
+                    tablaAdministradores.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">No hay administradores registrados en la base de datos.</td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                snapshot.forEach((doc) => {
+                    const admin = doc.data();
+                    const tr = document.createElement('tr');
+                    
+                    // Extraer iniciales para el avatar redondo
+                    const iniciales = (admin.nombres.charAt(0) + admin.apellidos.charAt(0)).toUpperCase();
+
+                    tr.innerHTML = `
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; color: #5e2a84; font-weight: bold;">
+                                    ${iniciales}
+                                </div>
+                                <div>
+                                    <div class="fw-bold text-dark">${admin.nombres} ${admin.apellidos}</div>
+                                    <div class="text-muted small">${admin.sexo}, ${admin.edad} años</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${admin.cedula}</td>
+                        <td><span class="badge bg-primary bg-opacity-10 text-primary">${admin.institucion}</span></td>
+                        <td>${admin.correo}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary" title="Editar"><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="bi bi-trash"></i></button>
+                        </td>
+                    `;
+                    tablaAdministradores.appendChild(tr);
+                });
+            });
+        }
+
+        // Llamar a la función inmediatamente al cargar la página
+        cargarAdministradores();
+    </script>
+</body>
+</html>

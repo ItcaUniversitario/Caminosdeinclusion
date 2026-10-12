@@ -1,0 +1,141 @@
+/* =========================================================
+   MODAL DE CRÉDITOS (DISEÑO HORIZONTAL / ANCHO)
+   ========================================================= */
+
+/* --- 1. Overlay y Contenedor Principal --- */
+.creditos-backdrop-especial {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 5, 25, 0.75); 
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    display: none; 
+    justify-content: center; align-items: center;
+    z-index: 999999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.creditos-backdrop-especial.creditos-visible { display: flex; opacity: 1; }
+
+.creditos-ventana-principal {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 246, 246, 0.95) 100%);
+    border: 2px solid rgba(225, 196, 255, 0.9);
+    border-radius: 30px;
+    width: 95%;
+    max-width: 1100px; /* 🔥 MUCHO MÁS ANCHO PARA PC */
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 40px;
+    position: relative;
+    transform: translateY(50px) scale(0.95);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.8), 0 0 35px rgba(189, 92, 255, 0.6), 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+.creditos-backdrop-especial.creditos-visible .creditos-ventana-principal {
+    transform: translateY(0) scale(1);
+}
+
+.creditos-ventana-principal::-webkit-scrollbar { width: 8px; }
+.creditos-ventana-principal::-webkit-scrollbar-track { background: transparent; }
+.creditos-ventana-principal::-webkit-scrollbar-thumb { background: rgba(189, 92, 255, 0.5); border-radius: 10px; }
+
+/* --- 2. Botón de Cerrar y Cabecera --- */
+.creditos-btn-salir {
+    position: absolute; top: 20px; right: 25px;
+    background: rgba(240, 98, 146, 0.1); border: 2px solid var(--color-pink-accent, #f06292);
+    color: var(--color-pink-accent, #f06292); font-size: 28px;
+    width: 45px; height: 45px; border-radius: 50%;
+    cursor: pointer; display: flex; justify-content: center; align-items: center;
+    transition: all 0.3s ease;
+}
+.creditos-btn-salir:hover { background: var(--color-pink-accent, #f06292); color: white; transform: rotate(90deg); }
+
+.creditos-encabezado-top { text-align: center; margin-bottom: 35px; }
+.creditos-encabezado-top h2 { color: var(--color-purple-dark, #3a1c4f); font-size: 2.2rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; }
+.creditos-encabezado-top p { color: var(--color-purple-main, #5e2a84); font-weight: bold; font-size: 1.1rem; }
+
+/* --- 3. Layout Jerárquico Horizontal --- */
+.creditos-layout-wrapper { display: flex; flex-direction: column; gap: 25px; }
+.creditos-seccion-coordinadora { display: flex; justify-content: center; width: 100%; }
+.creditos-seccion-desarrollo { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); /* 2 Columnas anchas */
+    gap: 20px; 
+}
+
+/* --- 4. Tarjetas Base (AHORA HORIZONTALES) --- */
+.creditos-card-perfil {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid rgba(189, 92, 255, 0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    display: flex; /* 🔥 Avatar y Texto uno al lado del otro */
+    align-items: center;
+    gap: 20px; /* Espacio entre el icono y el texto */
+    text-align: left; /* Texto alineado a la izquierda */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.creditos-card-perfil:hover {
+    transform: translateX(5px); /* Movimiento sutil hacia un lado */
+    box-shadow: 0 10px 25px rgba(189, 92, 255, 0.3);
+    background: rgba(255, 255, 255, 1);
+}
+
+.creditos-card-lider {
+    width: 100%;
+    max-width: 800px; /* Tarjeta principal ancha */
+    background: rgba(255, 255, 255, 0.85);
+    border: 2px solid rgba(243, 166, 1, 0.6); 
+    box-shadow: 0 8px 25px rgba(243, 166, 1, 0.2); 
+}
+
+/* --- 5. Contenido Interno de las Tarjetas --- */
+.creditos-icono-avatar {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0; /* Evita que el circulo se aplaste */
+    background: var(--color-bg-light, #fdf2e9);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    border: 3px solid;
+    box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.creditos-info-contenedor {
+    flex: 1; /* Ocupa el espacio restante */
+}
+
+.creditos-texto-nombre { color: var(--color-purple-dark, #3a1c4f); font-size: 1.15rem; margin-bottom: 5px; line-height: 1.2; }
+.creditos-texto-bio { font-size: 0.9rem; color: #555; line-height: 1.4; margin-top: 8px; }
+
+/* --- 6. Etiquetas de Colores --- */
+.creditos-badge-puesto {
+    display: inline-block; padding: 4px 10px; border-radius: 15px; font-size: 0.8rem; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.badge-coord  { background: var(--color-yellow-btn, #f3a601); color: var(--color-purple-dark); }
+.badge-diseno { background: var(--color-pink-accent, #f06292); color: white; }
+.badge-prog   { background: #4facfe; color: white; }
+.badge-superv { background: #ff758c; color: white; }
+.badge-3d     { background: #43e97b; color: #1a562f; }
+
+/* --- 7. Responsive para Celulares --- */
+@media screen and (max-width: 850px) {
+    /* Si la pantalla se hace pequeña, volvemos a 1 columna */
+    .creditos-seccion-desarrollo { grid-template-columns: 1fr; }
+}
+
+@media screen and (max-width: 600px) {
+    .creditos-ventana-principal { padding: 25px 15px; width: 95%; }
+    .creditos-encabezado-top h2 { font-size: 1.6rem; }
+    
+    /* En celulares muy pequeños, la tarjeta vuelve a apilarse hacia abajo */
+    .creditos-card-perfil { flex-direction: column; text-align: center; padding: 20px 15px; gap: 10px; }
+    .creditos-icono-avatar { width: 65px; height: 65px; font-size: 30px; }
+}

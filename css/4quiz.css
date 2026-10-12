@@ -1,0 +1,414 @@
+/* =========================================================
+   4QUIZ.CSS - PANTALLA DE CUESTIONARIO Y ROSTER
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   CONTENEDOR PRINCIPAL DEL PASO 4
+   --------------------------------------------------------- */
+#paso-4.activa {
+    display: flex;
+    justify-content: center;
+    align-items: stretch; 
+    padding: 0; 
+    width: 100%;
+    height: auto; /* 🔥 CAMBIO: Liberamos la altura */
+    min-height: 100%; /* 🔥 Para que ocupe todo el espacio si hay poco contenido */
+    box-sizing: border-box;
+}
+/* ---------------------------------------------------------
+   TARJETA MAESTRA DEL QUIZ
+   --------------------------------------------------------- */
+.tarjeta-quiz-unificada {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* 🔥 Deja la altura en 100% para PC, pero quitamos el scroll interno problemático */
+    height: 100%; 
+    max-width: 100%;
+    margin: 0; 
+    
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.0) 0%, rgba(248, 246, 246, 0.18) 100%);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.15),
+                0 10px 30px rgba(58, 28, 79, 0.15);
+    
+    /* 🔥 CAMBIO CRÍTICO: Lo ponemos hidden en vez de auto, porque el 
+       game-center-area global ya se encarga del scroll */
+    overflow: hidden; 
+    animation: fadeInScale 0.4s ease-out;
+}
+
+@keyframes fadeInScale {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* =========================================================
+   HEADER: TÍTULOS Y MARCADOR
+   ========================================================= */
+/* Busca esta clase y actualiza su padding */
+.quiz-header {
+    position: relative; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /* 🔥 CAMBIO: 140px a los lados asegura que el texto no toque el badge ni se descentre */
+    padding: 20px 140px; 
+    flex-shrink: 0; 
+}
+
+.quiz-titulos {
+    text-align: center;
+}
+
+.quiz-titulos h2 {
+    margin: 0 0 5px 0;
+    color: var(--color-purple-dark);
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+}
+
+.quiz-titulos p {
+    color: var(--color-purple-main);
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 0;
+}
+
+.quiz-marcador-badge {
+    background-color: #ff9800;
+    color: #ffffff;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-weight: 800;
+    font-size: 1rem;
+    box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3);
+    white-space: nowrap;
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* =========================================================
+   BARRA DE EQUIPO Y CHIPS DE JUGADORES
+   ========================================================= */
+.quiz-equipo-row {
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    flex-shrink: 0; /* 🔥 Evita que se aplaste */
+}
+
+.equipo-tag {
+    font-weight: 800;
+    color: var(--color-purple-dark);
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.equipo-chips-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(94, 42, 132, 0.3) transparent;
+}
+
+.equipo-chips-wrapper::-webkit-scrollbar { height: 6px; }
+.equipo-chips-wrapper::-webkit-scrollbar-thumb { background-color: rgba(94, 42, 132, 0.3); border-radius: 10px; }
+
+.chip-jugador {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.85);
+    border: 2px solid var(--color-purple-main);
+    border-radius: 30px;
+    padding: 3px 12px 3px 3px;
+    gap: 8px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.chip-jugador:hover {
+    transform: translateY(-2px);
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(94, 42, 132, 0.2);
+    border-color: var(--color-pink-accent);
+}
+
+.chip-jugador img {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top center;
+    flex-shrink: 0;
+}
+
+.chip-jugador span {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--color-purple-dark);
+}
+
+
+/* =========================================================
+   CUERPO DEL QUIZ Y SLIDER
+   ========================================================= */
+.quiz-separador {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(94, 42, 132, 0.2), transparent);
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.quiz-body {
+    padding: 30px;
+    /* 🔥 Le damos flex: 1 para que ocupe todo el espacio sobrante entre la cabecera y el footer */
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Mantiene la pregunta en el centro vertical */
+}
+
+.quiz-slider-wrapper {
+    overflow: hidden;
+    width: 100%;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.quiz-slider-track {
+    display: flex;
+    width: 100%;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.quiz-slide {
+    min-width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.quiz-pregunta-card {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    /* 🔥 Agregamos un máximo de ancho para que no se vea tan estirado en pantallas gigantes */
+    max-width: 800px;
+    margin: 0 auto; 
+}
+
+.quiz-pregunta-card p {
+    font-size: clamp(1.15rem, 2vw, 1.4rem);
+    color: var(--color-purple-dark);
+    line-height: 1.5;
+    margin: 0;
+    font-weight: 700; 
+    text-align: center; 
+}
+
+.quiz-pregunta-card strong {
+    color: var(--color-purple-main);
+    font-size: 1.4rem;
+}
+
+/* =========================================================
+   BOTONES DE RESPUESTA (OPCIONES A, B, C, D)
+   ========================================================= */
+.quiz-grid-opciones {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 25px;
+}
+
+.quiz-btn-premium {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 2px solid rgba(94, 42, 132, 0.2);
+    border-radius: 15px;
+    color: var(--color-purple-dark);
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+}
+
+.quiz-btn-premium:hover:not(:disabled) {
+    border-color: var(--color-purple-main);
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(94, 42, 132, 0.15);
+}
+
+.quiz-btn-premium:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.quiz-letra-circulo {
+    min-width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(94, 42, 132, 0.1);
+    color: var(--color-purple-main);
+    border-radius: 50%;
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.icono-resultado {
+    font-size: 1.3rem;
+    font-weight: bold;
+    width: 24px;
+    text-align: right;
+}
+
+/* =========================================================
+   MENSAJE DE CARGA
+   ========================================================= */
+.mensaje-carga {
+    text-align: center;
+    color: var(--color-purple-main);
+    font-weight: 800;
+    font-size: 1.3rem;
+    padding: 60px 0;
+    animation: pulseCarga 1.5s infinite;
+}
+
+@keyframes pulseCarga {
+    0% { opacity: 0.5; transform: scale(0.98); }
+    50% { opacity: 1; transform: scale(1.02); }
+    100% { opacity: 0.5; transform: scale(0.98); }
+}
+
+/* =========================================================
+   FOOTER CON BOTÓN
+   ========================================================= */
+.quiz-footer {
+    padding: 20px 30px;
+    background: rgba(94, 42, 132, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    display: flex;
+    justify-content: center; /* 🔥 Centramos el botón inferior para más elegancia */
+    flex-shrink: 0; /* 🔥 Evita que el footer se aplaste */
+}
+
+/* Hacemos el botón un poco más robusto */
+.quiz-footer .btn {
+    padding: 14px 35px;
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.quiz-footer .btn:disabled {
+    background-color: #cccccc !important;
+    color: #666666 !important;
+    box-shadow: none !important;
+    opacity: 0.7;
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN (MÓVILES Y TABLETS)
+   ========================================================= */
+@media (max-width: 900px) {
+    .quiz-pregunta-card p { font-size: 1.25rem; }
+}
+
+@media (max-width: 768px) {
+  #paso-4.activa,
+    .tarjeta-quiz-unificada {
+        height: auto !important;
+        min-height: 100%; 
+        overflow: visible !important; 
+    }
+
+    .quiz-header {
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .quiz-marcador-badge {
+        /* 🔥 CORRECCIÓN: Resetea el 'absolute' para que se acomode debajo del título en móvil */
+        position: relative;
+        top: auto;
+        right: auto;
+        transform: none;
+        align-self: center;
+    }
+
+    .quiz-equipo-row {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px 20px;
+        gap: 12px;
+    }
+
+   .equipo-chips-wrapper {
+        width: 100%;
+        justify-content: flex-start; /* 🔥 CAMBIO: Evita que el primer chip se corte */
+        padding-bottom: 8px;
+        padding-left: 15px; /* Da un poco de respiro lateral */
+        padding-right: 15px;
+    }
+
+    .quiz-footer { padding: 20px; }
+}
+
+@media (max-width: 650px) {
+    /* 🔥 Pasa las opciones a una sola columna */
+    .quiz-grid-opciones {
+        grid-template-columns: 1fr;
+    }
+    
+    .quiz-btn-premium {
+        padding: 14px 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .quiz-titulos h2 { font-size: 1.5rem; }
+    .quiz-titulos p { font-size: 1rem; }
+    
+    .quiz-body {
+        padding: 20px 15px;
+    }
+    
+    .quiz-pregunta-card p { font-size: 1.1rem; }
+    
+    .quiz-letra-circulo {
+        min-width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+    }
+    
+    .quiz-footer { padding: 15px; }
+    .quiz-footer .btn { width: 100%; }
+}
