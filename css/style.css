@@ -311,30 +311,31 @@ main, #main-content {
    COMPONENTES GLOBALES (TARJETAS)
    ========================================================= */
 .tarjeta-general {
-    /* Tu configuración de flexbox y tamaños... */
     display: flex;
     flex-direction: row; 
     width: 100%; 
-    height: 100%; 
+    
+    /* 🔥 LA MAGIA DEL TAMAÑO AUTOMÁTICO */
+    height: auto; 
+    min-height: 100%; /* Si hay poco contenido, se verá del tamaño de la pantalla. Si hay mucho, crecerá. */
+    
     max-width: 100%; 
     margin: 0; 
     flex-shrink: 0; 
-    overflow: auto; 
     
-    /* 🔥 EL EFECTO NEÓN Y CRISTAL */
+    /* 🔥 Evita que corte elementos flotantes y permite al scroll general hacer su trabajo */
+    overflow: visible; 
+    
+    /* EL EFECTO NEÓN Y CRISTAL (Mantienes lo que ya tenías) */
     border-radius: 40px; 
-    border: 2px solid rgba(225, 196, 255, 0.9); /* Borde lila brillante casi sólido */
-    
+    border: 2px solid rgba(225, 196, 255, 0.9);
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.0) 0%, rgba(248, 246, 246, 0.15) 100%);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-
     box-shadow: 
-        inset 0 0 15px rgba(255, 255, 255, 0.3),  /* Luz interna del cristal */
-        0 0 35px rgba(189, 92, 255, 0.6),         /* 🔥 LUZ NEÓN MORADA RADIAL */
-        0 15px 35px rgba(0, 0, 0, 0.5);           /* Sombra base oscura */
-    
-    /* FIX para que la luz y el cristal no se salgan de las esquinas curvas */
+        inset 0 0 15px rgba(255, 255, 255, 0.3),
+        0 0 35px rgba(189, 92, 255, 0.6), 
+        0 15px 35px rgba(0, 0, 0, 0.5); 
     -webkit-mask-image: -webkit-radial-gradient(white, black);
     mask-image: radial-gradient(white, black);
 }
@@ -349,18 +350,21 @@ main, #main-content {
     /* 🔥 La pantalla inactiva igual debe tener el 100% preparado */
     height: 100%;
 }
-
 .paso-pantalla.activa { 
     display: flex; 
-    /* 🔥 Cambiamos a 'column' para que la tarjeta de adentro pueda estirarse verticalmente */
     flex-direction: column; 
     width: 100%;
-    /* 🔥 Ocupa todo el alto de game-center-area */
-    height: 100%; 
-    flex: 1; 
-    /* 🔥 Quitamos el padding aquí porque game-center-area ya lo tiene, evitando un doble margen */
+    
+    /* 🔥 Dejamos que el contenedor crezca junto con la tarjeta */
+    height: auto; 
+    min-height: 100%; 
+    
+    /* 🔥 flex: 1 0 auto; permite que flexbox crezca sin aplastar el contenido */
+    flex: 1 0 auto; 
     padding: 0; 
-    overflow: hidden; 
+    
+    /* 🔥 CLAVE: Quitar el 'hidden' para que no corte el contenido */
+    overflow: visible; 
 }
 /* =========================================================
    SISTEMA GLOBAL DE NOTIFICACIONES FLOTANTES

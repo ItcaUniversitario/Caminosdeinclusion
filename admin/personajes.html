@@ -165,6 +165,9 @@
                     
                     <!-- BOTONES DE EXCEL Y BORRAR TODO -->
                     <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                        <button class="btn btn-success fw-bold" id="btnDescargarExcel">
+            <i class="bi bi-file-earmark-spreadsheet-fill me-1"></i> Descargar Datos (Excel)
+        </button>
                         <div class="d-flex gap-2">
                             <button class="btn btn-outline-success fw-bold" id="btnDescargarPlantilla">
                                 <i class="bi bi-file-earmark-excel me-1"></i> Descargar Plantilla
@@ -180,7 +183,7 @@
                         </div>
                         
                         <button class="btn fw-bold text-white" id="btnAbrirFormulario" style="background-color: #5e2a84; border: none;">
-                            <i class="bi bi-plus-circle me-1"></i> Agregar Manual
+                            <i class="bi bi-plus-circle me-1"></i> Agregar nueva
                         </button>
                     </div>
 
@@ -894,6 +897,77 @@
             };
             reader.readAsArrayBuffer(file);
         });
+      // ==========================================
+// FUNCIÓN PARA DESCARGAR DATOS COMPLETOS A EXCEL
+// ==========================================
+document.getElementById('btnDescargarExcel').addEventListener('click', () => {
+    if (!cartasDataLocal || cartasDataLocal.length === 0) {
+        alert("No hay registros disponibles para exportar en este personaje o sección.");
+        return;
+    }
+
+    let dataParaExcel = [];
+
+    // 1. CAMINO 1: Cartas de Personajes
+    if (tipoFormulario === 1) {
+        dataParaExcel = cartasDataLocal.map((item, index) => ({
+            "N°": index + 1,
+            "Personaje": personajeActualNombre,
+            "Descripcion": item.descripcion || '',
+            "Opcion Empatica": item.opcion_empatica || '',
+            "Retro Empatica": item.retro_empatica || '',
+            "Opcion Poco Empatica": item.opcion_poco_empatica || '',
+            "Retro Poco Empatica": item.retro_poco_empatica || '',
+            "Opcion Nada Empatica": item.opcion_nada_empatica || '',
+            "Retro Nada Empatica": item.retro_nada_empatica || ''
+        }));
+    } 
+    // 2. CAMINO 2: Adivinanzas
+    else if (tipoFormulario === 2) {
+        dataParaExcel = cartasDataLocal.map((item, index) => ({
+            "N°": index + 1,
+            "Escenario": item.escenario || '',
+            "Pregunta Anclaje": item.preguntaAnclaje || '¿Con cuál coincide lo que imaginaste?',
+            "Opcion A": item.opcionesAnclaje?.A?.texto || '',
+            "Reveal A": item.opcionesAnclaje?.A?.reveal || '',
+            "Opcion B": item.opcionesAnclaje?.B?.texto || '',
+            "Reveal B": item.opcionesAnclaje?.B?.reveal || '',
+            "Retroalimentacion Final": item.retroalimentacionFinal || '',
+            "Pregunta Reflexion": item.preguntaReflexion || '¿Qué piensas ahora?',
+            "Respuesta Buena": item.opcionesReflexion?.[0]?.texto || '',
+            "Respuesta Media": item.opcionesReflexion?.[1]?.texto || '',
+            "Respuesta Mala": item.opcionesReflexion?.[2]?.texto || ''
+        }));
+    } 
+    // 3. CAMINO 2: Casos Prácticos
+    else if (tipoFormulario === 3) {
+        dataParaExcel = cartasDataLocal.map((item, index) => ({
+            "N°": index + 1,
+            "Escenario": item.escenario || '',
+            "Pregunta": item.pregunta || '¿Qué harías?',
+            "Opcion Buena": item.opcionBuena?.texto || '',
+            "Retro Buena": item.opcionBuena?.retro || '',
+            "Opcion Media": item.opcionMedia?.texto || '',
+            "Retro Media": item.opcionMedia?.retro || '',
+            "Opcion Mala": item.opcionMala?.texto || '',
+            "Retro Mala": item.opcionMala?.retro || ''
+        }));
+    }
+
+    // Crear libro de trabajo Excel
+    const worksheet = XLSX.utils.json_to_sheet(dataParaExcel);
+    
+    // Auto-ajustar ancho de columnas
+    const colWidths = Object.keys(dataParaExcel[0] || {}).map(key => ({ wch: 30 }));
+    worksheet['!cols'] = colWidths;
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Registros");
+
+    // Nombre del archivo según el personaje/módulo
+    const nombreLimpio = personajeActualNombre.toLowerCase().replace(/\s+/g, '_');
+    XLSX.writeFile(workbook, `${nombreLimpio}_registros_completos.xlsx`);
+});
 
     </script>
 </body>

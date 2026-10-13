@@ -1,3 +1,17 @@
+#paso-1 {
+    position: relative; /* Base de posicionamiento para el modal */
+}
+#paso-1.activa {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* 🔥 CLAVE: Alinea al inicio para permitir crecer verticalmente */
+    padding: 0; 
+    width: 100%;
+    height: 100%; 
+    box-sizing: border-box;
+    overflow-y: auto; /* 🔥 CLAVE: Toda la pantalla/tarjeta ahora hace scroll de forma unificada */
+    animation: aparecerSuave 0.5s ease;
+}
 /* =========================================================
    PANTALLA 1: SELECCIÓN DE CAMINO
    ========================================================= */
@@ -24,7 +38,7 @@
 }
 .imagen-rosi-portada {
     width: 100%;
-    height: 100%; /* 🔥 CAMBIO: Vuelve a 100% para que nunca desborde el contenedor */
+   height: auto; /* 🔥 CAMBIO: Vuelve a 100% para que nunca desborde el contenedor */
     max-height: 100%;
     max-width: 100%;
     /* Elimina la línea de aspect-ratio */
@@ -330,8 +344,11 @@
    RESPONSIVIDAD: TABLETS (Hasta 960px)
    ========================================================= */
 @media (max-width: 960px) {
-    #paso-1 .tarjeta-general {
+ #paso-1 .tarjeta-general {
         flex-direction: column; 
+        max-height: none; /* ✅ Permite que crezca hacia abajo todo lo necesario */
+        /* height: auto; (ya lo tienes arriba, está bien) */
+        padding-bottom: 50px; 
     }
     
     .seleccion-columna-info, 
